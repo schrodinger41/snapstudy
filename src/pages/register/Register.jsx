@@ -1,7 +1,12 @@
 import React from "react";
+import Background from "../../components/background/Background";
 
 const Register = () => {
-  return <div>Register</div>;
+  return (
+    <div>
+      <Background />
+    </div>
+  );
 };
 
 export default Register;
