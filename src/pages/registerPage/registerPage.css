@@ -1,0 +1,100 @@
+.register-page {
+  display: flex;
+  height: 100vh;
+  background-color: #ffffff;
+}
+
+.left-container {
+  background-color: #0098db;
+  color: white;
+  width: 40%;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-container h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.left-container p {
+  font-size: 1.2rem;
+  margin-top: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem; /* Adjust spacing as needed */
+}
+
+.logo-image {
+  width: 3rem; /* Adjust the size to your preference */
+  height: auto;
+  margin-right: 10px; /* Space between logo and text */
+}
+
+.logo-text {
+  font-size: 2rem; /* Adjust to match the logo size */
+  color: white;
+  margin: 0;
+}
+
+.right-container {
+  width: 60%;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-container input {
+  width: 60%;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+  font-size: 1rem;
+}
+
+.sign-in-link-button,
+.google-sign-in-button {
+  width: 60%;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.sign-in-link-button {
+  background-color: #ffba00;
+  color: white;
+}
+
+.google-sign-in-button {
+  background-color: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+}
+
+.google-sign-in-button img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.or-text {
+  margin: 1rem 0;
+  color: #606060;
+}
