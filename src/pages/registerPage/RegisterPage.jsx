@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { auth, googleProvider } from "../../config/firebase";
 import {
   createUserWithEmailAndPassword,
@@ -15,6 +16,8 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate(); // Initialize navigate function
 
   const getErrorMessage = (errorCode) => {
     switch (errorCode) {
@@ -68,7 +71,7 @@ const RegisterPage = () => {
         await signInWithEmailAndPassword(auth, email, password);
       }
       setError(""); // Clear any previous errors
-      window.location.assign("/"); // Redirect after success
+      navigate("/home"); // Navigate to home page on success
     } catch (error) {
       setError(getErrorMessage(error.code));
     }
@@ -77,7 +80,7 @@ const RegisterPage = () => {
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      window.location.assign("/"); // Redirect after Google sign-in
+      navigate("/home"); // Navigate to home page on success
     } catch (error) {
       setError(getErrorMessage(error.code));
     }
