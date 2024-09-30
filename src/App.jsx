@@ -4,6 +4,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase";
 import Register from "./pages/registerPage/RegisterPage";
 import HomePage from "./pages/homePage/HomePage";
+import NewCardPage from "./pages/newCardPage/NewCardPage";
+import QuizPage from "./pages/quizPage/QuizPage";
+import CardPage from "./pages/cardPage/CardPage";
 import "./App.css";
 
 function App() {
@@ -34,6 +37,18 @@ function App() {
         <Route
           path="home"
           element={isAuth ? <HomePage /> : <Navigate to="/" />}
+        />
+         <Route
+          path="newCard"
+          element={isAuth ? <NewCardPage /> : <Navigate to="/" />}
+        />
+         <Route
+          path="card"
+          element={isAuth ? <CardPage /> : <Navigate to="/" />}
+        />
+         <Route
+          path="quiz"
+          element={isAuth ? <QuizPage /> : <Navigate to="/" />}
         />
       </Routes>
     </BrowserRouter>
