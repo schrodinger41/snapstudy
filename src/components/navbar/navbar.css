@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffea00; /* Yellow background */
+  background-color: var(--yellow-color);
   padding: 10px 20px;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .brand-name {
-  font-family: Arial, sans-serif;
+  font-family: var(--main-font);
   font-size: 24px;
   font-weight: bold;
   color: black;
@@ -29,6 +29,6 @@
 }
 
 .logout-icon {
-  font-size: 40px; /* Adjust the size of the logout icon */
+  font-size: 30px;
   color: black;
 }
