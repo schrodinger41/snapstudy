@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { auth, googleProvider } from "../../config/firebase";
+import { useNavigate } from "react-router-dom";
+import { auth, googleProvider, db } from "../../config/firebase"; // Added 'db' for Firestore
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore"; // Import Firestore methods
 import GoogleLogo from "../../images/googlelogo.png";
 import WebsiteLogo from "../../images/icon.png";
 import "./registerPage.css";
@@ -14,10 +16,11 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [fname, setFname] = useState(""); // Added fname for full name input
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
 
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   const getErrorMessage = (errorCode) => {
     switch (errorCode) {
@@ -49,7 +52,11 @@ const RegisterPage = () => {
   };
 
   const handleAuth = async () => {
-    if (!email || !password || (isRegistering && !confirmPassword)) {
+    if (
+      !email ||
+      !password ||
+      (isRegistering && (!confirmPassword || !fname))
+    ) {
       setError("Please fill in all fields.");
       return;
     }
@@ -66,7 +73,21 @@ const RegisterPage = () => {
           setError("Passwords do not match.");
           return;
         }
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+
+        // Save user data to Firestore and update profile
+        await updateProfile(user, { displayName: fname });
+        const userRef = doc(db, "Users", user.uid);
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          fullName: fname,
+        });
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
@@ -79,7 +100,17 @@ const RegisterPage = () => {
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      // Save Google user data to Firestore
+      const userRef = doc(db, "Users", user.uid);
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        fullName: user.displayName || "Anonymous",
+      });
+
       navigate("/home"); // Navigate to home page on success
     } catch (error) {
       setError(getErrorMessage(error.code));
@@ -108,6 +139,14 @@ const RegisterPage = () => {
             {isRegistering ? "Sign Up!" : "Sign In!"}
           </h1>
           {error && <p className="error-message">{error}</p>}
+          {isRegistering && (
+            <input
+              type="text"
+              placeholder="Full Name"
+              onChange={(e) => setFname(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+          )}
           <input
             type="email"
             placeholder="Email"

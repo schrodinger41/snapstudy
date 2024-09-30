@@ -1,0 +1,126 @@
+.newcard-page {
+  padding: 20px;
+  background-color: #fff7cc;
+  height: 100vh;
+}
+
+.flashcard-container {
+  background-color: #ffeb7d;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: left;
+  color: #333;
+}
+
+.flashcard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.flashcard-input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.flashcard-input label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.flashcard-input input,
+.flashcard-input textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.flashcard-image button {
+  background-color: #f0f0f0;
+  border: 2px dashed #bbb;
+  padding: 40px;
+  width: 150px;
+  height: 150px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.flashcard-cards .card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-body {
+  display: flex;
+  gap: 10px;
+}
+
+.card-body input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.remove-btn {
+  background-color: #f95f62;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.add-card-btn {
+  background-color: #fbc02d;
+  border: none;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-image-btn {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.flashcard-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.create-btn,
+.create-practice-btn {
+  background-color: #fbc02d;
+  border: none;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
