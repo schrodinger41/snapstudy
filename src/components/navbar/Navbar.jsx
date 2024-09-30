@@ -18,14 +18,14 @@ const handleLogout = async () => {
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <div className="navbar-left">
+      <a href="/home" className="navbar-left">
         <img
           src="../../../public/icon.png"
           alt="Hand Icon"
           className="hand-icon"
         />
         <span className="brand-name">SNAPSTUDY</span>
-      </div>
+      </a>
       <div className="navbar-right" onClick={handleLogout}>
         <FaSignOutAlt className="logout-icon" />
       </div>

@@ -101,29 +101,34 @@ const NewCardPage = () => {
 
         <div className="flashcard-header">
           <div className="flashcard-input">
-            <label>Title</label>
+            
             <input
               type="text"
               placeholder="Add a title (e.g. Death)"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-          </div>
-          <div className="flashcard-input">
-            <label>Description</label>
+            <label>Title</label>
+            
             <textarea
               placeholder="Add a description..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
+            <label>Description</label>
           </div>
           <div className="flashcard-image">
             <button>
               <FaImage /> IMAGE
             </button>
           </div>
-        </div>
-
+          <div className="flashcard-actions">
+            <button className="create-btn" onClick={createFlashcardSet}>
+              Create
+            </button>
+            <button className="create-practice-btn">Create and Practice</button>
+          </div>
+        </div>       
         <div className="flashcard-cards">
           {cards.map((card, index) => (
             <div key={index} className="card">
@@ -159,17 +164,9 @@ const NewCardPage = () => {
               </div>
             </div>
           ))}
-
           <button onClick={addCard} className="add-card-btn">
             <FaPlus /> Add Card
           </button>
-        </div>
-
-        <div className="flashcard-actions">
-          <button className="create-btn" onClick={createFlashcardSet}>
-            Create
-          </button>
-          <button className="create-practice-btn">Create and Practice</button>
         </div>
       </div>
     </div>
