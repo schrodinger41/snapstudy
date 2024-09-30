@@ -1,6 +1,6 @@
 .newcard-page {
-  background-color: #fff7cc;
-  height: 100vh;
+  background-color: #fffebe;
+  min-height: 100vh;
 }
 
 .flashcard-container {
@@ -78,9 +78,10 @@ h1 {
 .flashcard-cards .card {
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 15px;
   margin-bottom: 15px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
 }
 
 .card-header {
@@ -103,22 +104,30 @@ h1 {
 }
 
 .remove-btn {
-  background-color: #f95f62;
+  background: none;
   border: none;
-  color: #fff;
+  color: black;
   cursor: pointer;
-  padding: 5px;
-  border-radius: 5px;
+}
+
+.remove-btn:hover {
+  color: #f95f62;
 }
 
 .add-card-btn {
   background-color: #fbc02d;
   border: none;
   color: #333;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+  width: 1160px;
+}
+
+.add-card-btn:hover {
+  color: white;
+  background-color: #daa520;
 }
 
 .add-image-btn {
@@ -138,9 +147,25 @@ h1 {
 .create-btn,
 .create-practice-btn {
   background-color: #fbc02d;
-  border: none;
+  border: 2px solid #fbc02d;
   color: #333;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
+}
+
+.create-btn {
+  background-color: transparent;
+  border: 2px solid #fbc02d;
+}
+
+.create-btn:hover {
+  background-color: #fbc02d;
+  border: 2px solid #fbc02d;
+  color: white;
+}
+
+.create-practice-btn:hover {
+  background-color: #daa520;
+  border: 2px solid #daa520;
 }
