@@ -1,0 +1,107 @@
+.home-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff7cc;
+}
+
+.home-page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.top-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 40px;
+}
+
+.top-text {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.add-set-button {
+  position: relative;
+  display: flex;
+
+  color: black;
+  align-items: center;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 50px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.set-button {
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  border: black solid 1px;
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-10px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  margin-right: 1px;
+}
+
+.add-set-button:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.add-set-button span {
+  margin-left: 8px;
+  font-size: 16px;
+}
+
+.flashcard-sets {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0 40px;
+}
+
+.flashcard-set {
+  flex: 0 1 calc(33.33% - 20px); /* Adjust this to change how many cards fit per row */
+  box-sizing: border-box;
+}
+
+.bottom {
+  width: 100%;
+}

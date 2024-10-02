@@ -1,0 +1,53 @@
+.flashcard-content h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.flashcard-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  font-weight: 600;
+  gap: 5px;
+}
+
+.flashcard-footer p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: #444;
+}
+
+.flashcard-set {
+  width: 20%;
+  height: 200px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.flashcard-set:hover {
+  transform: scale(1.05);
+}
+
+.flashcard-set-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.flashcard-set-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

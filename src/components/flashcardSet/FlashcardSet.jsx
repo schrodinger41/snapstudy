@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./flashcardSet.css"; // Optional: Add styles for the FlashcardSet component
+import { TbCardsFilled } from "react-icons/tb";
+import "./flashcardSet.css";
 
 const FlashcardSet = ({ title, cardCount }) => {
   return (
     <div className="flashcard-set">
-      <h2>{title}</h2>
-      <p>Number of Cards: {cardCount}</p>
+      <div className="flashcard-content">
+        <h2>{title}</h2>
+      </div>
+      <div className="flashcard-footer">
+        <p>{cardCount} cards</p>
+        <TbCardsFilled className="card-icon" />
+      </div>
     </div>
   );
 };
