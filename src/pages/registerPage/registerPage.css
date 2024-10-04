@@ -71,6 +71,10 @@ h1.app-logo {
   color: white;
 }
 
+.sign-in-link-button:hover {
+  background-color: #e6a800;
+}
+
 .google-sign-in-button {
   background-color: white;
   color: black;
@@ -78,10 +82,15 @@ h1.app-logo {
   margin-bottom: 0.5rem;
 }
 
+.google-sign-in-button:hover {
+  background-color: #f1f1f1;
+}
+
 .google-sign-in-button img {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  vertical-align: middle; 
 }
 
 .or-text {
