@@ -9,7 +9,7 @@
   margin: 0 auto;
 }
 
-h1 {
+.flashcard-container h1 {
   text-align: left;
   color: #333;
   margin-bottom: 20px;

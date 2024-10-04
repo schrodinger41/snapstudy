@@ -20,7 +20,7 @@ const Navbar = () => {
     <nav className="navbar">
       <a href="/home" className="navbar-left">
         <img
-          src="../../../public/icon.png"
+          src="/icon.png"
           alt="Hand Icon"
           className="hand-icon"
         />
