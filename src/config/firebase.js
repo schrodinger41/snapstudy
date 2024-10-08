@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCu1UPB4CbTA4dwHnZDf8D5dfXrCTshV3U",
-  authDomain: "snapstudy-85185.firebaseapp.com",
-  projectId: "snapstudy-85185",
-  storageBucket: "snapstudy-85185.appspot.com",
-  messagingSenderId: "962524582803",
-  appId: "1:962524582803:web:44a054b55c55a03a80ce66",
-  measurementId: "G-ELT7E1X9TF",
+  apiKey: "AIzaSyCy2ANnsX3HybYUCY5VOMKolLc0kX_IxMU",
+  authDomain: "snapstudy-4124d.firebaseapp.com",
+  projectId: "snapstudy-4124d",
+  storageBucket: "snapstudy-4124d.appspot.com",
+  messagingSenderId: "33698395499",
+  appId: "1:33698395499:web:736992c7a4e56c059f482e",
+  measurementId: "G-CM4PDB33KQ",
 };
 
 const app = initializeApp(firebaseConfig);
