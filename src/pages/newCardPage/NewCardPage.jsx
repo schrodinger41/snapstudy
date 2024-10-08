@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./newcardpage.css";
 import Navbar from "../../components/navbar/Navbar";
-import { FaTrash, FaPlus, FaImage } from "react-icons/fa";
+import { FaTrash, FaPlus } from "react-icons/fa";
 import { db } from "../../config/firebase";
 import { getAuth } from "firebase/auth";
 import {
@@ -23,6 +23,7 @@ const NewCardPage = () => {
   const [userCards, setUserCards] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState(""); // State for category
   const [error, setError] = useState(""); // State for error message
   const auth = getAuth();
   const user = auth.currentUser;
@@ -64,24 +65,26 @@ const NewCardPage = () => {
   const createFlashcardSet = async () => {
     if (user) {
       if (cards.length < 4) {
-        setError("You must create at least 4 cards."); // Set error message
-        return; // Prevent further execution
+        setError("You must create at least 4 cards.");
+        return;
       } else {
-        setError(""); // Clear error message if valid
+        setError("");
       }
 
       try {
         const flashcardSet = {
           title,
           description,
+          category, // Save category
           uid: user.uid,
           cards: cards,
         };
         await addDoc(collection(db, "flashcards"), flashcardSet);
-        setCards([{ term: "", definition: "" }]); // Clear cards after saving
-        setTitle(""); // Clear title after saving
-        setDescription(""); // Clear description after saving
-        navigate("/home"); // Navigate to the homepage after creating
+        setCards([{ term: "", definition: "" }]);
+        setTitle("");
+        setDescription("");
+        setCategory(""); // Clear category after saving
+        navigate("/home");
       } catch (error) {
         console.error("Error creating flashcard set: ", error);
       }
@@ -96,31 +99,47 @@ const NewCardPage = () => {
       <div className="flashcard-container">
         <h1>Create a new flashcard set</h1>
 
-        {/* Display error message if any */}
         {error && <div className="error-message">{error}</div>}
 
         <div className="flashcard-header">
           <div className="flashcard-input">
-            
             <input
               type="text"
-              placeholder="Add a title (e.g. Death)"
+              placeholder="Add a title (e.g. Biology Basics)"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
             <label>Title</label>
-            
+
             <textarea
               placeholder="Add a description..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             <label>Description</label>
-          </div>
-          <div className="flashcard-image">
-            <button>
-              <FaImage /> IMAGE
-            </button>
+
+            {/* Category Selection */}
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="" disabled>
+                Select a category
+              </option>
+              <option value="mathematics">Mathematics</option>
+              <option value="science">Science</option>
+              <option value="history">History</option>
+              <option value="socialStudies">Social Studies</option>
+              <option value="literature">Literature</option>
+              <option value="medicalStudies">Medical Studies</option>
+              <option value="businessEconomics">Business & Economics</option>
+              <option value="technologyComputerScience">
+                Technology & Computer Science
+              </option>
+              <option value="artMusic">Art & Music</option>
+              <option value="other">Other</option>
+            </select>
+            <label>Category</label>
           </div>
           <div className="flashcard-actions">
             <button className="create-btn" onClick={createFlashcardSet}>
@@ -128,7 +147,8 @@ const NewCardPage = () => {
             </button>
             <button className="create-practice-btn">Create and Practice</button>
           </div>
-        </div>       
+        </div>
+
         <div className="flashcard-cards">
           {cards.map((card, index) => (
             <div key={index} className="card">
@@ -158,9 +178,6 @@ const NewCardPage = () => {
                     handleInputChange(index, "definition", e.target.value)
                   }
                 />
-                <button className="add-image-btn">
-                  <FaImage /> IMAGE
-                </button>
               </div>
             </div>
           ))}
