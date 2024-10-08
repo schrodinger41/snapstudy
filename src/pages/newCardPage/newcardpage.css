@@ -9,7 +9,7 @@
   margin: 0 auto;
 }
 
-h1 {
+.flashcard-container h1 {
   text-align: left;
   color: #333;
   margin-bottom: 20px;
@@ -155,7 +155,7 @@ h1 {
 }
 
 .create-btn {
-  background-color: transparent;
+  background-color: white;
   border: 2px solid #fbc02d;
 }
 

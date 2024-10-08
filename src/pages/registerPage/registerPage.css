@@ -1,73 +1,64 @@
 .register-page {
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
+  background-color: #fffebe;
+  /* background-image: url('../../images/snapstudy-bg.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; */
+}
+
+.register-box {
+  display: flex;
+  width: 60%;
+  max-width: 1200px;
   background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .left-container {
-  background-color: #0098db;
-  color: white;
-  width: 40%;
-  padding: 4rem 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 50%;
+  margin: 10px;
 }
 
-.left-container h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.left-container p {
-  font-size: 1.2rem;
-  margin-top: 0;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem; /* Adjust spacing as needed */
-}
-
-.logo-image {
-  width: 3rem; /* Adjust the size to your preference */
-  height: auto;
-  margin-right: 10px; /* Space between logo and text */
-}
-
-.logo-text {
-  font-size: 2rem; /* Adjust to match the logo size */
-  color: white;
-  margin: 0;
+.register-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
 }
 
 .right-container {
-  width: 60%;
+  width: 50%;
   padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .right-container input {
   width: 60%;
   padding: 1rem;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   border: 2px solid #ccc;
   border-radius: 30px;
   font-size: 1rem;
+}
+
+h1.app-logo {
+  margin-bottom: 20px;
 }
 
 .sign-in-link-button,
 .google-sign-in-button {
   width: 60%;
   padding: 1rem;
-  margin-top: 1rem;
   border: none;
   border-radius: 30px;
   cursor: pointer;
@@ -75,26 +66,67 @@
 }
 
 .sign-in-link-button {
+  margin-top: 1rem;
   background-color: #ffba00;
   color: white;
+}
+
+.sign-in-link-button:hover {
+  background-color: #e6a800;
 }
 
 .google-sign-in-button {
   background-color: white;
   color: black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border: 2px solid #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.google-sign-in-button:hover {
+  background-color: #f1f1f1;
 }
 
 .google-sign-in-button img {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  vertical-align: middle; 
 }
 
 .or-text {
   margin: 1rem 0;
   color: #606060;
+}
+
+.link-transfer-mode {
+  color: #606060;
+  cursor: pointer;
+  
+}
+
+.link-transfer-mode:hover {
+  color: #ffba00;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .register-box {
+    width: 90%;
+    flex-direction: column; 
+  }
+
+  .left-container {
+    display: none;
+  }
+
+  .right-container {
+    width: 100%;
+  }
+
+  .right-container input,
+  .sign-in-link-button,
+  .google-sign-in-button {
+    width: 90%;
+    padding: 0.8rem;
+  }
 }
