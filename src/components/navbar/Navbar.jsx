@@ -1,5 +1,6 @@
 import React from "react";
 import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import { FaSignOutAlt } from "react-icons/fa";
 import Cookies from "universal-cookie";
@@ -7,12 +8,12 @@ import "./navbar.css";
 
 const Navbar = () => {
   const cookies = new Cookies(); // Initialize cookies instance
-
+  const navigate = useNavigate();
   const handleLogout = async () => {
     try {
       await signOut(auth); // Sign out the user from Firebase
       cookies.remove("auth-token", { path: "/" }); // Remove the auth-token cookie
-      window.location.href = "/"; // Redirect to the homepage after logout
+      navigate("/"); // Redirect to the homepage after logout
     } catch (error) {
       console.error("Error logging out:", error);
     }
