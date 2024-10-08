@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--yellow-color);
+  background-color: #fffd70;
   padding: 10px 20px;
 }
 
