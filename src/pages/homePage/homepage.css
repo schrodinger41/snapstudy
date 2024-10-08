@@ -3,15 +3,58 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #fff7cc;
+  background-color: #fff7cc; /* Background color */
 }
 
 .home-page-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 20px 100px 20px 100px;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin-top: 20px;
+  margin-bottom: 20px; /* Space between search and categories */
+}
+
+.search-input {
+  width: 100%; /* Width of the search bar */
+  padding: 10px 10px 10px 15px;
+  border: 1px solid #d2d2d2;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.searchInput-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.left-input {
+  width: 100%;
+}
+.right-input {
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  width: 100%;
+  font-size: 2rem;
+}
+.main-title {
+  font-size: 28px; /* Size of the title */
+  font-weight: bold;
+  color: #f8d52c; /* Title color */
+  text-align: center; /* Center alignment */
+  margin-top: 10px;
 }
 
 .top {
@@ -30,63 +73,26 @@
 }
 
 .top-text {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   font-size: 24px;
   font-weight: bold;
 }
 
-.add-set-button {
-  position: relative;
+.category-container {
   display: flex;
-
-  color: black;
-  align-items: center;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 50px;
-  transition: transform 0.2s ease-in-out;
-}
-
-.set-button {
-  color: black;
-  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  gap: 10px; /* Space between buttons */
+  margin: 20px 0;
 }
 
-.tooltip-text {
-  visibility: hidden;
-  width: 120px;
-  background-color: white;
-  color: black;
-  text-align: center;
-  padding: 5px;
-  border-radius: 6px;
-  border: black solid 1px;
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  transform: translateY(-50%) translateX(-10px);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  margin-right: 1px;
-}
-
-.add-set-button:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-}
-
-.add-set-button span {
-  margin-left: 8px;
-  font-size: 16px;
+.category-button {
+  background-color: white; /* Button color */
+  border: solid 1px #d2d2d2;
+  border-radius: 20px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .flashcard-sets {
@@ -95,11 +101,6 @@
   flex-wrap: wrap;
   gap: 20px;
   padding: 0 40px;
-}
-
-.flashcard-set {
-  flex: 0 1 calc(33.33% - 20px); /* Adjust this to change how many cards fit per row */
-  box-sizing: border-box;
 }
 
 .bottom {

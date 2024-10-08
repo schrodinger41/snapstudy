@@ -26,7 +26,7 @@ const NewCardPage = () => {
   const [category, setCategory] = useState(""); // State for category
   const [error, setError] = useState(""); // State for error message
   const auth = getAuth();
-  const user = auth.currentUser;
+  const user = auth.currentUser; // Get the current user
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,6 +77,7 @@ const NewCardPage = () => {
           description,
           category, // Save category
           uid: user.uid,
+          creator: user.displayName || "Anonymous", // Save the user's display name
           cards: cards,
         };
         await addDoc(collection(db, "flashcards"), flashcardSet);
