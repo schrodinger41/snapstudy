@@ -112,7 +112,7 @@ function App() {
         {/* Can be accessed by both admin and user */}
 
         <Route
-          path="card"
+          path="card/:id"
           element={isAuth ? <CardPage /> : <Navigate to="/" />}
         />
         <Route

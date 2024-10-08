@@ -1,3 +1,4 @@
+// homepage.js
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./homepage.css";
@@ -5,7 +6,6 @@ import Navbar from "../../components/navbar/Navbar";
 import { db } from "../../config/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet";
-import { FaRegFolderOpen } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 
 const categories = [
@@ -25,7 +25,6 @@ const categories = [
 const HomePage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
   const [filteredSets, setFilteredSets] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "flashcards"), (snapshot) => {
@@ -45,15 +44,6 @@ const HomePage = () => {
     setFilteredSets(filtered);
   };
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    const filtered = flashcardSets.filter((set) =>
-      set.title.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredSets(filtered);
-  };
-
   return (
     <div className="home-page">
       <Navbar />
@@ -66,15 +56,12 @@ const HomePage = () => {
                 type="text"
                 placeholder="Search here..."
                 className="search-input"
-                value={searchTerm}
-                onChange={handleSearch}
               />
             </div>
             <div className="right-input">
               <IoSearch className="search-icon" />
             </div>
           </div>
-
           <h1 className="main-title">Snap, Save, and Study, and Save</h1>
         </div>
 
@@ -105,7 +92,7 @@ const HomePage = () => {
         <div className="bottom">
           <div className="top-container">
             <div className="top-left">
-              <div className="top-text">Recommended</div>
+              <div className="top-text reco">Recommended</div>
             </div>
             <div className="top-right">
               <div className="add-set-button"></div>
@@ -118,6 +105,7 @@ const HomePage = () => {
                 title={set.title}
                 cardCount={set.cards.length}
                 creator={set.creator} // Pass creator's name
+                id={set.id} // Pass id for navigation
               />
             ))}
           </div>
