@@ -1,14 +1,14 @@
-.search-section {
+/* .search-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 80%;
   margin-top: 20px;
-  margin-bottom: 20px; /* Space between search and categories */
+  margin-bottom: 20px; 
 }
 
 .search-input {
-  width: 100%; /* Width of the search bar */
+  width: 100%; 
   padding: 10px 10px 10px 15px;
   border: 1px solid #d2d2d2;
   border-radius: 20px;
@@ -33,4 +33,4 @@
 .search-icon {
   width: 100%;
   font-size: 2rem;
-}
+} */
