@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { auth, googleProvider, db } from "../../config/firebase";
 import {
   createUserWithEmailAndPassword,
@@ -23,8 +22,6 @@ const RegisterPage = () => {
   const [fname, setFname] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
-
-  const navigate = useNavigate();
 
   const getErrorMessage = (errorCode) => {
     switch (errorCode) {
@@ -97,7 +94,7 @@ const RegisterPage = () => {
         // Set the auth-token in cookies
         cookies.set("auth-token", user.accessToken, { path: "/" });
 
-        navigate("/home");
+        window.location.assign("/home");
       } else {
         const userCredential = await signInWithEmailAndPassword(
           auth,
@@ -116,9 +113,9 @@ const RegisterPage = () => {
           cookies.set("auth-token", user.accessToken, { path: "/" });
 
           if (role === "admin") {
-            navigate("/adminPage");
+            window.location.assign("/adminPage");
           } else {
-            navigate("/home");
+            window.location.assign("/home");
           }
         }
       }
@@ -151,9 +148,9 @@ const RegisterPage = () => {
       cookies.set("auth-token", user.accessToken, { path: "/" });
 
       if (role === "admin") {
-        navigate("/adminPage");
+        window.location.assign("/adminPage");
       } else {
-        navigate("/home");
+        window.location.assign("/home");
       }
     } catch (error) {
       setError(getErrorMessage(error.code));
