@@ -1,24 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./config/firebase";
+import { auth, db } from "./config/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import Register from "./pages/registerPage/RegisterPage";
 import HomePage from "./pages/homePage/HomePage";
+import AdminPage from "./pages/adminPage/AdminPage";
 import NewCardPage from "./pages/newCardPage/NewCardPage";
-import QuizPage from "./pages/quizPage/QuizPage";
 import CardPage from "./pages/cardPage/CardPage";
+import QuizPage from "./pages/quizPage/QuizPage";
+import MyCardsPage from "./pages/myCardsPage/MyCardsPage";
+import ProfilePage from "./pages/profilePage/ProfilePage";
+import QuizResultPage from "./pages/quizResultPage/QuizResultPage";
+import SearchResultsPage from "./pages/searchResultsPage/SearchResultsPage";
 import "./App.css";
+
+const cookies = new Cookies();
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    // Check if the auth-token cookie exists to update auth state
+    const authToken = cookies.get("auth-token");
+
+    if (authToken) {
+      setIsAuth(true); // User is logged in
+    } else {
+      setIsAuth(false); // User is not logged in
+    }
+
+    // Check Firebase auth state
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setIsAuth(true);
+        const userRef = doc(db, "Users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          setRole(userDoc.data().role);
+        }
       } else {
-        setIsAuth(false);
+        setRole(null);
       }
       setLoading(false);
     });
@@ -34,21 +59,65 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Register />} />
+        {/* User-only page */}
         <Route
           path="home"
-          element={isAuth ? <HomePage /> : <Navigate to="/" />}
+          element={
+            isAuth && role === "user" ? <HomePage /> : <Navigate to="/" />
+          }
         />
-         <Route
+        <Route
           path="newCard"
-          element={isAuth ? <NewCardPage /> : <Navigate to="/" />}
+          element={
+            isAuth && role === "user" ? <NewCardPage /> : <Navigate to="/" />
+          }
         />
-         <Route
-          path="card"
+        <Route
+          path="quiz"
+          element={
+            isAuth && role === "user" ? <QuizPage /> : <Navigate to="/" />
+          }
+        />
+        <Route
+          path="myCardsPage"
+          element={
+            isAuth && role === "user" ? <MyCardsPage /> : <Navigate to="/" />
+          }
+        />
+        <Route
+          path="quizResultPage"
+          element={
+            isAuth && role === "user" ? <QuizResultPage /> : <Navigate to="/" />
+          }
+        />
+        <Route
+          path="searchResultsPage"
+          element={
+            isAuth && role === "user" ? (
+              <SearchResultsPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+
+        {/* Admin-only page */}
+        <Route
+          path="adminPage"
+          element={
+            isAuth && role === "admin" ? <AdminPage /> : <Navigate to="/" />
+          }
+        />
+
+        {/* Can be accessed by both admin and user */}
+
+        <Route
+          path="card/:id"
           element={isAuth ? <CardPage /> : <Navigate to="/" />}
         />
-         <Route
-          path="quiz"
-          element={isAuth ? <QuizPage /> : <Navigate to="/" />}
+        <Route
+          path="profilePage"
+          element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
         />
       </Routes>
     </BrowserRouter>

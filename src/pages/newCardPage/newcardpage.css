@@ -17,16 +17,16 @@
 
 .flashcard-header {
   display: flex;
-  align-items: flex-start; 
+  align-items: flex-start;
   margin-bottom: 20px;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 .flashcard-input {
-  display: flex; 
-  flex-direction: column; 
-  flex: 1; 
-  margin-right: 10px; 
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 10px;
 }
 
 .flashcard-input label {
@@ -40,13 +40,13 @@
 .flashcard-input textarea {
   width: 100%;
   max-width: 500px;
-  background: transparent; 
-  padding: 10px; 
-  resize: none; 
-  border: none; 
-  border-bottom: 2px solid #5a5a5a; 
-  height: 40px; 
-  overflow: hidden; 
+  background: transparent;
+  padding: 10px;
+  resize: none;
+  border: none;
+  border-bottom: 2px solid #5a5a5a;
+  height: 40px;
+  overflow: hidden;
 }
 
 .flashcard-input input:focus,
@@ -59,9 +59,9 @@
 
 .flashcard-image {
   display: flex;
-  align-items: center; 
-  justify-content: center; 
-  flex: 1; 
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .flashcard-image button {
@@ -79,28 +79,35 @@
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 15px;
+
   margin-bottom: 15px;
   box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+}
+.flashcard-cards {
+  padding: 15px;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 15px;
+  background-color: #fffd70;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-weight: 700;
 }
 
 .card-body {
   display: flex;
   gap: 10px;
+  padding: 0px 15px 15px 15px;
 }
 
 .card-body input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border-bottom: 2px solid #5a5a5a;
 }
 
 .remove-btn {
@@ -122,12 +129,12 @@
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
-  width: 1160px;
+  width: 100%;
 }
 
 .add-card-btn:hover {
-  color: white;
-  background-color: #daa520;
+  color: black;
+  background-color: rgb(255, 251, 3);
 }
 
 .add-image-btn {
@@ -152,6 +159,7 @@
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .create-btn {
@@ -168,4 +176,4 @@
 .create-practice-btn:hover {
   background-color: #daa520;
   border: 2px solid #daa520;
-}
+} */

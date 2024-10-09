@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, googleProvider, db } from "../../config/firebase"; // Added 'db' for Firestore
+import { auth, googleProvider, db } from "../../config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore"; // Import Firestore methods
+import { setDoc, doc, getDoc } from "firebase/firestore";
+import Cookies from "universal-cookie"; // Import Cookies from universal-cookie
 import GoogleLogo from "../../images/googlelogo.png";
 import RegisterImage from "../../images/registerImage.png";
 import "./registerPage.css";
+
+// Initialize cookie object
+const cookies = new Cookies();
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [fname, setFname] = useState(""); // Added fname for full name input
+  const [fname, setFname] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
 
@@ -80,19 +84,44 @@ const RegisterPage = () => {
         );
         const user = userCredential.user;
 
-        // Save user data to Firestore and update profile
+        // Save user data to Firestore and assign the default role of "user"
         await updateProfile(user, { displayName: fname });
         const userRef = doc(db, "Users", user.uid);
         await setDoc(userRef, {
           uid: user.uid,
           email: user.email,
           fullName: fname,
+          role: "user", // Default role is "user"
         });
+
+        // Set the auth-token in cookies
+        cookies.set("auth-token", user.accessToken, { path: "/" });
+
+        navigate("/home");
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+
+        // Fetch user role from Firestore
+        const userRef = doc(db, "Users", user.uid);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const { role } = userDoc.data();
+          // Set the auth-token in cookies
+          cookies.set("auth-token", user.accessToken, { path: "/" });
+
+          if (role === "admin") {
+            navigate("/adminPage");
+          } else {
+            navigate("/home");
+          }
+        }
       }
-      setError(""); // Clear any previous errors
-      navigate("/home"); // Navigate to home page on success
     } catch (error) {
       setError(getErrorMessage(error.code));
     }
@@ -103,15 +132,29 @@ const RegisterPage = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
-      // Save Google user data to Firestore
+      // Check if user exists in Firestore, if not, add with role "user"
       const userRef = doc(db, "Users", user.uid);
-      await setDoc(userRef, {
-        uid: user.uid,
-        email: user.email,
-        fullName: user.displayName || "Anonymous",
-      });
+      const userDoc = await getDoc(userRef);
 
-      navigate("/home"); // Navigate to home page on success
+      if (!userDoc.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          fullName: user.displayName || "Anonymous",
+          role: "user", // Assign default role for Google sign-ins
+        });
+      }
+
+      const { role } = userDoc.data() || { role: "user" }; // Default to "user" if new user
+
+      // Set the auth-token in cookies
+      cookies.set("auth-token", user.accessToken, { path: "/" });
+
+      if (role === "admin") {
+        navigate("/adminPage");
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       setError(getErrorMessage(error.code));
     }
@@ -127,7 +170,11 @@ const RegisterPage = () => {
     <div className="register-page">
       <div className="register-box">
         <div className="left-container">
-          <img src={RegisterImage} alt="Register Image" className="register-image" />
+          <img
+            src={RegisterImage}
+            alt="Register Image"
+            className="register-image"
+          />
         </div>
         <div className="right-container">
           <div className="login-form-container">
@@ -167,7 +214,10 @@ const RegisterPage = () => {
               {isRegistering ? "Sign Up" : "Sign In"}
             </button>
             <p className="or-text">or</p>
-            <button className="google-sign-in-button" onClick={signInWithGoogle}>
+            <button
+              className="google-sign-in-button"
+              onClick={signInWithGoogle}
+            >
               <img src={GoogleLogo} alt="Google logo" />
               {isRegistering ? "Sign Up" : "Sign In"} with Google
             </button>
