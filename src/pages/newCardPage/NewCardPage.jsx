@@ -130,14 +130,14 @@ const NewCardPage = () => {
               <option value="mathematics">Mathematics</option>
               <option value="science">Science</option>
               <option value="history">History</option>
-              <option value="socialStudies">Social Studies</option>
+              <option value="Social Studies">Social Studies</option>
               <option value="literature">Literature</option>
-              <option value="medicalStudies">Medical Studies</option>
-              <option value="businessEconomics">Business & Economics</option>
-              <option value="technologyComputerScience">
+              <option value="Medical Studies">Medical Studies</option>
+              <option value="Business & Economics">Business & Economics</option>
+              <option value="Technology & Computer Science">
                 Technology & Computer Science
               </option>
-              <option value="artMusic">Art & Music</option>
+              <option value="Art & Music">Art & Music</option>
               <option value="other">Other</option>
             </select>
             <label>Category</label>

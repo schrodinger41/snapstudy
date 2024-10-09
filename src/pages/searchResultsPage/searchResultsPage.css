@@ -1,0 +1,36 @@
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin-top: 20px;
+  margin-bottom: 20px; /* Space between search and categories */
+}
+
+.search-input {
+  width: 100%; /* Width of the search bar */
+  padding: 10px 10px 10px 15px;
+  border: 1px solid #d2d2d2;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.searchInput-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.left-input {
+  width: 100%;
+}
+.right-input {
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  width: 100%;
+  font-size: 2rem;
+}

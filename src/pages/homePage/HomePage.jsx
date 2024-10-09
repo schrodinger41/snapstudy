@@ -1,6 +1,6 @@
 // homepage.js
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./homepage.css";
 import Navbar from "../../components/navbar/Navbar";
 import { db } from "../../config/firebase";
@@ -25,6 +25,8 @@ const categories = [
 const HomePage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
   const [filteredSets, setFilteredSets] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // Search query state
+  const navigate = useNavigate(); // Initialize navigate function
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "flashcards"), (snapshot) => {
@@ -39,9 +41,24 @@ const HomePage = () => {
     return () => unsubscribe();
   }, []);
 
-  const filterSets = (category) => {
-    const filtered = flashcardSets.filter((set) => set.category === category);
-    setFilteredSets(filtered);
+  // Handle search action
+  const handleSearch = () => {
+    if (searchQuery.trim() !== "") {
+      // Navigate to the search results page and pass the search query as a URL parameter
+      navigate(`/searchResultsPage?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  // Trigger search when Enter key is pressed
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  // Handle category selection and navigate to search results page
+  const handleCategoryClick = (category) => {
+    navigate(`/searchResultsPage?category=${encodeURIComponent(category)}`);
   };
 
   return (
@@ -56,9 +73,12 @@ const HomePage = () => {
                 type="text"
                 placeholder="Search here..."
                 className="search-input"
+                value={searchQuery} // Bind search query state
+                onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+                onKeyPress={handleKeyPress} // Trigger search on Enter
               />
             </div>
-            <div className="right-input">
+            <div className="right-input" onClick={handleSearch}>
               <IoSearch className="search-icon" />
             </div>
           </div>
@@ -82,7 +102,7 @@ const HomePage = () => {
             <button
               key={index}
               className="category-button"
-              onClick={() => filterSets(category)}
+              onClick={() => handleCategoryClick(category)}
             >
               {category}
             </button>
