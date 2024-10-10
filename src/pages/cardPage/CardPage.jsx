@@ -18,6 +18,7 @@ const CardPage = () => {
   const [flashcardSet, setFlashcardSet] = useState(null); // State to hold the flashcard set
   const [comments, setComments] = useState([]); // State to hold the comments
   const [newComment, setNewComment] = useState(""); // State to hold the new comment input
+  const [quizResults, setQuizResults] = useState([]); // State to hold the quiz results
   const auth = getAuth(); // Get the currently logged-in user
   const user = auth.currentUser; // Current user info
   const navigate = useNavigate(); // Initialize navigate function
@@ -40,7 +41,7 @@ const CardPage = () => {
   useEffect(() => {
     // Listen for real-time updates to comments
     const commentsRef = collection(db, "flashcards", id, "comments");
-    const unsubscribe = onSnapshot(commentsRef, (snapshot) => {
+    const unsubscribeComments = onSnapshot(commentsRef, (snapshot) => {
       const loadedComments = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -48,7 +49,22 @@ const CardPage = () => {
       setComments(loadedComments);
     });
 
-    return () => unsubscribe();
+    // Listen for real-time updates to quiz results
+    const resultsRef = collection(db, "flashcards", id, "results");
+    const unsubscribeResults = onSnapshot(resultsRef, (snapshot) => {
+      const loadedResults = snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .sort((a, b) => b.timestamp - a.timestamp); // Sort results by timestamp descending
+      setQuizResults(loadedResults.slice(0, 5)); // Take the latest 5 results
+    });
+
+    return () => {
+      unsubscribeComments();
+      unsubscribeResults();
+    };
   }, [id]);
 
   // Handle new comment submission
@@ -85,8 +101,9 @@ const CardPage = () => {
         onClick={() => navigate(`/quiz/${flashcardSet.id}`)}
         className="quiz-button"
       >
-        Take Quiz
+        Practice
       </button>
+      <button>Timed Practice</button>
       {/* Comments Section */}
       <div className="comments-section">
         <h3>Comments</h3>
@@ -124,6 +141,26 @@ const CardPage = () => {
             <p>No comments yet. Be the first to comment!</p>
           )}
         </div>
+      </div>
+
+      {/* Quiz Results Section */}
+      <div className="quiz-results-section">
+        <h3>Recent Quiz Attempts</h3>
+        {quizResults.length > 0 ? (
+          <ul>
+            {quizResults.map((result) => (
+              <li key={result.id}>
+                <strong>{result.userName}</strong>: {result.score}/
+                {flashcardSet.cards.length}
+                <p className="result-timestamp">
+                  {new Date(result.timestamp.toDate()).toLocaleString()}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No quiz attempts yet.</p>
+        )}
       </div>
     </div>
   );
