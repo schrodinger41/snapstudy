@@ -64,45 +64,46 @@ const SearchResultsPage = () => {
 
   return (
     <div className="search-results-page">
-      <Navbar />
-      {/* Search Section */}
-      <div className="search-section">
-        <div className="searchInput-container">
-          <div className="left-input">
-            <input
-              type="text"
-              placeholder="Search here..."
-              className="search-input"
-              value={searchQuery} // Bind search query state
-              onChange={(e) => setSearchQuery(e.target.value)} // Update search query
-              onKeyPress={handleKeyPress} // Trigger search on Enter
-            />
-          </div>
-          <div className="right-input" onClick={handleSearch}>
-            <IoSearch className="search-icon" />
+    <Navbar />
+      <div className="search-results">
+        <div className="search-section">
+          <div className="searchInput-container">
+            <div className="left-input">
+              <input
+                type="text"
+                placeholder="Search here..."
+                className="search-input"
+                value={searchQuery} // Bind search query state
+                onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+                onKeyPress={handleKeyPress} // Trigger search on Enter
+              />
+            </div>
+            <div className="right-input" onClick={handleSearch}>
+              <IoSearch className="search-icon" />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="results-container">
-        {query ? <h2>Search Results for "{query}"</h2> : null}
-        {category ? <h2>Category: "{category}"</h2> : null}
-        <div className="flashcard-sets">
-          {searchResults.length > 0 ? (
-            searchResults.map((set) => (
-              <FlashcardSet
-                key={set.id}
-                title={set.title}
-                cardCount={set.cards.length}
-                creator={set.creator}
-                id={set.id}
-              />
-            ))
-          ) : (
-            <p>
-              No flashcard sets found {query ? `matching "${query}"` : ""}{" "}
-              {category ? `in category "${category}"` : ""}.
-            </p>
-          )}
+        <div className="results-container">
+          {query ? <h2>Search Results for "{query}"</h2> : null}
+          {category ? <h2>Category: "{category}"</h2> : null}
+          <div className="flashcard-sets">
+            {searchResults.length > 0 ? (
+              searchResults.map((set) => (
+                <FlashcardSet
+                  key={set.id}
+                  title={set.title}
+                  cardCount={set.cards.length}
+                  creator={set.creator}
+                  id={set.id}
+                />
+              ))
+            ) : (
+              <p>
+                No flashcard sets found {query ? `matching "${query}"` : ""}{" "}
+                {category ? `in category "${category}"` : ""}.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
