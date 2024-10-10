@@ -1,4 +1,3 @@
-// components/quizPage/QuizPage.js
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../../config/firebase";
@@ -9,8 +8,8 @@ import {
   increment,
   collection,
   addDoc,
-} from "firebase/firestore"; // Add Firestore methods
-import { getAuth } from "firebase/auth"; // To get the current user
+} from "firebase/firestore"; // Firestore methods
+import { getAuth } from "firebase/auth"; // Get the current user
 import Navbar from "../../components/navbar/Navbar";
 import "./quizPage.css";
 
@@ -27,13 +26,27 @@ const QuizPage = () => {
   const auth = getAuth(); // Get the currently logged-in user
   const user = auth.currentUser; // Current user info
 
+  // Function to shuffle an array (Fisher-Yates Shuffle)
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  // Fetch the flashcard set and shuffle the cards
   useEffect(() => {
     const fetchFlashcardSet = async () => {
       const docRef = doc(db, "flashcards", id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setFlashcardSet({ id: docSnap.id, ...docSnap.data() });
+        const flashcardData = { id: docSnap.id, ...docSnap.data() };
+
+        // Shuffle the cards array inside the flashcard set
+        const shuffledCards = shuffleArray([...flashcardData.cards]);
+        setFlashcardSet({ ...flashcardData, cards: shuffledCards });
       }
     };
 
@@ -46,19 +59,25 @@ const QuizPage = () => {
     }
   }, [flashcardSet, currentCardIndex]);
 
-  // Generate options for the current card (1 correct, 3 incorrect)
+  // Generate options for the current card (1 correct, 3 incorrect), ensuring unique options
   const generateOptions = () => {
     const correctAnswer = flashcardSet.cards[currentCardIndex].term;
     setCorrectAnswer(correctAnswer);
+
+    // Filter out the correct answer and ensure all terms are unique
     const incorrectOptions = flashcardSet.cards
-      .filter((_, index) => index !== currentCardIndex) // Exclude the correct answer
-      .map((card) => card.term)
-      .sort(() => 0.5 - Math.random()) // Shuffle incorrect terms
-      .slice(0, 3); // Get 3 random incorrect options
+      .map((card) => card.term) // Get all terms
+      .filter(
+        (term, index) => term !== correctAnswer && index !== currentCardIndex
+      ) // Exclude correct answer and current card
+      .filter((term, index, self) => self.indexOf(term) === index) // Ensure terms are unique
+      .sort(() => 0.5 - Math.random()) // Shuffle terms
+      .slice(0, 3); // Get 3 unique incorrect options
 
     const allOptions = [...incorrectOptions, correctAnswer].sort(
       () => 0.5 - Math.random()
     ); // Shuffle all options
+
     setOptions(allOptions);
     setFeedback(""); // Reset feedback
     setSelectedAnswer(null); // Reset selected answer
@@ -77,19 +96,20 @@ const QuizPage = () => {
     }
   };
 
-  // Save score to the database and navigate to result page
+  // Save score to the "results" collection and the flashcard set, then navigate to result page
   const handleFinishQuiz = async () => {
     try {
-      // Save the score to Firestore under the flashcard set
-      const resultRef = collection(db, "flashcards", id, "results");
-      await addDoc(resultRef, {
+      // Save the score to the "results" collection
+      const resultsRef = collection(db, "results"); // New global "results" collection
+      await addDoc(resultsRef, {
         userId: user.uid,
         userName: user.displayName || "Anonymous",
         score: score,
-        timestamp: new Date(),
+        flashcardSetId: id, // Flashcard set ID
+        timestamp: new Date(), // Save the timestamp
       });
 
-      // Increment the number of users who have completed the quiz
+      // Increment the number of users who have completed the quiz in the flashcard set
       const flashcardSetRef = doc(db, "flashcards", id);
       await updateDoc(flashcardSetRef, {
         completedUsers: increment(1), // Increment the number of completed users
@@ -146,12 +166,12 @@ const QuizPage = () => {
     </div>
         <h2>{flashcardSet.title}</h2>
 
-      {feedback !== "Quiz Complete!" && (
+        {feedback !== "Quiz Complete!" && (
           <>
             <div className="quiz-box">
               <h3>Definition</h3>
               <div className="definition-statement">
-              {flashcardSet.cards[currentCardIndex].definition}
+                {flashcardSet.cards[currentCardIndex].definition}
               </div>
               <p>Choose the correct term</p>
               <div className="options">
@@ -164,9 +184,10 @@ const QuizPage = () => {
                         ? option === correctAnswer
                           ? "correct" // For correct answer selected
                           : "incorrect" // For incorrect answer selected
-                        : option === correctAnswer && feedback.includes("Incorrect")
-                          ? "correct" // Show correct answer if user selected wrong
-                          : ""
+                        : option === correctAnswer &&
+                          feedback.includes("Incorrect")
+                        ? "correct" // Show correct answer if user selected wrong
+                        : ""
                     }
                     disabled={selectedAnswer !== null} // Disable options after selecting an answer
                   >
