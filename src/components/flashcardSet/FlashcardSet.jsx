@@ -5,7 +5,7 @@ import { TbCardsFilled } from "react-icons/tb";
 import { Link } from "react-router-dom"; // Import Link
 import "./flashcardSet.css";
 
-const FlashcardSet = ({ title, cardCount, creator, id }) => {
+const FlashcardSet = ({ title, cardCount, creator, id, completedUsers }) => {
   return (
     <Link to={`/card/${id}`} className="flashcard-set">
       {" "}
@@ -15,7 +15,8 @@ const FlashcardSet = ({ title, cardCount, creator, id }) => {
         <p>Created by: {creator}</p> {/* Display creator's name */}
       </div>
       <div className="flashcard-footer">
-        <p>{cardCount} cards</p>
+        <p>{completedUsers} plays</p> <p>{cardCount} cards</p>
+        {/* Display completed users */}
         <TbCardsFilled className="card-icon" />
       </div>
     </Link>
@@ -25,8 +26,9 @@ const FlashcardSet = ({ title, cardCount, creator, id }) => {
 FlashcardSet.propTypes = {
   title: PropTypes.string.isRequired,
   cardCount: PropTypes.number.isRequired,
-  creator: PropTypes.string.isRequired, // Added creator prop
-  id: PropTypes.string.isRequired, // Added id prop
+  creator: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  completedUsers: PropTypes.number.isRequired, // Add completedUsers prop
 };
 
 export default FlashcardSet;

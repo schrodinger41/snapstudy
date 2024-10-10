@@ -126,6 +126,7 @@ const HomePage = () => {
                 cardCount={set.cards.length}
                 creator={set.creator} // Pass creator's name
                 id={set.id} // Pass id for navigation
+                completedUsers={set.completedUsers || 0}
               />
             ))}
           </div>

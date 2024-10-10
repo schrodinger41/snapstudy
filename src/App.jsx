@@ -73,7 +73,7 @@ function App() {
           }
         />
         <Route
-          path="quiz"
+          path="quiz/:id"
           element={
             isAuth && role === "user" ? <QuizPage /> : <Navigate to="/" />
           }
