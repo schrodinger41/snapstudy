@@ -1,3 +1,4 @@
+// components/navbar/Navbar.js
 import React, { useState } from "react";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -37,8 +38,11 @@ const Navbar = () => {
           {dropdownOpen && (
             <div className="dropdown-menu">
               <a href="/profilePage">Profile</a>
-              <a href="/myCardsPage">Card Sets</a>
-              <a href="/" onClick={handleLogout}>Logout</a>
+              <a href="/myCardsPage">Card Sets</a>{" "}
+              {/* Navigate to MyCardsPage */}
+              <a href="/" onClick={handleLogout}>
+                Logout
+              </a>
             </div>
           )}
         </div>

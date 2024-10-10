@@ -6,9 +6,11 @@ import { Link } from "react-router-dom"; // Import Link
 import "./flashcardSet.css";
 
 const FlashcardSet = ({ title, cardCount, creator, id, completedUsers }) => {
+  // Determine the plays display text
+  const playsText = completedUsers > 0 ? `${completedUsers} plays` : "0 plays";
+
   return (
     <Link to={`/card/${id}`} className="flashcard-set">
-      {" "}
       {/* Add Link for navigation */}
       <div className="flashcard-content">
         <h2>{title}</h2>
@@ -16,9 +18,9 @@ const FlashcardSet = ({ title, cardCount, creator, id, completedUsers }) => {
       </div>
       <div className="flashcard-footer">
         <div className="flashcard-footer-left">
-          <p>{completedUsers} plays</p>
+          <p>{playsText}</p> {/* Display plays text */}
         </div>
-        
+
         <div className="flashcard-footer-right">
           <p>{cardCount} cards</p>
           <TbCardsFilled className="card-icon" />
