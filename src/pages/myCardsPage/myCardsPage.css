@@ -1,0 +1,54 @@
+.my-cards-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  padding: 20px 300px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin: 30px 0px;
+}
+
+.new-card-btn {
+  display: flex;
+  align-items: center;
+  color: #333;
+  border: none;
+  border-radius: 5px; 
+  cursor: pointer;
+  background: transparent;
+  font-size: 2rem;
+  padding: 0;
+}
+
+.new-card-btn:hover {
+  color: var(--secondary-color);
+}
+
+.new-card-container {
+  position: relative; 
+}
+
+.tooltip {
+  position: absolute; 
+  bottom: 100%; 
+  right: 0; 
+  background-color: white; 
+  color: black; 
+  padding: 5px 10px; 
+  border-radius: 5px; 
+  border: 1px solid #333;
+  white-space: nowrap; 
+  transform: translateY(10px) translateX(-35px); 
+  transition: opacity 0.2s ease; 
+  opacity: 0; 
+}
+
+.new-card-container:hover .tooltip {
+  opacity: 1; 
+}
