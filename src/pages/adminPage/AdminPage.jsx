@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../config/firebase";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
 import { useNavigate } from "react-router-dom"; // Import the hook
 import "./adminPage.css";
@@ -107,6 +114,29 @@ const AdminPage = () => {
     fetchFlashcardSets();
   }, []);
 
+  // Delete Flashcard Set
+  const handleDeleteFlashcardSet = async (id) => {
+    try {
+      // Delete the flashcard set
+      const flashcardDoc = doc(db, "flashcards", id);
+      await deleteDoc(flashcardDoc);
+      console.log("Flashcard set deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting flashcard set: ", error);
+    }
+  };
+
+  // Delete User
+  const handleDeleteUser = async (id) => {
+    try {
+      const userDoc = doc(db, "Users", id);
+      await deleteDoc(userDoc);
+      console.log("User deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting user: ", error);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -136,7 +166,12 @@ const AdminPage = () => {
                 <td>{commentsCount[user.id] || 0}</td>
                 <td>
                   <button className="action-btn">Edit</button>
-                  <button className="action-btn">Delete</button>
+                  <button
+                    className="action-btn"
+                    onClick={() => handleDeleteUser(user.id)} // Call delete function
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))
@@ -177,7 +212,12 @@ const AdminPage = () => {
                   >
                     View
                   </button>
-                  <button className="action-btn">Delete</button>
+                  <button
+                    className="action-btn"
+                    onClick={() => handleDeleteFlashcardSet(set.id)} // Call delete function
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))
