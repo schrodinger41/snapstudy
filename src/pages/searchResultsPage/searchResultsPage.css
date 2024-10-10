@@ -7,3 +7,25 @@
   align-items: center;
   padding: 20px 300px
 }
+
+.search-results .flashcard-sets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0 40px;
+  width: 100%;
+}
+
+.results-container {
+  width: 100%;
+}
+
+.search-title {
+  font-size: var(--h3-font-size);
+  font-weight: bold;
+  margin: 20px 0px 40px 0px;
+}
+
+.search-title span {
+  color: var(--secondary-color);
+}
