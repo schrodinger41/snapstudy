@@ -61,6 +61,11 @@ const HomePage = () => {
     navigate(`/searchResultsPage?category=${encodeURIComponent(category)}`);
   };
 
+  // Get the top 3 flashcard sets based on completed users
+  const topFlashcardSets = flashcardSets
+    .sort((a, b) => (b.completedUsers || 0) - (a.completedUsers || 0))
+    .slice(0, 3);
+
   return (
     <div className="home-page">
       <Navbar />
@@ -119,7 +124,8 @@ const HomePage = () => {
             </div>
           </div>
           <div className="flashcard-sets">
-            {filteredSets.map((set) => (
+            {/* Render only the top 3 flashcard sets */}
+            {topFlashcardSets.map((set) => (
               <FlashcardSet
                 key={set.id}
                 title={set.title}
