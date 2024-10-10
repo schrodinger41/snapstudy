@@ -117,7 +117,12 @@ const ProfilePage = () => {
           };
         });
 
-        setUserFlashcards(flashcardsData); // Update state with fetched flashcard sets
+        // Sort by createdAt and slice to get the two most recent flashcards
+        const sortedFlashcards = flashcardsData
+          .sort((a, b) => b.createdAt - a.createdAt) // Sort in descending order
+          .slice(0, 2); // Get the two most recent flashcard sets
+
+        setUserFlashcards(sortedFlashcards); // Update state with fetched flashcard sets
       }
     };
 
@@ -135,11 +140,9 @@ const ProfilePage = () => {
     <div className="profile-page">
       <Navbar />
       <h1>{userInfo.fullName}'s Profile</h1>
-      <p>Email: {userInfo.email}</p>
-      <p>Role: {userInfo.role}</p>
 
       {/* Results Table */}
-      <h2>Your Results</h2>
+      <h2>Your Recent Results</h2>
       <table className="results-table">
         <thead>
           <tr>

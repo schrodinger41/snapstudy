@@ -61,33 +61,18 @@ const AdminPage = () => {
 
   // Fetch Comment Counts
   useEffect(() => {
-    const fetchCommentCounts = async () => {
+    const fetchCommentCounts = () => {
+      const commentsRef = collection(db, "comments");
       const counts = {};
 
       users.forEach((user) => {
-        let totalComments = 0;
-
-        const flashcardsRef = collection(db, "flashcards");
-        const unsubscribeFlashcards = onSnapshot(flashcardsRef, (snapshot) => {
-          snapshot.forEach((flashcardDoc) => {
-            const commentsRef = collection(
-              db,
-              "flashcards",
-              flashcardDoc.id,
-              "comments"
-            );
-            const q = query(commentsRef, where("uid", "==", user.id));
-            const unsubscribeComments = onSnapshot(q, (commentSnapshot) => {
-              totalComments += commentSnapshot.docs.length;
-              counts[user.id] = totalComments;
-              setCommentsCount({ ...counts });
-            });
-
-            return () => unsubscribeComments();
-          });
+        const q = query(commentsRef, where("uid", "==", user.id));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          counts[user.id] = snapshot.docs.length; // Count comments for each user
+          setCommentsCount({ ...counts });
         });
 
-        return () => unsubscribeFlashcards();
+        return () => unsubscribe();
       });
     };
 
@@ -138,7 +123,7 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
+    <div className="admin-page">
       <Navbar />
       <h1>Admin Dashboard</h1>
 
