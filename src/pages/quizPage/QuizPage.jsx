@@ -118,38 +118,44 @@ const QuizPage = () => {
   if (!flashcardSet) return <div>Loading...</div>;
 
   return (
-    <div className="quiz-page">
+    <div>
       <Navbar />
-      <h2>Quiz: {flashcardSet.title}</h2>
+      <div className="quiz-page">      
+        <h2>Quiz: {flashcardSet.title}</h2>
 
       {feedback !== "Quiz Complete!" && (
-        <>
-          <p>Definition: {flashcardSet.cards[currentCardIndex].definition}</p>
+          <>
+            <div className="quiz-box">
+              <h3>Definition</h3>
+              <div className="definition-statement">
+              {flashcardSet.cards[currentCardIndex].definition}
+              </div>
+              <p>Choose the correct term</p>
+              <div className="options">
+                {options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleAnswerSelect(option)}
+                    className={selectedAnswer === option ? "selected" : ""}
+                    disabled={selectedAnswer !== null} // Disable options after selecting an answer
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <p className="feedback">{feedback}</p>
 
-          <div className="options">
-            {options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerSelect(option)}
-                className={selectedAnswer === option ? "selected" : ""}
-                disabled={selectedAnswer !== null} // Disable options after selecting an answer
-              >
-                {option}
+            {feedback && (
+              <button onClick={handleNextCard} className="next-button">
+                {currentCardIndex === flashcardSet.cards.length - 1
+                  ? "Finish Quiz"
+                  : "Next"}
               </button>
-            ))}
-          </div>
-
-          <p className="feedback">{feedback}</p>
-
-          {feedback && (
-            <button onClick={handleNextCard} className="next-button">
-              {currentCardIndex === flashcardSet.cards.length - 1
-                ? "Finish Quiz"
-                : "Next"}
-            </button>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

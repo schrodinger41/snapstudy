@@ -1,18 +1,54 @@
 .quiz-page {
-  padding: 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh;
+  background-image: url('../../images/snapstudy-design.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px 300px;
+}
+
+.quiz-box {
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+  width: 100%; 
+  max-width: 1000px; 
+}
+
+.quiz-box h3 {
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.quiz-box p {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.definition-statement {
+  margin-bottom: 50px;
 }
 
 .options {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-wrap: wrap; 
+  gap: 10px; 
+  justify-content: center; 
 }
 
-button {
-  padding: 10px;
+.options button {
+  flex: 1 0 calc(50% - 10px); 
+  padding: 10px 10px 10px 15px;
   font-size: 16px;
+  text-align: left;
   cursor: pointer;
+  border-radius: 10px;
+  background-color: var(--primary-color);
 }
 
 button.selected {
