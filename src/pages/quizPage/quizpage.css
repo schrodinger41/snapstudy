@@ -14,6 +14,7 @@
 .quiz-page h2 {
   /* align-self: flex-start; */
   margin-bottom: 10px;
+  font-size: var(--h2-font-size);
 }
 
 .quiz-box {
@@ -93,52 +94,48 @@
   background-color: var(--secondary-color);
 }
 
-/* Wrapper for progress bar */
 .progress-bar-wrapper {
+  position: fixed;
+  top: 0;
+  padding: 80px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  margin-bottom: 20px;
+  width: 55%;
+  margin-bottom: 60px;
 }
 
-/* Progress bar container */
-/* Wrapper for progress bar and numbers */
-.progress-bar-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-/* Progress bar container */
 .progress-bar-container {
-  flex-grow: 1; /* Allow the progress bar to grow */
+  flex-grow: 1; 
   height: 20px;
-  background-color: #f0f0f0;
+  background-color: var(--primary-color);
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  margin: 0 15px; /* Spacing between the bar and the numbers */
+  margin: 0 15px; 
 }
 
-/* The filled part of the progress bar */
 .progress-bar {
   height: 100%;
-  background-color: #44c55c;
+  background-color: var(--secondary-color);
   transition: width 0.5s ease;
+  border-radius: 50px;
 }
 
-/* Number outside the progress bar (current card) */
 .progress-number.current {
-  font-size: 14px;
-  font-weight: bold;
+  font-size: var(--small-font-size);
+  font-weight: 500;
   color: #333;
+  border: 1px solid #333;
+  border-radius: 50px;
+  padding: 5px 25px;
 }
 
-/* Total number outside the progress bar (at the right) */
 .progress-number.total {
-  font-size: 14px;
-  font-weight: bold;
+  font-size: var(--small-font-size);
+  font-weight: 500;
   color: #333;
+  border: 1px solid #333;
+  border-radius: 50px;
+  padding: 5px 25px;
 }
