@@ -93,9 +93,13 @@ const QuizPage = () => {
         completedUsers: increment(1), // Increment the number of completed users
       });
 
-      // Navigate to the quiz result page with the score as a state
+      // Navigate to the quiz result page with the score and flashcard set id as state
       navigate(`/quizResultPage`, {
-        state: { score: score, totalCards: flashcardSet.cards.length },
+        state: {
+          score: score,
+          totalCards: flashcardSet.cards.length,
+          flashcardSetId: id, // Pass the flashcard set id here
+        },
       });
     } catch (error) {
       console.error("Error saving quiz result: ", error);
