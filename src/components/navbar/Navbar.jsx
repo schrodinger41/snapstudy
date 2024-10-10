@@ -45,10 +45,23 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <a href="/home" className="navbar-left">
-        <img src="/icon.png" alt="Hand Icon" className="hand-icon" />
-        <span className="brand-name">SNAPSTUDY</span>
-      </a>
+      {role === "user" && (
+        <>
+          <a href="/home" className="navbar-left">
+            <img src="/icon.png" alt="Hand Icon" className="hand-icon" />
+            <span className="brand-name">SNAPSTUDY</span>
+          </a>
+        </>
+      )}
+      {role === "admin" && (
+        <>
+          <a href="/adminPage" className="navbar-left">
+            <img src="/icon.png" alt="Hand Icon" className="hand-icon" />
+            <span className="brand-name">SNAPSTUDY</span>
+          </a>
+        </>
+      )}
+
       <div className="navbar-right">
         <div className="user-icon-container" onClick={toggleDropdown}>
           <FaUserCircle className="user-icon" />
