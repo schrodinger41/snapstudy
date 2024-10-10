@@ -122,7 +122,28 @@ const QuizPage = () => {
   return (
     <div>
       <Navbar />
-      <div className="quiz-page">      
+      <div className="quiz-page">    
+        {/* Progress Bar */}
+        <div className="progress-bar-wrapper">
+      {/* Display the current number outside, to the left */}
+      <span className="progress-number current">
+        {currentCardIndex + 1}
+      </span>
+
+      <div className="progress-bar-container">
+        <div
+          className="progress-bar"
+          style={{
+            width: `${((currentCardIndex + 1) / flashcardSet.cards.length) * 100}%`,
+          }}
+        ></div>
+      </div>
+
+      {/* Display the total number outside, to the right */}
+      <span className="progress-number total">
+        {flashcardSet.cards.length}
+      </span>
+    </div>
         <h2>{flashcardSet.title}</h2>
 
       {feedback !== "Quiz Complete!" && (
