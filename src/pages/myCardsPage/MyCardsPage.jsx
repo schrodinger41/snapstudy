@@ -3,6 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import { db } from "../../config/firebase"; // Ensure you have this import
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
+import { FaRegFolderOpen } from 'react-icons/fa6';
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./myCardsPage.css";
 
@@ -42,25 +43,32 @@ const MyCardsPage = () => {
   return (
     <div>
       <Navbar />
-      <h1>My Flashcards</h1>
-      <button onClick={handleNavigateToNewCardPage} className="new-card-btn">
-        Create New Flashcard
-      </button>
-      <div className="my-cards-container">
-        {userCards.length > 0 ? (
-          userCards.map((card) => (
-            <FlashcardSet
-              key={card.id}
-              id={card.id}
-              title={card.title}
-              creator={card.creator}
-              cardCount={card.cards.length}
-              completedUsers={card.completedUsers || 0} // Adjust this based on your data structure
-            />
-          ))
-        ) : (
-          <p>No flashcards created yet.</p>
-        )}
+      <div className="my-cards-page">
+      <div className="header-container">
+        <h1>My Flashcards</h1>
+        <div className="new-card-container">
+          <button onClick={handleNavigateToNewCardPage} className="new-card-btn">
+            <FaRegFolderOpen />
+          </button>
+          <div className="tooltip">Add new set?</div>
+        </div>
+      </div>
+        <div className="my-cards-container">
+          {userCards.length > 0 ? (
+            userCards.map((card) => (
+              <FlashcardSet
+                key={card.id}
+                id={card.id}
+                title={card.title}
+                creator={card.creator}
+                cardCount={card.cards.length}
+                completedUsers={card.completedUsers || 0} // Adjust this based on your data structure
+              />
+            ))
+          ) : (
+            <p>No flashcards created yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );
