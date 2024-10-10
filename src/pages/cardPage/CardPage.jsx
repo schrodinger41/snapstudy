@@ -7,22 +7,24 @@ import {
   collection,
   addDoc,
   onSnapshot,
-} from "firebase/firestore"; // Add necessary Firestore methods
-import { getAuth } from "firebase/auth"; // Import Firebase Auth to get the currently logged-in user
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 import "./cardPage.css";
 
 const CardPage = () => {
-  const { id } = useParams(); // Get the flashcard set id from the URL
-  const [flashcardSet, setFlashcardSet] = useState(null); // State to hold the flashcard set
-  const [comments, setComments] = useState([]); // State to hold the comments
-  const [newComment, setNewComment] = useState(""); // State to hold the new comment input
-  const [quizResults, setQuizResults] = useState([]); // State to hold the quiz results
-  const auth = getAuth(); // Get the currently logged-in user
-  const user = auth.currentUser; // Current user info
-  const navigate = useNavigate(); // Initialize navigate function
+  const { id } = useParams();
+  const [flashcardSet, setFlashcardSet] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [quizResults, setQuizResults] = useState([]);
+  const [userRole, setUserRole] = useState(null);
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const navigate = useNavigate();
 
+  // Fetch flashcard set data from Firestore
   useEffect(() => {
     const fetchFlashcardSet = async () => {
       const docRef = doc(db, "flashcards", id);
@@ -38,8 +40,8 @@ const CardPage = () => {
     fetchFlashcardSet();
   }, [id]);
 
+  // Fetch comments and quiz results in real-time
   useEffect(() => {
-    // Listen for real-time updates to comments
     const commentsRef = collection(db, "flashcards", id, "comments");
     const unsubscribeComments = onSnapshot(commentsRef, (snapshot) => {
       const loadedComments = snapshot.docs.map((doc) => ({
@@ -49,7 +51,6 @@ const CardPage = () => {
       setComments(loadedComments);
     });
 
-    // Listen for real-time updates to quiz results
     const resultsRef = collection(db, "flashcards", id, "results");
     const unsubscribeResults = onSnapshot(resultsRef, (snapshot) => {
       const loadedResults = snapshot.docs
@@ -57,8 +58,8 @@ const CardPage = () => {
           id: doc.id,
           ...doc.data(),
         }))
-        .sort((a, b) => b.timestamp - a.timestamp); // Sort results by timestamp descending
-      setQuizResults(loadedResults.slice(0, 5)); // Take the latest 5 results
+        .sort((a, b) => b.timestamp - a.timestamp);
+      setQuizResults(loadedResults.slice(0, 5));
     });
 
     return () => {
@@ -67,28 +68,49 @@ const CardPage = () => {
     };
   }, [id]);
 
+  // Fetch the user's role from Firestore
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (user) {
+        try {
+          const userRef = doc(db, "Users", user.uid); // Use the same Firestore collection as Navbar
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            setUserRole(userSnap.data().role); // Set user role
+          } else {
+            console.log("User document not found!");
+          }
+        } catch (error) {
+          console.error("Error fetching user role: ", error);
+        }
+      }
+    };
+
+    fetchUserRole();
+  }, [user]);
+
   // Handle new comment submission
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newComment.trim()) return; // Prevent empty comment submission
+    if (!newComment.trim()) return;
 
     try {
-      // Add the comment to Firestore under the specific flashcard set
       const commentsRef = collection(db, "flashcards", id, "comments");
       await addDoc(commentsRef, {
         text: newComment,
         author: user.displayName || "Anonymous",
+        uid: user.uid,
         timestamp: new Date(),
       });
 
-      setNewComment(""); // Clear the input field after submission
+      setNewComment("");
     } catch (error) {
       console.error("Error adding comment: ", error);
     }
   };
 
-  if (!flashcardSet) return <div>Loading...</div>; // Loading state
+  if (!flashcardSet) return <div>Loading...</div>;
 
   return (
     <div className="card-page">
@@ -96,14 +118,36 @@ const CardPage = () => {
       <h2>{flashcardSet.title}</h2>
       <p>Created by: {flashcardSet.creator}</p>
       <p>{flashcardSet.cards.length} cards available</p>
-      {/* Take Quiz Button */}
-      <button
-        onClick={() => navigate(`/quiz/${flashcardSet.id}`)}
-        className="quiz-button"
-      >
-        Practice
-      </button>
-      <button>Timed Practice</button>
+
+      {/* Add description and category */}
+      <p>
+        <strong>Description:</strong> {flashcardSet.description}
+      </p>
+      <p>
+        <strong>Category:</strong> {flashcardSet.category}
+      </p>
+      <p>
+        {flashcardSet.completedUsers} <strong>plays</strong>
+      </p>
+
+      {/* Conditionally render buttons based on user role */}
+      {userRole === "user" && (
+        <>
+          <button
+            onClick={() => navigate(`/quiz/${flashcardSet.id}`)}
+            className="quiz-button"
+          >
+            Practice
+          </button>
+          <button
+            onClick={() => navigate(`/timed-quiz/${flashcardSet.id}`)}
+            className="timed-quiz-button"
+          >
+            Timed Practice
+          </button>
+        </>
+      )}
+
       {/* Comments Section */}
       <div className="comments-section">
         <h3>Comments</h3>
@@ -123,7 +167,6 @@ const CardPage = () => {
           <p>You must be logged in to leave a comment.</p>
         )}
 
-        {/* Display Comments */}
         <div className="comments-list">
           {comments.length > 0 ? (
             comments.map((comment) => (
