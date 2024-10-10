@@ -1,16 +1,33 @@
 // components/navbar/Navbar.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../config/firebase";
-import { FaUserCircle } from "react-icons/fa"; // User icon instead of logout icon
+import { auth, db } from "../../config/firebase"; // Ensure you import db
+import { FaUserCircle } from "react-icons/fa"; // User icon
 import Cookies from "universal-cookie";
+import { doc, getDoc } from "firebase/firestore"; // Import Firestore functions
 import "./navbar.css";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false); // Manage dropdown state
+  const [role, setRole] = useState(null); // State to store user role
   const cookies = new Cookies();
   const navigate = useNavigate();
+
+  // Fetch user role when the component mounts
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "Users", user.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          setRole(userDoc.data().role); // Set user role from Firestore
+        }
+      }
+    };
+    fetchUserRole();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -37,9 +54,12 @@ const Navbar = () => {
           <FaUserCircle className="user-icon" />
           {dropdownOpen && (
             <div className="dropdown-menu">
-              <a href="/profilePage">Profile</a>
-              <a href="/myCardsPage">Card Sets</a>{" "}
-              {/* Navigate to MyCardsPage */}
+              {role === "user" && (
+                <>
+                  <a href="/profilePage">Profile</a>
+                  <a href="/myCardsPage">Card Sets</a>
+                </>
+              )}
               <a href="/" onClick={handleLogout}>
                 Logout
               </a>
