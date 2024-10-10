@@ -19,21 +19,25 @@ const QuizResultPage = () => {
   };
 
   return (
-    <div className="quiz-result-page">
+    <div>
       <Navbar />
-      <h2>Quiz Results</h2>
-      <p>
-        You scored {score} out of {totalCards}
-      </p>
-      <p>Thank you for completing the quiz!</p>
+      <div className="quiz-result-page">
+        <div className="quiz-result-box">
+        <h2>Score</h2>
+        <div className="total-score">
+          {score}/{totalCards}
+        </div>
+        <p>Thank you for completing the quiz! ( ˶ˆᗜˆ˵ )</p>
 
-      <div className="quiz-result-buttons">
-        <button onClick={goToHomePage} className="quiz-result-button">
-          Back to Home
-        </button>
-        <button onClick={retryQuiz} className="quiz-result-button">
-          Try Again
-        </button>
+        <div className="quiz-result-buttons">
+          <button onClick={goToHomePage} className="quiz-result-button">
+            Go Back
+          </button>
+          <button onClick={retryQuiz} className="quiz-result-button">
+            Try Again
+          </button>
+        </div>
+        </div>
       </div>
     </div>
   );

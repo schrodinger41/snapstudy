@@ -20,6 +20,7 @@ const QuizPage = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0); // Track current card in quiz
   const [options, setOptions] = useState([]); // Store options for current card
   const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected answer
+  const [correctAnswer, setCorrectAnswer] = useState(null);
   const [feedback, setFeedback] = useState(""); // Store feedback (correct/incorrect)
   const [score, setScore] = useState(0); // Track the user's score
   const navigate = useNavigate(); // For navigation
@@ -48,6 +49,7 @@ const QuizPage = () => {
   // Generate options for the current card (1 correct, 3 incorrect)
   const generateOptions = () => {
     const correctAnswer = flashcardSet.cards[currentCardIndex].term;
+    setCorrectAnswer(correctAnswer);
     const incorrectOptions = flashcardSet.cards
       .filter((_, index) => index !== currentCardIndex) // Exclude the correct answer
       .map((card) => card.term)
@@ -121,7 +123,7 @@ const QuizPage = () => {
     <div>
       <Navbar />
       <div className="quiz-page">      
-        <h2>Quiz: {flashcardSet.title}</h2>
+        <h2>{flashcardSet.title}</h2>
 
       {feedback !== "Quiz Complete!" && (
           <>
@@ -136,7 +138,15 @@ const QuizPage = () => {
                   <button
                     key={index}
                     onClick={() => handleAnswerSelect(option)}
-                    className={selectedAnswer === option ? "selected" : ""}
+                    className={
+                      selectedAnswer === option
+                        ? option === correctAnswer
+                          ? "correct" // For correct answer selected
+                          : "incorrect" // For incorrect answer selected
+                        : option === correctAnswer && feedback.includes("Incorrect")
+                          ? "correct" // Show correct answer if user selected wrong
+                          : ""
+                    }
                     disabled={selectedAnswer !== null} // Disable options after selecting an answer
                   >
                     {option}
@@ -150,7 +160,7 @@ const QuizPage = () => {
               <button onClick={handleNextCard} className="next-button">
                 {currentCardIndex === flashcardSet.cards.length - 1
                   ? "Finish Quiz"
-                  : "Next"}
+                  : "Continue"}
               </button>
             )}
           </>

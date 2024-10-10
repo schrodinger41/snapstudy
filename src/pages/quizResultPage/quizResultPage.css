@@ -1,0 +1,64 @@
+.quiz-result-page {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh;
+    background-image: url('../../images/snapstudy-design.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px 300px;
+}
+
+.quiz-result-box {
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center children vertically */
+    align-items: center; /* Center children horizontally */
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+    min-height: 500px;
+    width: 100%; 
+    max-width: 800px; 
+}
+
+.quiz-result-box h2 {
+    text-transform: uppercase;
+    font-size: var(--h1-font-size);
+    font-weight: 500;
+}
+
+.quiz-result-box p {
+    margin-bottom: 20px;
+    font-size: var(--small-font-size);
+}
+
+.total-score {
+    margin: 50px;
+    font-size: var(--h1-font-size);
+}
+
+.quiz-result-button {
+    background-color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: var(--smaller-font-size);
+    margin-top: 20px; 
+
+}
+
+.quiz-result-buttons {
+    display: flex;
+    justify-content: center; 
+    gap: 80px;
+}
+
+.quiz-result-button:hover {
+    background-color: var(--secondary-color);
+}
