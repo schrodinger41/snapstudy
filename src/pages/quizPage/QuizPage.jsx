@@ -1,4 +1,3 @@
-// components/quizPage/QuizPage.js
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../../config/firebase";
@@ -9,8 +8,8 @@ import {
   increment,
   collection,
   addDoc,
-} from "firebase/firestore"; // Add Firestore methods
-import { getAuth } from "firebase/auth"; // To get the current user
+} from "firebase/firestore"; // Firestore methods
+import { getAuth } from "firebase/auth"; // Get the current user
 import Navbar from "../../components/navbar/Navbar";
 import "./quizPage.css";
 
@@ -27,13 +26,27 @@ const QuizPage = () => {
   const auth = getAuth(); // Get the currently logged-in user
   const user = auth.currentUser; // Current user info
 
+  // Function to shuffle an array (Fisher-Yates Shuffle)
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  // Fetch the flashcard set and shuffle the cards
   useEffect(() => {
     const fetchFlashcardSet = async () => {
       const docRef = doc(db, "flashcards", id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setFlashcardSet({ id: docSnap.id, ...docSnap.data() });
+        const flashcardData = { id: docSnap.id, ...docSnap.data() };
+
+        // Shuffle the cards array inside the flashcard set
+        const shuffledCards = shuffleArray([...flashcardData.cards]);
+        setFlashcardSet({ ...flashcardData, cards: shuffledCards });
       }
     };
 

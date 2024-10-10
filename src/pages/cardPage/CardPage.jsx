@@ -7,6 +7,8 @@ import {
   collection,
   addDoc,
   onSnapshot,
+  query,
+  where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
@@ -14,9 +16,9 @@ import { useNavigate } from "react-router-dom";
 import "./cardPage.css";
 
 const CardPage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Flashcard set ID from URL
   const [flashcardSet, setFlashcardSet] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([]); // Comments state
   const [newComment, setNewComment] = useState("");
   const [quizResults, setQuizResults] = useState([]);
   const [userRole, setUserRole] = useState(null);
@@ -40,10 +42,11 @@ const CardPage = () => {
     fetchFlashcardSet();
   }, [id]);
 
-  // Fetch comments and quiz results in real-time
+  // Fetch comments for the flashcard set in real-time from the "comments" collection
   useEffect(() => {
-    const commentsRef = collection(db, "flashcards", id, "comments");
-    const unsubscribeComments = onSnapshot(commentsRef, (snapshot) => {
+    const commentsRef = collection(db, "comments");
+    const q = query(commentsRef, where("flashcardSetId", "==", id)); // Filter by flashcard set ID
+    const unsubscribeComments = onSnapshot(q, (snapshot) => {
       const loadedComments = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -73,10 +76,10 @@ const CardPage = () => {
     const fetchUserRole = async () => {
       if (user) {
         try {
-          const userRef = doc(db, "Users", user.uid); // Use the same Firestore collection as Navbar
+          const userRef = doc(db, "Users", user.uid);
           const userSnap = await getDoc(userRef);
           if (userSnap.exists()) {
-            setUserRole(userSnap.data().role); // Set user role
+            setUserRole(userSnap.data().role);
           } else {
             console.log("User document not found!");
           }
@@ -96,15 +99,16 @@ const CardPage = () => {
     if (!newComment.trim()) return;
 
     try {
-      const commentsRef = collection(db, "flashcards", id, "comments");
+      const commentsRef = collection(db, "comments"); // Save in the separate "comments" collection
       await addDoc(commentsRef, {
+        flashcardSetId: id, // Link the comment to the flashcard set
         text: newComment,
         author: user.displayName || "Anonymous",
-        uid: user.uid,
+        uid: user.uid, // Save the user ID of the person commenting
         timestamp: new Date(),
       });
 
-      setNewComment("");
+      setNewComment(""); // Clear the comment input
     } catch (error) {
       console.error("Error adding comment: ", error);
     }
@@ -119,7 +123,6 @@ const CardPage = () => {
       <p>Created by: {flashcardSet.creator}</p>
       <p>{flashcardSet.cards.length} cards available</p>
 
-      {/* Add description and category */}
       <p>
         <strong>Description:</strong> {flashcardSet.description}
       </p>
