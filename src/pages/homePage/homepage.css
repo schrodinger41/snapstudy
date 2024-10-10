@@ -107,10 +107,9 @@
 }
 
 .flashcard-sets {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Create three equal columns */
+  gap: 20px; /* Space between the cards */
   padding: 0 40px;
 }
 

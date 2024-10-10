@@ -84,9 +84,11 @@ const SearchResultsPage = () => {
           </div>
         </div>
         <div className="results-container">
-          {query ? <h2>Search Results for "{query}"</h2> : null}
-          {category ? <h2>Category: "{category}"</h2> : null}
-          <div className="flashcard-sets">
+          <div className="search-title">
+          {query ? <p>Search Results for <span>{query}</span></p> : null}
+          {category ? <p>Category: <span>{category}</span></p> : null}
+          </div>
+          <div className="flashcard-sets flashcard-sets-search">
             {searchResults.length > 0 ? (
               searchResults.map((set) => (
                 <FlashcardSet
