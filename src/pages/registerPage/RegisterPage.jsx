@@ -90,7 +90,7 @@ const RegisterPage = () => {
           fullName: fname,
           role: "user", // Default role is "user"
         });
-
+        localStorage.setItem("userUID", user.uid);
         // Set the auth-token in cookies
         cookies.set("auth-token", user.accessToken, { path: "/" });
 
@@ -110,6 +110,7 @@ const RegisterPage = () => {
         if (userDoc.exists()) {
           const { role } = userDoc.data();
           // Set the auth-token in cookies
+          localStorage.setItem("userUID", user.uid);
           cookies.set("auth-token", user.accessToken, { path: "/" });
 
           if (role === "admin") {
@@ -143,7 +144,7 @@ const RegisterPage = () => {
       }
 
       const { role } = userDoc.data() || { role: "user" }; // Default to "user" if new user
-
+      localStorage.setItem("userUID", user.uid);
       // Set the auth-token in cookies
       cookies.set("auth-token", user.accessToken, { path: "/" });
 
