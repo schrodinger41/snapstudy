@@ -12,15 +12,26 @@
 
 .flashcard-footer {
   display: flex;
-  justify-content: flex-end;
-  align-items: end;
+  justify-content: space-between; /* Ensure left and right elements are spaced apart */
+  align-items: center; /* Align items vertically */
   font-weight: 600;
   gap: 5px;
+}
+
+.flashcard-footer-left,
+.flashcard-footer-right {
+  display: flex; /* Flex to align items if needed */
+  align-items: center; /* Ensure vertical alignment */
 }
 
 .flashcard-footer p {
   margin: 0;
   font-size: 1.1rem;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: #444;
 }
 
 .card-icon {
@@ -37,7 +48,7 @@
   background-position: center;
   border-radius: 20px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-  padding: 40px 30px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

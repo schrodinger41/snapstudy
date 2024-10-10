@@ -15,9 +15,14 @@ const FlashcardSet = ({ title, cardCount, creator, id, completedUsers }) => {
         <p>Created by: {creator}</p> {/* Display creator's name */}
       </div>
       <div className="flashcard-footer">
-        <p>{completedUsers} plays</p> <p>{cardCount} cards</p>
-        {/* Display completed users */}
-        <TbCardsFilled className="card-icon" />
+        <div className="flashcard-footer-left">
+          <p>{completedUsers} plays</p>
+        </div>
+        
+        <div className="flashcard-footer-right">
+          <p>{cardCount} cards</p>
+          <TbCardsFilled className="card-icon" />
+        </div>
       </div>
     </Link>
   );
