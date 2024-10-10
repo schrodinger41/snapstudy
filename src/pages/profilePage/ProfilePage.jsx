@@ -62,7 +62,13 @@ const ProfilePage = () => {
           })
         );
 
-        setUserResults(resultsData); // Update state with fetched user results
+        // Sort results by timestamp and slice to get the five most recent results
+        const sortedResults = resultsData.sort(
+          (a, b) => b.timestamp.seconds - a.timestamp.seconds
+        );
+
+        const recentResults = sortedResults.slice(0, 5);
+        setUserResults(recentResults); // Update state with the most recent results
       }
     };
 
@@ -160,7 +166,7 @@ const ProfilePage = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="3">No results found.</td>
+              <td colSpan="2">No results found.</td>
             </tr>
           )}
         </tbody>
