@@ -64,7 +64,7 @@ const SearchResultsPage = () => {
 
   return (
     <div className="search-results-page">
-    <Navbar />
+      <Navbar />
       <div className="search-results">
         <div className="search-section">
           <div className="searchInput-container">
@@ -93,8 +93,9 @@ const SearchResultsPage = () => {
                   key={set.id}
                   title={set.title}
                   cardCount={set.cards.length}
-                  creator={set.creator}
-                  id={set.id}
+                  creator={set.creator} // Pass creator's name
+                  id={set.id} // Pass id for navigation
+                  completedUsers={set.completedUsers || 0}
                 />
               ))
             ) : (
