@@ -120,7 +120,8 @@ const NewCardPage = () => {
             <label>Description</label>
 
             {/* Category Selection */}
-            <select className="select-category"
+            <select
+              className="select-category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
@@ -130,6 +131,7 @@ const NewCardPage = () => {
               <option value="mathematics">Mathematics</option>
               <option value="science">Science</option>
               <option value="history">History</option>
+              <option value="languages">Languages</option>
               <option value="Social Studies">Social Studies</option>
               <option value="literature">Literature</option>
               <option value="Medical Studies">Medical Studies</option>
