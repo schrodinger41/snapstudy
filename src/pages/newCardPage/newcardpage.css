@@ -1,5 +1,5 @@
 .newcard-page {
-  background-color: #fffebe;
+  background-color: var(--background-color);
   min-height: 100vh;
 }
 
@@ -34,6 +34,7 @@
   margin-bottom: 5px;
   color: #555;
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 .flashcard-input input,
@@ -77,12 +78,11 @@
 
 .flashcard-cards .card {
   background-color: #fff;
-  border: 1px solid #ddd;
   border-radius: 10px;
-
   margin-bottom: 15px;
   box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
 }
+
 .flashcard-cards {
   padding: 15px;
 }
@@ -91,17 +91,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 8px 15px;
   background-color: #fffd70;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  font-weight: 700;
+  font-weight: 500;
+  border-bottom: 2px solid #ccc;
 }
 
 .card-body {
   display: flex;
   gap: 10px;
-  padding: 0px 15px 15px 15px;
+  padding: 20px 20px 20px 40px;
 }
 
 .card-body input {
@@ -115,6 +116,8 @@
   border: none;
   color: black;
   cursor: pointer;
+  vertical-align: middle;
+  line-height: 1;
 }
 
 .remove-btn:hover {
@@ -122,19 +125,20 @@
 }
 
 .add-card-btn {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   border: none;
   color: #333;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
   width: 100%;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
 }
 
 .add-card-btn:hover {
   color: black;
-  background-color: rgb(255, 251, 3);
+  background-color: var(--secondary-color);
 }
 
 .add-image-btn {
@@ -153,27 +157,46 @@
 
 .create-btn,
 .create-practice-btn {
-  background-color: var(--secondary-color);
-  border: 2px solid var(--secondary-color);
+  background-color: var(--primary-color);
+  border: 1px solid #333;
   color: #333;
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
+  
 }
 
 .create-btn {
   background-color: white;
-  border: 2px solid var(--secondary-color);
+  border: 1px solid #333;
 }
 
 .create-btn:hover {
-  background-color: var(--secondary-color);
-  border: 2px solid var(--secondary-color);
-  color: white;
+  background-color: var(--primary-color);
+  border: 1px solid #333;
+  color: #333;
 }
 
 .create-practice-btn:hover {
   background-color: #daa520;
-  border: 2px solid #daa520;
+  border: 1px solid #333;
+}
+
+.select-category {
+  width: 100%;
+  max-width: 250px;
+  background: transparent;
+  padding: 10px;
+  resize: none;
+  border: none;
+  border-bottom: 2px solid #5a5a5a;
+  height: 40px;
+  color: #727272;
+}
+
+.select-category:focus {
+  background: white; 
+  border-radius: 5px; 
+  outline: none; 
+  border-bottom: 2px solid var(--secondary-color); 
 }

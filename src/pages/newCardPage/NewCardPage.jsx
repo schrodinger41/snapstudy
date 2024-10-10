@@ -120,7 +120,7 @@ const NewCardPage = () => {
             <label>Description</label>
 
             {/* Category Selection */}
-            <select
+            <select className="select-category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
@@ -163,22 +163,28 @@ const NewCardPage = () => {
                 </button>
               </div>
               <div className="card-body">
-                <input
-                  type="text"
-                  placeholder="Enter term"
-                  value={card.term}
-                  onChange={(e) =>
-                    handleInputChange(index, "term", e.target.value)
-                  }
-                />
-                <input
-                  type="text"
-                  placeholder="Enter definition"
-                  value={card.definition}
-                  onChange={(e) =>
-                    handleInputChange(index, "definition", e.target.value)
-                  }
-                />
+                <div className="flashcard-input">
+                  <input
+                    type="text"
+                    placeholder="Enter term"
+                    value={card.term}
+                    onChange={(e) =>
+                      handleInputChange(index, "term", e.target.value)
+                    }
+                  />
+                  <label>Term</label>
+                </div>
+                <div className="flashcard-input">
+                  <input
+                    type="text"
+                    placeholder="Enter definition"
+                    value={card.definition}
+                    onChange={(e) =>
+                      handleInputChange(index, "definition", e.target.value)
+                    }
+                  />
+                  <label>Definition</label>
+                </div>
               </div>
             </div>
           ))}
