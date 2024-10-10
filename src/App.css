@@ -3,10 +3,11 @@
 
 :root {
   /* =========== COLORS =========== */
-  --primary-color: #FFFD70;
+  --primary-color: #fffd70;
   --secondary-color: #fbc02d;
   --black-color: #000000;
   --white-color: white;
+  --background-color: #ffffe8;
 
   /* =========== TYPOGRAPHY =========== */
   --main-font: "Prompt", sans-serif;

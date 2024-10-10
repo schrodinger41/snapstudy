@@ -3,7 +3,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #ffffe8; /* Background color */
+  background-color: var(--background-color);
 }
 
 .home-page-content {
