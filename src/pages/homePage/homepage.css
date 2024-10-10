@@ -3,14 +3,14 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #fff7cc; /* Background color */
+  background-color: #ffffe8; /* Background color */
 }
 
 .home-page-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 300px
+  padding: 20px 300px;
 }
 
 .search-section {
@@ -51,21 +51,17 @@
   cursor: pointer;
 }
 .main-title {
-  font-size: var(--h1-font-size); 
+  font-size: var(--h1-font-size);
   font-weight: bold;
-  color: var(--primary-color); 
-  text-align: center; 
+  color: var(--primary-color);
+  text-align: center;
   margin-top: 20px;
   font-style: italic;
-  text-shadow: 
-    1px 1px 0px #000,  /* Right bottom shadow */
-    -1px 1px 0px #000, /* Left bottom shadow */
-    1px -1px 0px #000, /* Right top shadow */
-    -1px -1px 0px #000, /* Left top shadow */
-    1px 0px 0px #000,  /* Right */
-    -1px 0px 0px #000, /* Left */
-    0px 1px 0px #000,  /* Bottom */
-    0px -1px 0px #000;
+  text-shadow: 1px 1px 0px #000, /* Right bottom shadow */ -1px 1px 0px #000,
+    /* Left bottom shadow */ 1px -1px 0px #000,
+    /* Right top shadow */ -1px -1px 0px #000,
+    /* Left top shadow */ 1px 0px 0px #000, /* Right */ -1px 0px 0px #000,
+    /* Left */ 0px 1px 0px #000, /* Bottom */ 0px -1px 0px #000;
 }
 
 .top {
