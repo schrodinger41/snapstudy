@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
+import { TbCardsFilled } from "react-icons/tb"
 import { useNavigate } from "react-router-dom";
 import "./cardPage.css";
 
@@ -132,94 +133,102 @@ const CardPage = () => {
   return (
     <div className="card-page">
       <Navbar />
-      <h2>{flashcardSet.title}</h2>
-      <p>Created by: {flashcardSet.creator}</p>
-      <p>{flashcardSet.cards.length} cards available</p>
+      <div className="flashcard-container">
+        <p className="flashcard-title">{flashcardSet.title}</p>
+        <p className="flashcard-creator">Created by: {flashcardSet.creator} ({flashcardSet.completedUsers} plays)</p>
+        <div className="flashcard-header">
+          <div className="flashcard-description-box">   
+            <p>{flashcardSet.description}</p>
+            <p className="flashcard-category">{flashcardSet.category} Category</p>
+          </div>  
+        <div className="flashcard-buttons-container">
+          <div className="flashcard-buttons">
+            {/* Conditionally render buttons based on user role */}
+            {userRole === "user" && (
+              <>
+                <button
+                  onClick={() => navigate(`/quiz/${flashcardSet.id}`)}
+                  className="quiz-button"
+                >
+                  Practice
+                </button>
+                <button
+                  onClick={() => navigate(`/timed-quiz/${flashcardSet.id}`)}
+                  className="timed-quiz-button"
+                >
+                  Timed Practice
+                </button>
+              </>
+            )}
+          </div>
+          <p className="flashcard-count">
+            {flashcardSet.cards.length} cards <TbCardsFilled />
+          </p>
+          </div>
+        </div>
 
-      <p>
-        <strong>Description:</strong> {flashcardSet.description}
-      </p>
-      <p>
-        <strong>Category:</strong> {flashcardSet.category}
-      </p>
-      <p>
-        {flashcardSet.completedUsers} <strong>plays</strong>
-      </p>
-
-      {/* Conditionally render buttons based on user role */}
-      {userRole === "user" && (
-        <>
-          <button
-            onClick={() => navigate(`/quiz/${flashcardSet.id}`)}
-            className="quiz-button"
-          >
-            Practice
-          </button>
-          <button
-            onClick={() => navigate(`/timed-quiz/${flashcardSet.id}`)}
-            className="timed-quiz-button"
-          >
-            Timed Practice
-          </button>
-        </>
-      )}
-
-      {/* Comments Section */}
-      <div className="comments-section">
-        <h3>Comments</h3>
-        {user ? (
-          <form onSubmit={handleCommentSubmit} className="comment-form">
-            <textarea
-              placeholder="Write a comment..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="comment-input"
-            ></textarea>
-            <button type="submit" className="comment-submit-button">
-              Submit
-            </button>
-          </form>
-        ) : (
-          <p>You must be logged in to leave a comment.</p>
-        )}
-
-        <div className="comments-list">
-          {comments.length > 0 ? (
-            comments.map((comment) => (
-              <div key={comment.id} className="comment">
-                <p>
-                  <strong>{comment.author}</strong>
-                </p>
-                <p>{comment.text}</p>
-                <p className="comment-timestamp">
-                  {new Date(comment.timestamp.toDate()).toLocaleString()}
-                </p>
+        {/* Comments Section */}
+        <div className="comments-section">
+          <h3>Comments</h3>
+          {user ? (
+            <form onSubmit={handleCommentSubmit} className="comment-form">
+              <textarea
+                placeholder="Write a comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="comment-input"
+              ></textarea>
+              <div className="comment-buttons">
+                <button type="submit" className="comment-submit-button">
+                  Submit
+                </button>
+                <button type="button" className="comment-cancel-button">
+                  Cancel
+                </button>
               </div>
-            ))
+            </form>
           ) : (
-            <p>No comments yet. Be the first to comment!</p>
+            <p>You must be logged in to leave a comment.</p>
+          )}
+
+          <div className="comments-list">
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <div key={comment.id} className="comment">
+                  <div className="comment-header">
+                    <strong>{comment.author}</strong>
+                    <p className="comment-timestamp">
+                      {new Date(comment.timestamp.toDate()).toLocaleString()}
+                    </p>
+                  </div>
+                  <p>{comment.text}</p>
+                </div>
+              ))
+            ) : (
+              <p>No comments yet. Be the first to comment!</p>
+            )}
+          </div>
+        </div>
+
+        {/* Quiz Results Section */}
+        <div className="quiz-results-section">
+          <h3>Recent Quiz Attempts</h3>
+          {quizResults.length > 0 ? (
+            <ul>
+              {quizResults.map((result) => (
+                <li key={result.id}>
+                  <strong>{result.userName}</strong>: {result.score}/
+                  {flashcardSet.cards.length}
+                  <p className="result-timestamp">
+                    {new Date(result.timestamp).toLocaleString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No quiz attempts yet.</p>
           )}
         </div>
-      </div>
-
-      {/* Quiz Results Section */}
-      <div className="quiz-results-section">
-        <h3>Recent Quiz Attempts</h3>
-        {quizResults.length > 0 ? (
-          <ul>
-            {quizResults.map((result) => (
-              <li key={result.id}>
-                <strong>{result.userName}</strong>: {result.score}/
-                {flashcardSet.cards.length}
-                <p className="result-timestamp">
-                  {new Date(result.timestamp).toLocaleString()}
-                </p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No quiz attempts yet.</p>
-        )}
       </div>
     </div>
   );
