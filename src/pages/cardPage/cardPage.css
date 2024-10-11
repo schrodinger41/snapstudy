@@ -1,53 +1,53 @@
 .card-page {
-    min-height: 100vh;
-    background-color: var(--background-color);
-    padding: 80px 300px;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  padding: 80px 300px;
 }
 
 .flashcard-title {
-    font-size: var(--h2-font-size);
-    font-weight: bold;
-    text-align: left;
-    color: #333;
+  font-size: var(--h2-font-size);
+  font-weight: bold;
+  text-align: left;
+  color: #333;
 }
 
 .flashcard-creator {
-    margin-bottom: 20px;
-    color: #999999;
-    font-weight: 500;
+  margin-bottom: 20px;
+  color: #999999;
+  font-weight: 500;
 }
 
 .flashcard-description-box {
-    padding: 20px;
-    background-color: #fffd7085;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    margin-right: 10px;
+  padding: 20px;
+  background-color: #fffd7085;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 10px;
 }
 
 .flashcard-category {
-    margin-top: 20px;
-    font-style: italic;
-    color: var(--secondary-color);
-    font-weight: 600;
+  margin-top: 20px;
+  font-style: italic;
+  color: var(--secondary-color);
+  font-weight: 600;
 }
 
 .flashcard-buttons-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; 
+  align-items: flex-end;
   gap: 10px;
 }
 
 .flashcard-buttons {
   display: flex;
-  gap: 10px; 
+  gap: 10px;
 }
 
 .flashcard-count {
@@ -64,7 +64,6 @@
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
-  
 }
 
 .quiz-button {
@@ -83,109 +82,171 @@
   border: 1px solid #333;
 }
 
-.comments-section, .quiz-results-section {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 600px;
+.comments-section,
+.quiz-results-section {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
 }
 
 .comments-section h3 {
-    font-size: var(--h3-font-size);
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: #333;
+  font-size: var(--h3-font-size);
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #333;
 }
 
 .comment-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .comment-input {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: none;
-    font-size: 1rem;
-    color: #333;
-    overflow: hidden;
-    transition: height 0.2s ease;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+  font-size: 1rem;
+  color: #333;
+  overflow: hidden;
+  transition: height 0.2s ease;
 }
 
 .comment-input:focus {
-    border-color: var(--secondary-color);
-    outline: none;
+  border-color: var(--secondary-color);
+  outline: none;
 }
 
-.comment-submit-button, .comment-cancel-button {
-    background-color: var(--primary-color);
-    border: 1px solid #333;
-    color: #333;
-    padding: 10px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 15%; 
-    margin-right: 2%; 
+.comment-submit-button,
+.comment-cancel-button {
+  background-color: var(--primary-color);
+  border: 1px solid #333;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 15%;
+  margin-right: 2%;
 }
 
 .comment-cancel-button {
-    background-color: #ccc;
+  background-color: #ccc;
 }
 
 .comment-submit-button:hover {
-    background-color: var(--secondary-color);
+  background-color: var(--secondary-color);
 }
 
 .comment-cancel-button:hover {
-    background-color: #bbbbbb;
+  background-color: #bbbbbb;
 }
 
 .comments-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .comment {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 .comment p {
-    margin: 5px 0;
-    color: #555;
+  margin: 5px 0;
+  color: #555;
 }
 
 .comment-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
 }
 
 .comment strong {
-    color: #333;
-    font-weight: bold;
+  color: #333;
+  font-weight: bold;
 }
 
 .comment-timestamp {
-    font-size: 0.85rem;
-    color: #999;
-    font-style: italic;
+  font-size: 0.85rem;
+  color: #999;
+  font-style: italic;
 }
 
 .no-comments {
-    color: #777;
-    font-style: italic;
-    margin-top: 10px;
+  color: #777;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+/* Styles for the modal */
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure modal appears above other elements */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+.timer-input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.start-quiz-button,
+.cancel-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.start-quiz-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
 }

@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
-import { TbCardsFilled } from "react-icons/tb"
+import { TbCardsFilled } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import "./cardPage.css";
 
@@ -26,6 +26,9 @@ const CardPage = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [timerMinutes, setTimerMinutes] = useState(0); // State to hold minutes
+  const [timerSeconds, setTimerSeconds] = useState(0); // State to hold seconds
 
   // Fetch flashcard set data from Firestore
   useEffect(() => {
@@ -128,6 +131,18 @@ const CardPage = () => {
     }
   };
 
+  const handleTimedPractice = () => {
+    setIsModalOpen(true); // Open the modal for timer input
+  };
+
+  const handleStartTimedQuiz = () => {
+    const totalTimeInSeconds = Number(timerMinutes) * 60 + Number(timerSeconds); // Convert to total seconds
+    setIsModalOpen(false); // Close the modal
+    navigate(`/quiz/${flashcardSet.id}`, {
+      state: { timer: totalTimeInSeconds }, // Pass total time to QuizPage
+    });
+  };
+
   if (!flashcardSet) return <div>Loading...</div>;
 
   return (
@@ -135,37 +150,83 @@ const CardPage = () => {
       <Navbar />
       <div className="flashcard-container">
         <p className="flashcard-title">{flashcardSet.title}</p>
-        <p className="flashcard-creator">Created by: {flashcardSet.creator} ({flashcardSet.completedUsers} plays)</p>
+        <p className="flashcard-creator">
+          Created by: {flashcardSet.creator} ({flashcardSet.completedUsers}{" "}
+          plays)
+        </p>
         <div className="flashcard-header">
-          <div className="flashcard-description-box">   
+          <div className="flashcard-description-box">
             <p>{flashcardSet.description}</p>
-            <p className="flashcard-category">{flashcardSet.category} Category</p>
-          </div>  
-        <div className="flashcard-buttons-container">
-          <div className="flashcard-buttons">
-            {/* Conditionally render buttons based on user role */}
-            {userRole === "user" && (
-              <>
-                <button
-                  onClick={() => navigate(`/quiz/${flashcardSet.id}`)}
-                  className="quiz-button"
-                >
-                  Practice
-                </button>
-                <button
-                  onClick={() => navigate(`/timed-quiz/${flashcardSet.id}`)}
-                  className="timed-quiz-button"
-                >
-                  Timed Practice
-                </button>
-              </>
-            )}
+            <p className="flashcard-category">
+              {flashcardSet.category} Category
+            </p>
           </div>
-          <p className="flashcard-count">
-            {flashcardSet.cards.length} cards <TbCardsFilled />
-          </p>
+          <div className="flashcard-buttons-container">
+            <div className="flashcard-buttons">
+              {/* Conditionally render buttons based on user role */}
+              {userRole === "user" && (
+                <>
+                  <button
+                    onClick={() => navigate(`/quiz/${flashcardSet.id}`)}
+                    className="quiz-button"
+                  >
+                    Practice
+                  </button>
+                  <button
+                    onClick={handleTimedPractice}
+                    className="timed-quiz-button"
+                  >
+                    Timed Practice
+                  </button>
+                </>
+              )}
+            </div>
+            <p className="flashcard-count">
+              {flashcardSet.cards.length} cards <TbCardsFilled />
+            </p>
           </div>
         </div>
+
+        {/* Custom Modal */}
+        {isModalOpen && (
+          <div className="custom-modal">
+            <div className="modal-content">
+              <h2>Set Timer</h2>
+              <p>Enter the number of minutes and seconds</p>
+              <input
+                type="number"
+                value={timerMinutes}
+                onChange={(e) => setTimerMinutes(e.target.value)}
+                placeholder="Minutes"
+                min="0"
+                className="timer-input"
+              />
+              <input
+                type="number"
+                value={timerSeconds}
+                onChange={(e) => setTimerSeconds(e.target.value)}
+                placeholder="Seconds"
+                min="0"
+                max="59"
+                className="timer-input"
+              />
+              <div className="modal-buttons">
+                <button
+                  onClick={handleStartTimedQuiz}
+                  className="start-quiz-button"
+                >
+                  Start Quiz
+                </button>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="cancel-button"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Comments Section */}
         <div className="comments-section">
