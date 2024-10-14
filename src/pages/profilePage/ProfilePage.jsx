@@ -10,6 +10,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
+import { FaEdit  } from "react-icons/fa";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
 import "./profilePage.css";
 
@@ -209,7 +210,7 @@ const ProfilePage = () => {
     setIsEditingName(false);
   };
 
-  const cancelEdit = () => {
+  const cancelEditBio = () => {
     setUserInfo((prevUserInfo) => ({
       ...prevUserInfo,
       bio: originalBio, // Restore original bio
@@ -232,61 +233,91 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <Navbar />
-      <h1>
-        {isEditingName ? (
-          <div>
-            <input
-              type="text"
-              value={userInfo.fullName}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, fullName: e.target.value })
-              }
-            />
-            <button onClick={saveName}>Save</button>
-            <button onClick={cancelEditName}>Cancel</button>
-          </div>
-        ) : (
-          <div>
-            <p>{userInfo.fullName}</p>
-            <button onClick={() => setIsEditingName(true)}>Edit Name</button>
-          </div>
-        )}
-        's Profile
-      </h1>
-      {/* Editable Name Section */}
-      <h2>Name</h2>
-      <p>
-        Sets Created: {flashcardCount}
-        {flashcardCount !== 1 ? "s" : ""}.
-      </p>{" "}
-      {/* Display count here */}
-      <p>
-        Sets Completed: {totalCompletedFlashcards}{" "}
-        {/* Display total completed flashcards count */}
-      </p>
-      {/* Bio Section */}
-      <h2>Bio</h2>
-      {isEditingBio ? (
-        <textarea
-          value={userInfo.bio}
-          onChange={(e) => setUserInfo({ ...userInfo, bio: e.target.value })}
-        />
-      ) : (
-        <p>{userInfo.bio || "No bio available."}</p>
-      )}
-      {userUID && (
-        <div>
-          {isEditingBio ? (
-            <div>
-              <button onClick={saveBio}>Save</button>
-              <button onClick={cancelEditBio}>Cancel</button>
+      <div className="profile-first-section">
+      <div className="profile-info">
+        <h1>
+          {isEditingName ? (
+            <div className="edit-name-section">
+              <input
+                className="edit-name-input"
+                type="text"
+                value={userInfo.fullName}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, fullName: e.target.value })
+                }
+              />
+              <button onClick={saveName} className="save-edit-button">Save</button>
+              <button onClick={cancelEditName} className="cancel-edit-button">Cancel</button>
             </div>
           ) : (
-            <button onClick={() => setIsEditingBio(true)}>Edit Bio</button>
+            <div className="name-container">
+              <p>{userInfo.fullName}'s Profile</p>
+              <FaEdit onClick={() => setIsEditingName(true)} className="edit-name-icon" />
+            </div>
+          )}
+        </h1>
+        
+        <div className="set-details">
+          <p>
+            Sets Created: {flashcardCount}
+            {flashcardCount !== 1 ? "s" : ""}
+          </p>
+          <p>
+            Sets Completed: {totalCompletedFlashcards}
+          </p>
+        </div>
+
+        {/* Bio Section */}
+        <div className="bio-box">
+          <h2>
+            Bio
+            <FaEdit onClick={() => setIsEditingBio(true)} className="edit-bio-icon" />
+          </h2>
+          {isEditingBio ? (
+            <textarea
+              className="edit-bio-input"
+              value={userInfo.bio}
+              onChange={(e) => setUserInfo({ ...userInfo, bio: e.target.value })}
+            />
+          ) : (
+            <p>{userInfo.bio || "No bio available."}</p>
+          )}
+          {userUID && (
+            <div>
+              {isEditingBio ? (
+                <div>
+                  <button onClick={saveBio} className="save-edit-button">Save</button>
+                  <button onClick={cancelEditBio} className="cancel-edit-button">Cancel</button>
+                </div>
+              ) : null}
+            </div>
           )}
         </div>
-      )}
+      </div>
+
+        <div className="my-flashcards">
+          <h2>Your Flashcard Sets</h2>
+          <div className="flashcard-sets-container">
+            {userFlashcards.length > 0 ? (
+              userFlashcards.map((flashcardSet) => (
+                <FlashcardSet
+                  key={flashcardSet.id}
+                  id={flashcardSet.id}
+                  title={flashcardSet.title}
+                  cardCount={flashcardSet.cardCount} // Pass card count here
+                  creator={userInfo.fullName} // Assuming the creator is the current user
+                  completedUsers={flashcardSet.completedUsers || 0} // Default to 0 if not available
+                />
+              ))
+            ) : (
+              <p>No flashcard sets created.</p>
+            )}
+          </div>
+        </div>  
+      </div>
+
       {/* Results Table */}
+      <div className="my-recent-results">
       <h2>Your Recent Results</h2>
       <table className="results-table">
         <thead>
@@ -312,7 +343,9 @@ const ProfilePage = () => {
           )}
         </tbody>
       </table>
+      </div>
       {/* Comments Table */}
+      <div className="my-comments">
       <h2>Your Comments</h2>
       <table className="comments-table">
         <thead>
@@ -340,22 +373,6 @@ const ProfilePage = () => {
           )}
         </tbody>
       </table>
-      <h2>Your Flashcard Sets</h2>
-      <div className="flashcard-sets-container">
-        {userFlashcards.length > 0 ? (
-          userFlashcards.map((flashcardSet) => (
-            <FlashcardSet
-              key={flashcardSet.id}
-              id={flashcardSet.id}
-              title={flashcardSet.title}
-              cardCount={flashcardSet.cardCount} // Pass card count here
-              creator={userInfo.fullName} // Assuming the creator is the current user
-              completedUsers={flashcardSet.completedUsers || 0} // Default to 0 if not available
-            />
-          ))
-        ) : (
-          <p>No flashcard sets created.</p>
-        )}
       </div>
     </div>
   );

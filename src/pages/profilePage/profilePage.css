@@ -1,5 +1,148 @@
 .profile-page {
   min-height: 100vh;
   background-color: var(--background-color);
-  padding: 80px 300px;
+  padding: 80px 400px;
+}
+
+.profile-first-section {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  margin-top: 20px; 
+}
+
+.profile-info {
+  flex: 1; 
+  max-width: 600px; 
+  margin-right: 20px; 
+}
+
+.bio-box {
+  padding: 20px;
+  background-color: #fffd7085;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  min-height: 245px;
+}
+
+.name-container {
+  display: flex;
+  align-items: center; 
+}
+
+.edit-name-section {
+  margin-bottom: 20px;
+}
+
+.edit-name-icon,
+.edit-bio-icon {
+  cursor: pointer; 
+  margin: 0 0 5px 8px; 
+  font-size: 1em; 
+  color: var(--secondary-color);
+}
+
+.edit-name-input {
+  font-size: 2rem;
+  font-weight: bold;
+  border-bottom: 2px solid #333;
+}
+
+.edit-name-input,
+.edit-bio-input {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  padding: 10px;
+  resize: none;
+  border-radius: 5px; 
+  overflow: hidden;
+}
+
+.edit-bio-input {
+  min-height: 100px;
+}
+
+.edit-name-input:focus,
+.edit-bio-input:focus {
+  background: white; 
+  border-radius: 5px; 
+  outline: none; 
+}
+
+.edit-bio-input:focus {
+  border: 1px solid var(--secondary-color); 
+}
+
+.edit-name-input:focus {
+  border-bottom: 2px solid var(--secondary-color); 
+}
+
+.bio-box h2 {
+  display: flex; 
+  align-items: center; 
+}
+
+.bio-box h2 .edit-bio-icon {
+  margin-left: 8px; 
+}
+
+.set-details {
+  display: flex; 
+  justify-content: space-between; 
+  width: 60%; 
+  margin-bottom: 20px; 
+}
+
+.set-details p {
+  margin: 0;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.my-flashcards,
+.my-comments,
+.my-recent-results {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+}
+
+.my-flashcards {
+  flex: 0 0 440px;
+}
+
+table {
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-top: 20px; 
+}
+
+th, td {
+  padding: 12px; 
+  text-align: left;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+th {
+  background-color: #fffd7085;
+  color: var(--secondary-color); 
+  font-weight: 600; 
+  text-transform: uppercase;
+}
+
+
+tr:hover {
+  background-color: var(--background-color);
+}
+
+td[colspan="3"] {
+  text-align: center; 
+  font-style: italic; 
+  color: #777; 
 }
