@@ -19,11 +19,16 @@ const ProfilePage = () => {
     bio: "", // Add bio to the state
   });
   const [isEditingBio, setIsEditingBio] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false); // State for editing name
   const [originalBio, setOriginalBio] = useState("");
+  const [originalName, setOriginalName] = useState(""); // State for original name
   const [userResults, setUserResults] = useState([]); // State to hold user results
   const [userComments, setUserComments] = useState([]); // State to hold user comments
   const [userFlashcards, setUserFlashcards] = useState([]); // State to hold flashcard sets created by the user
   const userUID = localStorage.getItem("userUID"); // Retrieve UID from local storage
+  const [flashcardCount, setFlashcardCount] = useState(0); // State to hold the count of flashcard sets
+  const [totalCompletedFlashcards, setTotalCompletedFlashcards] = useState(0); // New state for total completed flashcards count
+
   console.log("Current user UID from local storage:", userUID);
 
   useEffect(() => {
@@ -39,6 +44,7 @@ const ProfilePage = () => {
             bio: data.bio || "", // Fetch bio
           });
           setOriginalBio(data.bio || "");
+          setOriginalName(data.fullName); // Store original name
         }
       }
     };
@@ -64,10 +70,17 @@ const ProfilePage = () => {
               ? flashcardDoc.data()
               : null;
 
+            // Count the number of cards in the cards array
+            const cardCount =
+              flashcardData && flashcardData.cards
+                ? flashcardData.cards.length
+                : 0;
+
             return {
               score: resultData.score,
               flashcardSetId: resultData.flashcardSetId,
               flashcardSetTitle: flashcardData ? flashcardData.title : "N/A",
+              cardCount: cardCount, // Use the counted cards
               timestamp: resultData.timestamp,
             };
           })
@@ -130,34 +143,86 @@ const ProfilePage = () => {
           const flashcardData = flashcardDoc.data();
           return {
             id: flashcardDoc.id,
-            ...flashcardData, // Include all flashcard data (title, cardCount, etc.)
+            ...flashcardData,
+            cardCount: flashcardData.cards ? flashcardData.cards.length : 0,
           };
         });
 
-        // Sort by createdAt and slice to get the two most recent flashcards
-        const sortedFlashcards = flashcardsData
-          .sort((a, b) => b.createdAt - a.createdAt) // Sort in descending order
-          .slice(0, 2); // Get the two most recent flashcard sets
+        // Set the flashcard count
+        setFlashcardCount(flashcardsData.length); // Update count here
 
-        setUserFlashcards(sortedFlashcards); // Update state with fetched flashcard sets
+        const sortedFlashcards = flashcardsData
+          .sort((a, b) => b.createdAt - a.createdAt)
+          .slice(0, 2);
+
+        setUserFlashcards(sortedFlashcards);
       }
     };
 
+    // Call functions to fetch data
     fetchUserInfo();
     fetchUserResults();
     fetchUserComments();
     fetchUserFlashcards(); // Fetch flashcards created by the user
+    fetchCompletedFlashcardsCount();
   }, [userUID]);
+
+  const fetchCompletedFlashcardsCount = async () => {
+    const resultsRef = collection(db, "results");
+    const querySnapshot = await getDocs(resultsRef);
+    setTotalCompletedFlashcards(querySnapshot.docs.length); // Set the total number of completed flashcards
+  };
 
   const saveBio = async () => {
     const userRef = doc(db, "Users", userUID);
     await setDoc(userRef, { bio: userInfo.bio }, { merge: true });
+    setOriginalBio(userInfo.bio);
     setIsEditingBio(false);
   };
 
+  const saveName = async () => {
+    const userRef = doc(db, "Users", userUID);
+    await setDoc(userRef, { fullName: userInfo.fullName }, { merge: true });
+
+    // Update any other necessary collections if required (e.g., comments, results)
+    const resultsRef = collection(db, "results");
+    const resultsQuery = query(resultsRef, where("userId", "==", userUID));
+    const resultsSnapshot = await getDocs(resultsQuery);
+    resultsSnapshot.forEach(async (resultDoc) => {
+      const resultRef = doc(resultsRef, resultDoc.id);
+      await setDoc(resultRef, { userName: userInfo.fullName }, { merge: true });
+    });
+
+    const commentsRef = collection(db, "comments");
+    const commentsQuery = query(commentsRef, where("uid", "==", userUID));
+    const commentsSnapshot = await getDocs(commentsQuery);
+    commentsSnapshot.forEach(async (commentDoc) => {
+      const commentRef = doc(commentsRef, commentDoc.id);
+      await setDoc(
+        commentRef,
+        { userName: userInfo.fullName },
+        { merge: true }
+      );
+    });
+
+    setOriginalName(userInfo.fullName); // Update original name
+    setIsEditingName(false);
+  };
+
   const cancelEdit = () => {
-    setUserInfo({ ...userInfo, bio: originalBio });
+    setUserInfo((prevUserInfo) => ({
+      ...prevUserInfo,
+      bio: originalBio, // Restore original bio
+    }));
     setIsEditingBio(false);
+  };
+
+  const cancelEditName = () => {
+    setUserInfo((prevUserInfo) => ({
+      ...prevUserInfo,
+      fullName: originalName, // Restore original name
+    }));
+    setIsEditingName(false);
   };
 
   if (!userInfo) {
@@ -167,8 +232,38 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <Navbar />
-      <h1>{userInfo.fullName}'s Profile</h1>
-
+      <h1>
+        {isEditingName ? (
+          <div>
+            <input
+              type="text"
+              value={userInfo.fullName}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, fullName: e.target.value })
+              }
+            />
+            <button onClick={saveName}>Save</button>
+            <button onClick={cancelEditName}>Cancel</button>
+          </div>
+        ) : (
+          <div>
+            <p>{userInfo.fullName}</p>
+            <button onClick={() => setIsEditingName(true)}>Edit Name</button>
+          </div>
+        )}
+        's Profile
+      </h1>
+      {/* Editable Name Section */}
+      <h2>Name</h2>
+      <p>
+        Sets Created: {flashcardCount}
+        {flashcardCount !== 1 ? "s" : ""}.
+      </p>{" "}
+      {/* Display count here */}
+      <p>
+        Sets Completed: {totalCompletedFlashcards}{" "}
+        {/* Display total completed flashcards count */}
+      </p>
       {/* Bio Section */}
       <h2>Bio</h2>
       {isEditingBio ? (
@@ -179,26 +274,25 @@ const ProfilePage = () => {
       ) : (
         <p>{userInfo.bio || "No bio available."}</p>
       )}
-
       {userUID && (
         <div>
           {isEditingBio ? (
             <div>
               <button onClick={saveBio}>Save</button>
-              <button onClick={cancelEdit}>Cancel</button>
+              <button onClick={cancelEditBio}>Cancel</button>
             </div>
           ) : (
             <button onClick={() => setIsEditingBio(true)}>Edit Bio</button>
           )}
         </div>
       )}
-
       {/* Results Table */}
       <h2>Your Recent Results</h2>
       <table className="results-table">
         <thead>
           <tr>
             <th>Flashcard Set Title</th>
+            <th>Number of Cards</th> {/* Column for card count */}
             <th>Score</th>
           </tr>
         </thead>
@@ -207,17 +301,17 @@ const ProfilePage = () => {
             userResults.map((result, index) => (
               <tr key={index}>
                 <td>{result.flashcardSetTitle}</td>
+                <td>{result.cardCount}</td> {/* Display card count */}
                 <td>{result.score}</td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="2">No results found.</td>
+              <td colSpan="3">No results found.</td>
             </tr>
           )}
         </tbody>
       </table>
-
       {/* Comments Table */}
       <h2>Your Comments</h2>
       <table className="comments-table">
@@ -246,8 +340,6 @@ const ProfilePage = () => {
           )}
         </tbody>
       </table>
-
-      {/* Flashcard Sets Created by User */}
       <h2>Your Flashcard Sets</h2>
       <div className="flashcard-sets-container">
         {userFlashcards.length > 0 ? (
@@ -256,7 +348,7 @@ const ProfilePage = () => {
               key={flashcardSet.id}
               id={flashcardSet.id}
               title={flashcardSet.title}
-              cardCount={flashcardSet.cardCount}
+              cardCount={flashcardSet.cardCount} // Pass card count here
               creator={userInfo.fullName} // Assuming the creator is the current user
               completedUsers={flashcardSet.completedUsers || 0} // Default to 0 if not available
             />
