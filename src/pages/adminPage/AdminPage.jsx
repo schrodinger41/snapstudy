@@ -8,6 +8,7 @@ import {
   deleteDoc,
   doc,
   getDoc, // Import getDoc to retrieve specific documents
+  updateDoc, // Import updateDoc to update documents
 } from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
 import { useNavigate } from "react-router-dom"; // Import the hook
@@ -24,6 +25,8 @@ const AdminPage = () => {
   const [commentUsers, setCommentUsers] = useState({});
   const [flashcardTitles, setFlashcardTitles] = useState({});
   const [commentTexts, setCommentTexts] = useState({}); // State for storing comment texts
+  const [editingUserId, setEditingUserId] = useState(null); // State to track which user is being edited
+  const [editableName, setEditableName] = useState(""); // State to store the name being edited
   const navigate = useNavigate();
 
   // Fetch Users
@@ -256,6 +259,32 @@ const AdminPage = () => {
     }
   };
 
+  // Start editing a user's name
+  const handleEditUser = (userId, name) => {
+    setEditingUserId(userId);
+    setEditableName(name); // Set the name to edit
+  };
+
+  // Save the edited user name
+  const handleSaveUserName = async (userId) => {
+    try {
+      const userDoc = doc(db, "Users", userId);
+      await updateDoc(userDoc, { fullName: editableName }); // Update the user's name in Firestore
+      console.log("User name updated successfully.");
+    } catch (error) {
+      console.error("Error updating user name: ", error);
+    } finally {
+      setEditingUserId(null); // Reset the editing state
+      setEditableName(""); // Clear the editable name
+    }
+  };
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingUserId(null); // Reset the editing state
+    setEditableName(""); // Clear the editable name
+  };
+
   return (
     <div className="admin-page">
       <Navbar />
@@ -275,30 +304,46 @@ const AdminPage = () => {
           </tr>
         </thead>
         <tbody>
-          {users.length > 0 ? (
-            users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.fullName || "N/A"}</td>
-                <td>{user.email || "N/A"}</td>
-                <td>{flashcardCounts[user.id] || 0}</td>
-                <td>{commentsCount[user.id] || 0}</td>
-                <td>
-                  <button className="action-btn">Edit</button>
-                  <button
-                    className="action-btn"
-                    onClick={() => handleDeleteUser(user.id)} // Call delete function
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6">No users found.</td>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>
+                {editingUserId === user.id ? (
+                  <input
+                    type="text"
+                    value={editableName}
+                    onChange={(e) => setEditableName(e.target.value)}
+                  />
+                ) : (
+                  user.fullName
+                )}
+              </td>
+              <td>{user.email || "N/A"}</td>
+              <td>{flashcardCounts[user.id] || 0}</td>
+              <td>{commentsCount[user.id] || 0}</td>
+              <td>
+                {editingUserId === user.id ? (
+                  <>
+                    <button onClick={() => handleSaveUserName(user.id)}>
+                      Save
+                    </button>
+                    <button onClick={handleCancelEdit}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleEditUser(user.id, user.fullName)}
+                    >
+                      Edit
+                    </button>
+                    <button onClick={() => handleDeleteUser(user.id)}>
+                      Delete
+                    </button>
+                  </>
+                )}
+              </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
 
