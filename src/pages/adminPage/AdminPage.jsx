@@ -22,7 +22,8 @@ const AdminPage = () => {
   const [flashcardCreators, setFlashcardCreators] = useState({});
   const [reportedComments, setReportedComments] = useState([]);
   const [commentUsers, setCommentUsers] = useState({});
-  const [flashcardTitles, setFlashcardTitles] = useState({}); // State for flashcard titles
+  const [flashcardTitles, setFlashcardTitles] = useState({});
+  const [commentTexts, setCommentTexts] = useState({}); // State for storing comment texts
   const navigate = useNavigate();
 
   // Fetch Users
@@ -141,7 +142,7 @@ const AdminPage = () => {
 
   // Fetch Reported Comments
   useEffect(() => {
-    const fetchReportedComments = () => {
+    const fetchReportedComments = async () => {
       const reportCommentsRef = collection(db, "reportComments");
       const unsubscribe = onSnapshot(reportCommentsRef, async (snapshot) => {
         const reportedCommentsData = snapshot.docs.map((doc) => ({
@@ -150,18 +151,20 @@ const AdminPage = () => {
         }));
         setReportedComments(reportedCommentsData);
 
-        // Fetch usernames for each reported comment
         const usersMap = {};
+        const textsMap = {}; // Map to hold comment texts
         await Promise.all(
           reportedCommentsData.map(async (report) => {
             const commentRef = doc(db, "comments", report.commentId);
             const commentSnap = await getDoc(commentRef);
             if (commentSnap.exists()) {
               usersMap[report.commentId] = commentSnap.data().userName || "N/A";
+              textsMap[report.commentId] = commentSnap.data().text || "N/A"; // Fetch comment text
             }
           })
         );
         setCommentUsers(usersMap);
+        setCommentTexts(textsMap); // Store the comment texts in state
       });
 
       return () => unsubscribe();
@@ -416,18 +419,14 @@ const AdminPage = () => {
               <tr key={report.id}>
                 <td>{report.id}</td>
                 <td>{commentUsers[report.commentId] || "N/A"}</td>
-                <td>{report.commentId || "N/A"}</td>
+                <td>{commentTexts[report.commentId] || "N/A"}</td>
                 <td>{report.userName || "N/A"}</td>
                 <td>{report.reasons.join(", ") || "N/A"}</td>
                 <td>
                   <button
                     className="action-btn"
-                    onClick={
-                      () =>
-                        handleDeleteCommentAndReport(
-                          report.commentId,
-                          report.id
-                        ) // Call the delete function
+                    onClick={() =>
+                      handleDeleteCommentAndReport(report.commentId, report.id)
                     }
                   >
                     Delete
