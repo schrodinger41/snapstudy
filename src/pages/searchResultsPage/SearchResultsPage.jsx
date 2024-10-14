@@ -35,8 +35,8 @@ const SearchResultsPage = () => {
 
   useEffect(() => {
     if (query) {
-      const results = flashcardSets.filter((set) =>
-        set.title.toLowerCase().includes(query.toLowerCase())
+      const results = flashcardSets.filter(
+        (set) => set.title.toLowerCase().startsWith(query.toLowerCase()) // Change includes to startsWith
       );
       setSearchResults(results);
     } else if (category) {
@@ -85,8 +85,16 @@ const SearchResultsPage = () => {
         </div>
         <div className="results-container">
           <div className="search-title">
-          {query ? <p>Search Results for <span>{query}</span></p> : null}
-          {category ? <p>Category: <span>{category}</span></p> : null}
+            {query ? (
+              <p>
+                Search Results for <span>{query}</span>
+              </p>
+            ) : null}
+            {category ? (
+              <p>
+                Category: <span>{category}</span>
+              </p>
+            ) : null}
           </div>
           <div className="flashcard-sets flashcard-sets-search">
             {searchResults.length > 0 ? (
@@ -95,15 +103,15 @@ const SearchResultsPage = () => {
                   key={set.id}
                   title={set.title}
                   cardCount={set.cards.length}
-                  creator={set.creator} // Pass creator's name
-                  id={set.id} // Pass id for navigation
+                  creator={set.creator}
+                  id={set.id}
                   completedUsers={set.completedUsers || 0}
                 />
               ))
             ) : (
               <p>
-                No flashcard sets found {query ? `matching "${query}"` : ""}{" "}
-                {category ? `in category "${category}"` : ""}.
+                No flashcard sets found that start with "{query}"
+                {category ? ` in category "${category}"` : ""}.
               </p>
             )}
           </div>
