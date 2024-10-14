@@ -125,7 +125,7 @@ const CardPage = () => {
       await addDoc(commentsRef, {
         flashcardSetId: id, // Link the comment to the flashcard set
         text: newComment,
-        author: user.displayName || "Anonymous",
+        userName: user.displayName || "Anonymous",
         uid: user.uid, // Save the user ID of the person commenting
         timestamp: new Date(),
       });
@@ -281,18 +281,19 @@ const CardPage = () => {
             </button>
           </form>
 
-          {/* Display comments */}
-          <div className="comments-list">
-            {comments.length > 0 ? (
-              comments.map((comment) => (
-                <div key={comment.id} className="comment">
-                  <div className="comment-header">
-                    <div className="comment-author"> 
-                    <strong>{comment.author}</strong>
+        {/* Display comments */}
+        <div className="comments-list">
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <div key={comment.id} className="comment">
+                <div className="comment-header">
+                  <strong>{comment.userName}</strong>
+                  <p className="comment-timestamp">
+                    {new Date(comment.timestamp.toDate()).toLocaleString()}
                     {comment.edited && (
                       <span className="edited-text"> (edited)</span>
                     )}
-                    </div>
+                    </p>
                     <p className="comment-timestamp">
                       {new Date(comment.timestamp.toDate()).toLocaleString()}
                     </p>
