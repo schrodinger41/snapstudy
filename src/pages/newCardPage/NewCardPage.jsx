@@ -128,19 +128,19 @@ const NewCardPage = () => {
               <option value="" disabled>
                 Select a category
               </option>
-              <option value="mathematics">Mathematics</option>
-              <option value="science">Science</option>
-              <option value="history">History</option>
-              <option value="languages">Languages</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Science">Science</option>
+              <option value="History">History</option>
+              <option value="Languages">Languages</option>
               <option value="Social Studies">Social Studies</option>
-              <option value="literature">Literature</option>
+              <option value="Literature">Literature</option>
               <option value="Medical Studies">Medical Studies</option>
               <option value="Business & Economics">Business & Economics</option>
               <option value="Technology & Computer Science">
                 Technology & Computer Science
               </option>
               <option value="Art & Music">Art & Music</option>
-              <option value="other">Other</option>
+              <option value="Other">Other</option>
             </select>
             <label>Category</label>
           </div>

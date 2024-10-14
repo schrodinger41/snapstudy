@@ -6,6 +6,8 @@ import {
   getDoc,
   collection,
   addDoc,
+  updateDoc,
+  deleteDoc,
   onSnapshot,
   query,
   where,
@@ -21,6 +23,7 @@ const CardPage = () => {
   const [flashcardSet, setFlashcardSet] = useState(null);
   const [comments, setComments] = useState([]); // Comments state
   const [newComment, setNewComment] = useState("");
+  const [editCommentText, setEditCommentText] = useState(""); // Separate state for editing comment
   const [quizResults, setQuizResults] = useState([]); // Quiz results state
   const [userRole, setUserRole] = useState(null);
   const auth = getAuth();
@@ -29,6 +32,8 @@ const CardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [timerMinutes, setTimerMinutes] = useState(0); // State to hold minutes
   const [timerSeconds, setTimerSeconds] = useState(0); // State to hold seconds
+  const [editingCommentId, setEditingCommentId] = useState(null); // Track the comment being edited
+  const [dropdownVisible, setDropdownVisible] = useState(null); // Track dropdown visibility for each comment
 
   // Fetch flashcard set data from Firestore
   useEffect(() => {
@@ -131,6 +136,39 @@ const CardPage = () => {
     }
   };
 
+  // Edit comment
+  const handleEditComment = async (commentId) => {
+    try {
+      const commentRef = doc(db, "comments", commentId);
+      await updateDoc(commentRef, {
+        text: editCommentText,
+        edited: true, // Add an "edited" flag to the comment
+        timestamp: new Date(), // Update timestamp to reflect the change
+      });
+      setEditingCommentId(null); // Exit edit mode after successful update
+      setEditCommentText(""); // Clear the edit input after saving
+    } catch (error) {
+      console.error("Error editing comment: ", error);
+    }
+  };
+
+  // Delete comment
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const commentRef = doc(db, "comments", commentId);
+      await deleteDoc(commentRef);
+      console.log("Comment deleted successfully");
+    } catch (error) {
+      console.error("Error deleting comment: ", error);
+    }
+  };
+
+  // Report comment (placeholder functionality)
+  const handleReportComment = (commentId) => {
+    console.log("Reported comment ID: ", commentId);
+    // Add logic to handle reporting the comment
+  };
+
   const handleTimedPractice = () => {
     setIsModalOpen(true); // Open the modal for timer input
   };
@@ -227,69 +265,123 @@ const CardPage = () => {
             </div>
           </div>
         )}
+      </div>
 
-        {/* Comments Section */}
-        <div className="comments-section">
-          <h3>Comments</h3>
-          {user ? (
-            <form onSubmit={handleCommentSubmit} className="comment-form">
-              <textarea
-                placeholder="Write a comment..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                className="comment-input"
-              ></textarea>
-              <div className="comment-buttons">
-                <button type="submit" className="comment-submit-button">
-                  Submit
-                </button>
-                <button type="button" className="comment-cancel-button">
-                  Cancel
-                </button>
-              </div>
-            </form>
-          ) : (
-            <p>You must be logged in to leave a comment.</p>
-          )}
+      <div className="comments-section">
+        <h2>Comments</h2>
+        <form onSubmit={handleCommentSubmit} className="comment-form">
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            className="comment-input"
+            placeholder="Leave a comment..."
+          />
+          <button type="submit" className="submit-comment-button">
+            Submit
+          </button>
+        </form>
 
-          <div className="comments-list">
-            {comments.length > 0 ? (
-              comments.map((comment) => (
-                <div key={comment.id} className="comment">
-                  <div className="comment-header">
-                    <strong>{comment.author}</strong>
-                    <p className="comment-timestamp">
-                      {new Date(comment.timestamp.toDate()).toLocaleString()}
-                    </p>
-                  </div>
-                  <p>{comment.text}</p>
-                </div>
-              ))
-            ) : (
-              <p>No comments yet. Be the first to comment!</p>
-            )}
-          </div>
-        </div>
-
-        {/* Quiz Results Section */}
-        <div className="quiz-results-section">
-          <h3>Recent Quiz Attempts</h3>
-          {quizResults.length > 0 ? (
-            <ul>
-              {quizResults.map((result) => (
-                <li key={result.id}>
-                  <strong>{result.userName}</strong>: {result.score}/
-                  {flashcardSet.cards.length}
-                  <p className="result-timestamp">
-                    {new Date(result.timestamp).toLocaleString()}
+        {/* Display comments */}
+        <div className="comments-list">
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <div key={comment.id} className="comment">
+                <div className="comment-header">
+                  <strong>{comment.author}</strong>
+                  <p className="comment-timestamp">
+                    {new Date(comment.timestamp.toDate()).toLocaleString()}
+                    {comment.edited && (
+                      <span className="edited-text"> (edited)</span>
+                    )}
                   </p>
-                </li>
-              ))}
-            </ul>
+
+                  {/* Three-dotted menu button */}
+                  <div className="comment-options">
+                    <button
+                      className="options-button"
+                      onClick={() =>
+                        setDropdownVisible(
+                          dropdownVisible === comment.id ? null : comment.id
+                        )
+                      }
+                    >
+                      ⋮
+                    </button>
+                    {dropdownVisible === comment.id && (
+                      <div className="options-menu">
+                        {user.uid === comment.uid ? (
+                          <>
+                            <button
+                              onClick={() => {
+                                setEditingCommentId(comment.id);
+                                setEditCommentText(comment.text); // Set the existing comment text in the edit state
+                              }}
+                              className="edit-button"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDeleteComment(comment.id)}
+                              className="delete-button"
+                            >
+                              Delete
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            onClick={() => handleReportComment(comment.id)}
+                            className="report-button"
+                          >
+                            Report
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {editingCommentId === comment.id ? (
+                  <div className="edit-comment-form">
+                    <textarea
+                      value={editCommentText}
+                      onChange={(e) => setEditCommentText(e.target.value)}
+                      className="comment-edit-input"
+                    ></textarea>
+                    <button
+                      onClick={() => handleEditComment(comment.id, newComment)}
+                      className="save-edit-button"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditingCommentId(null)}
+                      className="cancel-edit-button"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <p>{comment.text}</p>
+                )}
+              </div>
+            ))
           ) : (
-            <p>No quiz attempts yet.</p>
+            <p>No comments yet. Be the first to comment!</p>
           )}
         </div>
+      </div>
+
+      {/* Display the latest 3 quiz results */}
+      <div className="quiz-results">
+        <h2>Latest Quiz Results</h2>
+        <ul>
+          {quizResults.map((result) => (
+            <li key={result.id}>
+              <strong>{result.userName}</strong>: {result.score} points (
+              {new Date(result.timestamp).toLocaleString()})
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
