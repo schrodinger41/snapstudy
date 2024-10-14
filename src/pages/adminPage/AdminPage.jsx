@@ -8,6 +8,7 @@ import {
   deleteDoc,
   doc,
   getDoc, // Import getDoc to retrieve specific documents
+  updateDoc, // Import updateDoc to update documents
 } from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
 import { useNavigate } from "react-router-dom"; // Import the hook
@@ -22,7 +23,10 @@ const AdminPage = () => {
   const [flashcardCreators, setFlashcardCreators] = useState({});
   const [reportedComments, setReportedComments] = useState([]);
   const [commentUsers, setCommentUsers] = useState({});
-  const [flashcardTitles, setFlashcardTitles] = useState({}); // State for flashcard titles
+  const [flashcardTitles, setFlashcardTitles] = useState({});
+  const [commentTexts, setCommentTexts] = useState({}); // State for storing comment texts
+  const [editingUserId, setEditingUserId] = useState(null); // State to track which user is being edited
+  const [editableName, setEditableName] = useState(""); // State to store the name being edited
   const navigate = useNavigate();
 
   // Fetch Users
@@ -141,7 +145,7 @@ const AdminPage = () => {
 
   // Fetch Reported Comments
   useEffect(() => {
-    const fetchReportedComments = () => {
+    const fetchReportedComments = async () => {
       const reportCommentsRef = collection(db, "reportComments");
       const unsubscribe = onSnapshot(reportCommentsRef, async (snapshot) => {
         const reportedCommentsData = snapshot.docs.map((doc) => ({
@@ -150,18 +154,20 @@ const AdminPage = () => {
         }));
         setReportedComments(reportedCommentsData);
 
-        // Fetch usernames for each reported comment
         const usersMap = {};
+        const textsMap = {}; // Map to hold comment texts
         await Promise.all(
           reportedCommentsData.map(async (report) => {
             const commentRef = doc(db, "comments", report.commentId);
             const commentSnap = await getDoc(commentRef);
             if (commentSnap.exists()) {
               usersMap[report.commentId] = commentSnap.data().userName || "N/A";
+              textsMap[report.commentId] = commentSnap.data().text || "N/A"; // Fetch comment text
             }
           })
         );
         setCommentUsers(usersMap);
+        setCommentTexts(textsMap); // Store the comment texts in state
       });
 
       return () => unsubscribe();
@@ -253,6 +259,32 @@ const AdminPage = () => {
     }
   };
 
+  // Start editing a user's name
+  const handleEditUser = (userId, name) => {
+    setEditingUserId(userId);
+    setEditableName(name); // Set the name to edit
+  };
+
+  // Save the edited user name
+  const handleSaveUserName = async (userId) => {
+    try {
+      const userDoc = doc(db, "Users", userId);
+      await updateDoc(userDoc, { fullName: editableName }); // Update the user's name in Firestore
+      console.log("User name updated successfully.");
+    } catch (error) {
+      console.error("Error updating user name: ", error);
+    } finally {
+      setEditingUserId(null); // Reset the editing state
+      setEditableName(""); // Clear the editable name
+    }
+  };
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingUserId(null); // Reset the editing state
+    setEditableName(""); // Clear the editable name
+  };
+
   return (
     <div className="admin-page">
       <Navbar />
@@ -266,36 +298,52 @@ const AdminPage = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Card Sets Created</th>
-            <th>Number of Comments</th>
-            <th>Actions</th>
+            <th className="center-text">Card Sets Created</th>
+            <th className="center-text">Number of Comments</th>
+            <th className="center-text">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.length > 0 ? (
-            users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.fullName || "N/A"}</td>
-                <td>{user.email || "N/A"}</td>
-                <td>{flashcardCounts[user.id] || 0}</td>
-                <td>{commentsCount[user.id] || 0}</td>
-                <td>
-                  <button className="action-btn">Edit</button>
-                  <button
-                    className="action-btn"
-                    onClick={() => handleDeleteUser(user.id)} // Call delete function
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6">No users found.</td>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>
+                {editingUserId === user.id ? (
+                  <input
+                    type="text"
+                    value={editableName}
+                    onChange={(e) => setEditableName(e.target.value)}
+                  />
+                ) : (
+                  user.fullName
+                )}
+              </td>
+              <td>{user.email || "N/A"}</td>
+              <td className="center-text">{flashcardCounts[user.id] || 0}</td>
+              <td className="center-text">{commentsCount[user.id] || 0}</td>
+              <td className="center-text">
+                {editingUserId === user.id ? (
+                  <>
+                    <button onClick={() => handleSaveUserName(user.id)}>
+                      Save
+                    </button>
+                    <button onClick={handleCancelEdit}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleEditUser(user.id, user.fullName)}
+                    >
+                      Edit
+                    </button>
+                    <button onClick={() => handleDeleteUser(user.id)}>
+                      Delete
+                    </button>
+                  </>
+                )}
+              </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
 
@@ -307,7 +355,7 @@ const AdminPage = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Creator</th>
+            <th className="center-text">Creator</th>
             <th>Play Count</th>
             <th>Actions</th>
           </tr>
@@ -416,18 +464,14 @@ const AdminPage = () => {
               <tr key={report.id}>
                 <td>{report.id}</td>
                 <td>{commentUsers[report.commentId] || "N/A"}</td>
-                <td>{report.commentId || "N/A"}</td>
+                <td>{commentTexts[report.commentId] || "N/A"}</td>
                 <td>{report.userName || "N/A"}</td>
                 <td>{report.reasons.join(", ") || "N/A"}</td>
                 <td>
                   <button
                     className="action-btn"
-                    onClick={
-                      () =>
-                        handleDeleteCommentAndReport(
-                          report.commentId,
-                          report.id
-                        ) // Call the delete function
+                    onClick={() =>
+                      handleDeleteCommentAndReport(report.commentId, report.id)
                     }
                   >
                     Delete
