@@ -11,16 +11,16 @@
   color: #333;
 }
 
-.flashcard-title-line{
+.flashcard-title-line {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
 }
 
 .report-icon {
-  color: #333; 
-  font-size: 1.5rem; 
-  cursor: pointer; 
+  color: #333;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .report-icon:hover {
@@ -101,16 +101,14 @@
 .content-sections {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; 
+  gap: 20px;
   margin-top: 20px;
 }
-
 
 .comments-section {
   flex: 1 1 600px;
   min-width: 300px;
 }
-
 
 .quiz-results-container {
   flex: 1 1 300px;
@@ -138,14 +136,14 @@
 
 .quiz-results-section ul {
   line-height: 2rem;
-  padding: 0; 
+  padding: 0;
 }
 
 .quiz-results-section li {
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  padding: 5px 0; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
 }
 
 .quiz-results-section strong {
@@ -166,7 +164,8 @@
   margin-bottom: 20px;
 }
 
-.comment-input, .comment-edit-input {
+.comment-input,
+.comment-edit-input {
   width: 100%;
   height: 100px;
   padding: 10px;
@@ -185,7 +184,7 @@
 }
 
 .comment-submit-button,
-.comment-cancel-button, 
+.comment-cancel-button,
 .save-edit-button,
 .cancel-edit-button {
   background-color: var(--primary-color);
@@ -198,7 +197,7 @@
   margin-right: 2%;
 }
 
-.comment-cancel-button, 
+.comment-cancel-button,
 .cancel-edit-button {
   background-color: #ccc;
 }
@@ -351,4 +350,106 @@ h2 {
   font-style: italic;
   color: gray;
   font-size: 0.9rem;
+}
+
+/* report flaschard modal */
+
+.report-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.report-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.report-reasons {
+  margin: 10px 0;
+}
+
+.report-reason-label {
+  display: block;
+  margin: 5px 0;
+}
+
+.report-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-report-button,
+.cancel-report-button {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+/* report comment modal */
+
+.reportcommentmodal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+  width: 300px; /* Adjust width as needed */
+}
+
+.reportcommentmodal-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333; /* Title color */
+}
+
+.reportcommentmodal-reasons {
+  margin-bottom: 20px;
+}
+
+.reportcommentmodal-checkbox {
+  margin-right: 10px;
+}
+
+.reportcommentmodal-label {
+  font-size: 16px;
+  color: #555; /* Label color */
+}
+
+.reportcommentmodal-submit,
+.reportcommentmodal-close {
+  background-color: #007bff; /* Primary button color */
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reportcommentmodal-submit:hover,
+.reportcommentmodal-close:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+.reportcommentmodal-close {
+  background-color: #dc3545; /* Danger color for close button */
+  margin-left: 10px;
+}
+
+.reportcommentmodal-close:hover {
+  background-color: #c82333; /* Darker shade for hover effect */
 }
