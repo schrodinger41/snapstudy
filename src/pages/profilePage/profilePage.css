@@ -146,3 +146,14 @@ td[colspan="3"] {
   font-style: italic; 
   color: #777; 
 }
+
+.results-table td:nth-child(2),
+.results-table td:nth-child(3),
+.comments-table td:nth-child(2),
+.comments-table td:nth-child(3),
+.results-table th:nth-child(2),
+.results-table th:nth-child(3),
+.comments-table th:nth-child(2),
+.comments-table th:nth-child(3) {
+  text-align: center; 
+}

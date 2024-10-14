@@ -134,19 +134,29 @@
   border-bottom: 2px solid #ccc;
 }
 
-.quiz-results-section ul {
+.quiz-results-section ul,
+.timed-quiz-results-section ul {
   line-height: 2rem;
   padding: 0;
 }
 
-.quiz-results-section li {
+.quiz-results-section li,
+.timed-quiz-results-section li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px 0;
 }
 
-.quiz-results-section strong {
+.timed-quiz-result-info {
+  display: flex;
+  flex-direction: row;
+  gap: 80px; 
+  align-items: center; 
+}
+
+.quiz-results-section strong,
+.timed-quiz-results-section strong {
   font-size: var(--small-font-size);
 }
 
