@@ -151,6 +151,7 @@ const QuizPage = () => {
           totalCards: flashcardSet.cards.length,
           timeTaken: timeTakenInSeconds,
           flashcardSetId: id,
+          timer, // Pass the timer back to the result page
         },
       });
     } catch (error) {

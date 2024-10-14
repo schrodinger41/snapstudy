@@ -5,7 +5,8 @@ import "./quizResultPage.css";
 
 const QuizResultPage = () => {
   const location = useLocation();
-  const { score, totalCards, flashcardSetId, timeTaken } = location.state || {};
+  const { score, totalCards, flashcardSetId, timeTaken, timer } =
+    location.state || {}; // Add timer to destructuring
   const navigate = useNavigate();
 
   // Handle navigation back to home page
@@ -15,7 +16,7 @@ const QuizResultPage = () => {
 
   // Handle retrying the quiz
   const retryQuiz = () => {
-    navigate(`/quiz/${flashcardSetId}`); // Navigate to the quiz page of the same flashcard set
+    navigate(`/quiz/${flashcardSetId}`, { state: { timer } }); // Pass timer along with the navigation
   };
 
   return (
@@ -30,7 +31,6 @@ const QuizResultPage = () => {
           {timeTaken > 0 && (
             <p>You took {timeTaken} seconds to complete the quiz.</p>
           )}
-          {/* Display only if timeTaken is greater than 0 */}
           <p>Thank you for completing the quiz! ( ˶ˆᗜˆ˵ )</p>
           <div className="quiz-result-buttons">
             <button onClick={goToHomePage} className="quiz-result-button">
