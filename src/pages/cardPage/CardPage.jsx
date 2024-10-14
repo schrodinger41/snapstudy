@@ -287,16 +287,15 @@ const CardPage = () => {
             comments.map((comment) => (
               <div key={comment.id} className="comment">
                 <div className="comment-header">
+                  <div className="comment-author">
                   <strong>{comment.userName}</strong>
-                  <p className="comment-timestamp">
-                    {new Date(comment.timestamp.toDate()).toLocaleString()}
-                    {comment.edited && (
+                  {comment.edited && (
                       <span className="edited-text"> (edited)</span>
                     )}
-                    </p>
-                    <p className="comment-timestamp">
-                      {new Date(comment.timestamp.toDate()).toLocaleString()}
-                    </p>
+                  </div>                 
+                  <p className="comment-timestamp">
+                    {new Date(comment.timestamp.toDate()).toLocaleString()}
+                  </p>
 
                     {/* Three-dotted menu button */}
                     <div className="comment-options">
