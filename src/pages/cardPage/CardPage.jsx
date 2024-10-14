@@ -15,26 +15,33 @@ import {
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
 import { TbCardsFilled } from "react-icons/tb";
-import { FaExclamationTriangle } from 'react-icons/fa';
+import { FaExclamationTriangle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./cardPage.css";
 
 const CardPage = () => {
   const { id } = useParams(); // Flashcard set ID from URL
   const [flashcardSet, setFlashcardSet] = useState(null);
-  const [comments, setComments] = useState([]); // Comments state
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  const [editCommentText, setEditCommentText] = useState(""); // Separate state for editing comment
-  const [quizResults, setQuizResults] = useState([]); // Quiz results state
+  const [editCommentText, setEditCommentText] = useState("");
+  const [quizResults, setQuizResults] = useState([]);
+  const [timedQuizResults, setTimedQuizResults] = useState([]);
   const [userRole, setUserRole] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false); // New report modal state
+  const [isReportCommentModalOpen, setIsReportCommentModalOpen] =
+    useState(false); // New report modal state
+  const [timerMinutes, setTimerMinutes] = useState(0);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [dropdownVisible, setDropdownVisible] = useState(null);
+  const [selectedReportReasons, setSelectedReportReasons] = useState([]); // State to hold selected report reasons
+  const [reportCommentId, setReportCommentId] = useState(null); // State to hold the comment ID being reported
+
   const auth = getAuth();
   const user = auth.currentUser;
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-  const [timerMinutes, setTimerMinutes] = useState(0); // State to hold minutes
-  const [timerSeconds, setTimerSeconds] = useState(0); // State to hold seconds
-  const [editingCommentId, setEditingCommentId] = useState(null); // Track the comment being edited
-  const [dropdownVisible, setDropdownVisible] = useState(null); // Track dropdown visibility for each comment
 
   // Fetch flashcard set data from Firestore
   useEffect(() => {
@@ -83,6 +90,12 @@ const CardPage = () => {
 
         // Show only the latest 3 results
         setQuizResults(loadedResults.slice(0, 3)); // Show only the latest 3 results
+
+        // Filter and show the latest 3 timed quiz results with time taken > 0
+        const filteredTimedResults = loadedResults
+          .filter((result) => result.timeTaken > 0)
+          .slice(0, 3);
+        setTimedQuizResults(filteredTimedResults);
       });
 
       return () => {
@@ -137,6 +150,52 @@ const CardPage = () => {
     }
   };
 
+  // Handle report submission
+  const handleReportSubmit = async () => {
+    try {
+      const reportsRef = collection(db, "reportSets"); // Create a "reports" collection in Firestore
+      await addDoc(reportsRef, {
+        flashcardSetId: id,
+        userName: user.displayName || "Anonymous",
+        uid: user.uid,
+        reasons: selectedReportReasons,
+        timestamp: new Date(),
+      });
+      setIsReportModalOpen(false); // Close the report modal
+      setSelectedReportReasons([]); // Reset selected reasons
+    } catch (error) {
+      console.error("Error reporting flashcard: ", error);
+    }
+  };
+
+  // Handle report submission for comments
+  const handleCommentReportSubmit = async () => {
+    try {
+      const reportsRef = collection(db, "reportComments"); // Create a "reportComments" collection in Firestore
+      await addDoc(reportsRef, {
+        commentId: reportCommentId, // ID of the reported comment
+        userName: user.displayName || "Anonymous",
+        uid: user.uid,
+        reasons: selectedReportReasons,
+        timestamp: new Date(),
+      });
+      setIsReportCommentModalOpen(false); // Close the report modal
+      setReportCommentId(null); // Reset report comment ID
+      setSelectedReportReasons([]); // Reset selected reasons
+    } catch (error) {
+      console.error("Error reporting comment: ", error);
+    }
+  };
+
+  // Handle toggling of report reasons
+  const toggleReportReason = (reason) => {
+    setSelectedReportReasons((prev) =>
+      prev.includes(reason)
+        ? prev.filter((r) => r !== reason)
+        : [...prev, reason]
+    );
+  };
+
   // Edit comment
   const handleEditComment = async (commentId) => {
     try {
@@ -164,10 +223,10 @@ const CardPage = () => {
     }
   };
 
-  // Report comment (placeholder functionality)
+  // Report comment
   const handleReportComment = (commentId) => {
-    console.log("Reported comment ID: ", commentId);
-    // Add logic to handle reporting the comment
+    setReportCommentId(commentId); // Set the comment ID to report
+    setIsReportCommentModalOpen(true); // Open report modal
   };
 
   const handleTimedPractice = () => {
@@ -182,6 +241,14 @@ const CardPage = () => {
     });
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds
+    ).padStart(2, "0")}`;
+  };
+
   if (!flashcardSet) return <div>Loading...</div>;
 
   return (
@@ -190,7 +257,10 @@ const CardPage = () => {
       <div className="flashcard-container">
         <div className="flashcard-title-line">
           <p className="flashcard-title">{flashcardSet.title}</p>
-          <FaExclamationTriangle className="report-icon" />
+          <FaExclamationTriangle
+            className="report-icon"
+            onClick={() => setIsReportModalOpen(true)} // Open report modal on click
+          />
         </div>
         <p className="flashcard-creator">
           Created by: {flashcardSet.creator} ({flashcardSet.completedUsers}{" "}
@@ -228,6 +298,84 @@ const CardPage = () => {
             </p>
           </div>
         </div>
+
+        {/* Report Modal */}
+        {isReportModalOpen && (
+          <div className="report-modal">
+            <div className="report-modal-content">
+              <h2>Report This Flashcard</h2>
+              <p>Please select the reason(s) for reporting:</p>
+              <div className="report-reasons">
+                {[
+                  "Sexual Content",
+                  "Inappropriate",
+                  "Hateful or Abusive Content",
+                  "Misinformation",
+                  "Harmful",
+                  "Spam",
+                  "Misleading",
+                ].map((reason) => (
+                  <label key={reason} className="report-reason-label">
+                    <input
+                      type="checkbox"
+                      checked={selectedReportReasons.includes(reason)}
+                      onChange={() => toggleReportReason(reason)}
+                    />
+                    {reason}
+                  </label>
+                ))}
+              </div>
+              <div className="report-modal-buttons">
+                <button
+                  onClick={handleReportSubmit}
+                  className="submit-report-button"
+                >
+                  Submit Report
+                </button>
+                <button
+                  onClick={() => setIsReportModalOpen(false)}
+                  className="cancel-report-button"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isReportCommentModalOpen && (
+          <div className="modal reportcommentmodal">
+            <h2 className="reportcommentmodal-title">Report Comment</h2>
+            <p>Please select reasons for reporting:</p>
+            <div className="reportcommentmodal-reasons">
+              {["Spam", "Inappropriate Content", "Harassment", "Other"].map(
+                (reason) => (
+                  <div key={reason}>
+                    <input
+                      type="checkbox"
+                      checked={selectedReportReasons.includes(reason)}
+                      onChange={() => toggleReportReason(reason)}
+                      className="reportcommentmodal-checkbox"
+                    />
+                    <label className="reportcommentmodal-label">{reason}</label>
+                  </div>
+                )
+              )}
+            </div>
+            <button
+              className="reportcommentmodal-submit"
+              onClick={handleCommentReportSubmit}
+            >
+              Submit Report
+            </button>
+            <button
+              className="reportcommentmodal-close"
+              onClick={() => setIsReportCommentModalOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+        )}
 
         {/* Custom Modal */}
         {isModalOpen && (
@@ -270,132 +418,160 @@ const CardPage = () => {
           </div>
         )}
 
-      <div className="content-sections">
-        <div className="comments-section">
-          <h2>Comments</h2>
-          <form onSubmit={handleCommentSubmit} className="comment-form">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="comment-input"
-              placeholder="Leave a comment..."
-            />
-            <button type="submit" className="comment-submit-button">
-              Submit
-            </button>
-          </form>
+        <div className="content-sections">
+          <div className="comments-section">
+            <h2>Comments</h2>
+            <form onSubmit={handleCommentSubmit} className="comment-form">
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="comment-input"
+                placeholder="Leave a comment..."
+              />
+              <button type="submit" className="comment-submit-button">
+                Submit
+              </button>
+            </form>
 
-        {/* Display comments */}
-        <div className="comments-list">
-          {comments.length > 0 ? (
-            comments.map((comment) => (
-              <div key={comment.id} className="comment">
-                <div className="comment-header">
-                  <div className="comment-author">
-                  <strong>{comment.userName}</strong>
-                  {comment.edited && (
-                      <span className="edited-text"> (edited)</span>
+            {/* Display comments */}
+            <div className="comments-list">
+              {comments.length > 0 ? (
+                comments.map((comment) => (
+                  <div key={comment.id} className="comment">
+                    <div className="comment-header">
+                      <div className="comment-author">
+                        <strong>{comment.userName}</strong>
+                        {comment.edited && (
+                          <span className="edited-text"> (edited)</span>
+                        )}
+                      </div>
+                      <p className="comment-timestamp">
+                        {new Date(comment.timestamp.toDate()).toLocaleString(
+                          undefined,
+                          {
+                            year: "numeric",
+                            month: "numeric",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true, // Use false for 24-hour format
+                          }
+                        )}
+                      </p>
+
+                      {/* Three-dotted menu button */}
+                      <div className="comment-options">
+                        <button
+                          className="options-button"
+                          onClick={() =>
+                            setDropdownVisible(
+                              dropdownVisible === comment.id ? null : comment.id
+                            )
+                          }
+                        >
+                          ⋮
+                        </button>
+                        {dropdownVisible === comment.id && (
+                          <div className="options-menu">
+                            {user.uid === comment.uid ? (
+                              <>
+                                <button
+                                  onClick={() => {
+                                    setEditingCommentId(comment.id);
+                                    setEditCommentText(comment.text); // Set the existing comment text in the edit state
+                                  }}
+                                  className="edit-button"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleDeleteComment(comment.id)
+                                  }
+                                  className="delete-button"
+                                >
+                                  Delete
+                                </button>
+                              </>
+                            ) : (
+                              <button
+                                className="report-comment"
+                                onClick={() => handleReportComment(comment.id)}
+                              >
+                                Report
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {editingCommentId === comment.id ? (
+                      <div className="edit-comment-form">
+                        <textarea
+                          value={editCommentText}
+                          onChange={(e) => setEditCommentText(e.target.value)}
+                          className="comment-edit-input"
+                        ></textarea>
+                        <button
+                          onClick={() =>
+                            handleEditComment(comment.id, newComment)
+                          }
+                          className="save-edit-button"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingCommentId(null)}
+                          className="cancel-edit-button"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <p>{comment.text}</p>
                     )}
-                  </div>                 
-                  <p className="comment-timestamp">
-                    {new Date(comment.timestamp.toDate()).toLocaleString()}
-                  </p>
-
-                    {/* Three-dotted menu button */}
-                    <div className="comment-options">
-                      <button
-                        className="options-button"
-                        onClick={() =>
-                          setDropdownVisible(
-                            dropdownVisible === comment.id ? null : comment.id
-                          )
-                        }
-                      >
-                        ⋮
-                      </button>
-                      {dropdownVisible === comment.id && (
-                        <div className="options-menu">
-                          {user.uid === comment.uid ? (
-                            <>
-                              <button
-                                onClick={() => {
-                                  setEditingCommentId(comment.id);
-                                  setEditCommentText(comment.text); // Set the existing comment text in the edit state
-                                }}
-                                className="edit-button"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                onClick={() => handleDeleteComment(comment.id)}
-                                className="delete-button"
-                              >
-                                Delete
-                              </button>
-                            </>
-                          ) : (
-                            <button
-                              onClick={() => handleReportComment(comment.id)}
-                              className="report-button"
-                            >
-                              Report
-                            </button>
-                          )}
-                        </div>
-                      )}
-                    </div>
                   </div>
+                ))
+              ) : (
+                <p>No comments yet. Be the first to comment!</p>
+              )}
+            </div>
+          </div>
 
-                  {editingCommentId === comment.id ? (
-                    <div className="edit-comment-form">
-                      <textarea
-                        value={editCommentText}
-                        onChange={(e) => setEditCommentText(e.target.value)}
-                        className="comment-edit-input"
-                      ></textarea>
-                      <button
-                        onClick={() => handleEditComment(comment.id, newComment)}
-                        className="save-edit-button"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingCommentId(null)}
-                        className="cancel-edit-button"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <p>{comment.text}</p>
-                  )}
-                </div>
-              ))
-            ) : (
-              <p>No comments yet. Be the first to comment!</p>
-            )}
+          <div className="quiz-results-container">
+            {/* Display the latest 3 quiz results */}
+            <div className="quiz-results-section">
+              <h2>Recent Scores</h2>
+              <ul>
+                {quizResults.map((result) => (
+                  <li key={result.id}>
+                    <strong>{result.userName}</strong> {result.score}/
+                    {flashcardSet.cards.length}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Display the latest 3 timed quiz results */}
+            <div className="timed-quiz-results-section">
+              <h2>Recent Timed Scores</h2>
+              {timedQuizResults.length > 0 ? (
+                <ul>
+                  {timedQuizResults.map((result) => (
+                    <li key={result.id}>
+                      <strong>{result.userName}</strong> {result.score}/
+                      {flashcardSet.cards.length},{" "}
+                      {formatTime(result.timeTaken)}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No timed quiz results available.</p>
+              )}
+            </div>
           </div>
         </div>
-        
-        <div className="quiz-results-container">
-          {/* Display the latest 3 quiz results */}
-          <div className="quiz-results-section">
-            <h2>Recent Scores</h2>
-            <ul>
-              {quizResults.map((result) => (
-                <li key={result.id}>
-                  <strong>{result.userName}</strong> {result.score}/{flashcardSet.cards.length}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Display the latest 3 timed quiz results */}
-          <div className="timed-quiz-results-section">
-            <h2>Recent Timed Scores</h2>
-          </div>
-        </div>  
-      </div>
       </div>
     </div>
   );
