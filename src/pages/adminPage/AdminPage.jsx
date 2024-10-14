@@ -298,9 +298,9 @@ const AdminPage = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Card Sets Created</th>
-            <th>Number of Comments</th>
-            <th>Actions</th>
+            <th className="center-text">Card Sets Created</th>
+            <th className="center-text">Number of Comments</th>
+            <th className="center-text">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -319,9 +319,9 @@ const AdminPage = () => {
                 )}
               </td>
               <td>{user.email || "N/A"}</td>
-              <td>{flashcardCounts[user.id] || 0}</td>
-              <td>{commentsCount[user.id] || 0}</td>
-              <td>
+              <td className="center-text">{flashcardCounts[user.id] || 0}</td>
+              <td className="center-text">{commentsCount[user.id] || 0}</td>
+              <td className="center-text">
                 {editingUserId === user.id ? (
                   <>
                     <button onClick={() => handleSaveUserName(user.id)}>
@@ -355,7 +355,7 @@ const AdminPage = () => {
             <th>ID</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Creator</th>
+            <th className="center-text">Creator</th>
             <th>Play Count</th>
             <th>Actions</th>
           </tr>
