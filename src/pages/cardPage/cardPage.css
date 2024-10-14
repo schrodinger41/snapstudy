@@ -271,11 +271,11 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.6); 
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Ensure modal appears above other elements */
+  z-index: 1000; 
 }
 
 .modal-content {
@@ -291,13 +291,40 @@ h2 {
   margin-bottom: 1rem;
 }
 
+.time-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0;
+}
+
 .timer-input {
-  width: 100%;
+  width: 60px; 
   padding: 0.5rem;
-  margin-bottom: 1rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  text-align: center;
+  border: none
+}
+
+.timer-input:focus {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+}
+
+.timer-input::-webkit-outer-spin-button,
+.timer-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.timer-input {
+  -moz-appearance: textfield; /* Firefox */
+  appearance: textfield;
+}
+
+.colon {
+  font-size: 1.5rem;
+  padding: 0 5px;
 }
 
 .modal-buttons {
@@ -306,22 +333,37 @@ h2 {
 }
 
 .start-quiz-button,
-.cancel-button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
+.cancel-button,
+.submit-report-button,
+.cancel-report-button,
+.reportcommentmodal-submit,
+.reportcommentmodal-close {
+  background-color: var(--primary-color);
+  border: 1px solid #333;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-.start-quiz-button {
-  background-color: #28a745;
-  color: white;
+.start-quiz-button:hover,
+.submit-report-button:hover,
+.reportcommentmodal-submit:hover {
+  background-color: var(--secondary-color);
 }
 
-.cancel-button {
+.cancel-button,
+.cancel-report-button,
+.reportcommentmodal-close {
   background-color: #dc3545;
   color: white;
+}
+
+.cancel-button:hover,
+.cancel-report-button:hover,
+.reportcommentmodal-close:hover {
+  background-color: #c42939;
 }
 
 .comment-options {
@@ -345,7 +387,7 @@ h2 {
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  padding: 0.5rem;
+  padding: 0.3rem 0.5rem;
 }
 
 .options-menu button {
@@ -379,30 +421,31 @@ h2 {
 
 .report-modal-content {
   background-color: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 5px;
   width: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .report-reasons {
-  margin: 10px 0;
+  margin: 20px 0;
 }
 
 .report-reason-label {
   display: block;
   margin: 5px 0;
+  color: #555;
 }
 
-.report-modal-buttons {
+.report-reason-label input,
+.reportcommentmodal-checkbox {
+  margin-right: 10px; /* Adds space between the checkbox and the label */
+}
+
+.report-modal-buttons,
+.reportcommentmodal-buttons {
   display: flex;
   justify-content: space-between;
-}
-
-.submit-report-button,
-.cancel-report-button {
-  padding: 10px 15px;
-  cursor: pointer;
 }
 
 /* report comment modal */
@@ -415,9 +458,13 @@ h2 {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  padding: 20px;
+  padding: 30px;
   z-index: 1000;
-  width: 300px; /* Adjust width as needed */
+  width: 350px; /* Adjust width as needed */
+}
+
+.reportcommentmodal p {
+  margin-bottom: 10px;
 }
 
 .reportcommentmodal-title {
@@ -436,30 +483,5 @@ h2 {
 
 .reportcommentmodal-label {
   font-size: 16px;
-  color: #555; /* Label color */
-}
-
-.reportcommentmodal-submit,
-.reportcommentmodal-close {
-  background-color: #007bff; /* Primary button color */
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.reportcommentmodal-submit:hover,
-.reportcommentmodal-close:hover {
-  background-color: #0056b3; /* Darker shade for hover effect */
-}
-
-.reportcommentmodal-close {
-  background-color: #dc3545; /* Danger color for close button */
-  margin-left: 10px;
-}
-
-.reportcommentmodal-close:hover {
-  background-color: #c82333; /* Darker shade for hover effect */
+  color: #555;
 }

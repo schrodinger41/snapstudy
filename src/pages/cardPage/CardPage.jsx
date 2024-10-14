@@ -344,36 +344,40 @@ const CardPage = () => {
         )}
 
         {isReportCommentModalOpen && (
-          <div className="modal reportcommentmodal">
-            <h2 className="reportcommentmodal-title">Report Comment</h2>
-            <p>Please select reasons for reporting:</p>
-            <div className="reportcommentmodal-reasons">
-              {["Spam", "Inappropriate Content", "Harassment", "Other"].map(
-                (reason) => (
-                  <div key={reason}>
-                    <input
-                      type="checkbox"
-                      checked={selectedReportReasons.includes(reason)}
-                      onChange={() => toggleReportReason(reason)}
-                      className="reportcommentmodal-checkbox"
-                    />
-                    <label className="reportcommentmodal-label">{reason}</label>
-                  </div>
-                )
-              )}
+          <div className="custom-modal">
+            <div className="modal reportcommentmodal">
+              <h2 className="reportcommentmodal-title">Report Comment</h2>
+              <p>Please select reasons for reporting:</p>
+              <div className="reportcommentmodal-reasons">
+                {["Spam", "Inappropriate Content", "Harassment", "Other"].map(
+                  (reason) => (
+                    <div key={reason}>
+                      <input
+                        type="checkbox"
+                        checked={selectedReportReasons.includes(reason)}
+                        onChange={() => toggleReportReason(reason)}
+                        className="reportcommentmodal-checkbox"
+                      />
+                      <label className="reportcommentmodal-label">{reason}</label>
+                    </div>
+                  )
+                )}
+              </div>
+              <div className="reportcommentmodal-buttons">
+                <button
+                  className="reportcommentmodal-submit"
+                  onClick={handleCommentReportSubmit}
+                >
+                  Submit Report
+                </button>
+                <button
+                  className="reportcommentmodal-close"
+                  onClick={() => setIsReportCommentModalOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
             </div>
-            <button
-              className="reportcommentmodal-submit"
-              onClick={handleCommentReportSubmit}
-            >
-              Submit Report
-            </button>
-            <button
-              className="reportcommentmodal-close"
-              onClick={() => setIsReportCommentModalOpen(false)}
-            >
-              Close
-            </button>
           </div>
         )}
 
@@ -382,24 +386,24 @@ const CardPage = () => {
           <div className="custom-modal">
             <div className="modal-content">
               <h2>Set Timer</h2>
-              <p>Enter the number of minutes and seconds</p>
-              <input
-                type="number"
-                value={timerMinutes}
-                onChange={(e) => setTimerMinutes(e.target.value)}
-                placeholder="Minutes"
-                min="0"
-                className="timer-input"
-              />
-              <input
-                type="number"
-                value={timerSeconds}
-                onChange={(e) => setTimerSeconds(e.target.value)}
-                placeholder="Seconds"
-                min="0"
-                max="59"
-                className="timer-input"
-              />
+              <div className="time-input-wrapper">
+                <input
+                  type="number"
+                  value={timerMinutes}
+                  onChange={(e) => setTimerMinutes(e.target.value)}
+                  min="0"
+                  className="timer-input"
+                />
+                <span className="colon">:</span> {/* Separator */}
+                <input
+                  type="number"
+                  value={timerSeconds}
+                  onChange={(e) => setTimerSeconds(e.target.value)}
+                  min="0"
+                  max="59"
+                  className="timer-input"
+                />
+              </div>
               <div className="modal-buttons">
                 <button
                   onClick={handleStartTimedQuiz}
