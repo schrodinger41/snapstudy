@@ -145,10 +145,12 @@ const NewCardPage = () => {
             <label>Category</label>
           </div>
           <div className="flashcard-actions">
-            <button className="create-btn" onClick={createFlashcardSet}>
+            <button
+              className="create-practice-btn"
+              onClick={createFlashcardSet}
+            >
               Create
             </button>
-            <button className="create-practice-btn">Create and Practice</button>
           </div>
         </div>
 
