@@ -7,13 +7,19 @@ import {
   query,
   where,
   getDocs,
+  setDoc,
 } from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
 import "./profilePage.css";
 
 const ProfilePage = () => {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({
+    fullName: "",
+    bio: "", // Add bio to the state
+  });
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [originalBio, setOriginalBio] = useState("");
   const [userResults, setUserResults] = useState([]); // State to hold user results
   const [userComments, setUserComments] = useState([]); // State to hold user comments
   const [userFlashcards, setUserFlashcards] = useState([]); // State to hold flashcard sets created by the user
@@ -27,7 +33,12 @@ const ProfilePage = () => {
         const userDoc = await getDoc(userRef);
 
         if (userDoc.exists()) {
-          setUserInfo(userDoc.data());
+          const data = userDoc.data();
+          setUserInfo({
+            fullName: data.fullName,
+            bio: data.bio || "", // Fetch bio
+          });
+          setOriginalBio(data.bio || "");
         }
       }
     };
@@ -138,6 +149,17 @@ const ProfilePage = () => {
     fetchUserFlashcards(); // Fetch flashcards created by the user
   }, [userUID]);
 
+  const saveBio = async () => {
+    const userRef = doc(db, "Users", userUID);
+    await setDoc(userRef, { bio: userInfo.bio }, { merge: true });
+    setIsEditingBio(false);
+  };
+
+  const cancelEdit = () => {
+    setUserInfo({ ...userInfo, bio: originalBio });
+    setIsEditingBio(false);
+  };
+
   if (!userInfo) {
     return <div>Loading user info...</div>; // Display a loading message
   }
@@ -146,6 +168,30 @@ const ProfilePage = () => {
     <div className="profile-page">
       <Navbar />
       <h1>{userInfo.fullName}'s Profile</h1>
+
+      {/* Bio Section */}
+      <h2>Bio</h2>
+      {isEditingBio ? (
+        <textarea
+          value={userInfo.bio}
+          onChange={(e) => setUserInfo({ ...userInfo, bio: e.target.value })}
+        />
+      ) : (
+        <p>{userInfo.bio || "No bio available."}</p>
+      )}
+
+      {userUID && (
+        <div>
+          {isEditingBio ? (
+            <div>
+              <button onClick={saveBio}>Save</button>
+              <button onClick={cancelEdit}>Cancel</button>
+            </div>
+          ) : (
+            <button onClick={() => setIsEditingBio(true)}>Edit Bio</button>
+          )}
+        </div>
+      )}
 
       {/* Results Table */}
       <h2>Your Recent Results</h2>

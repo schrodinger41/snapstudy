@@ -89,6 +89,7 @@ const RegisterPage = () => {
           email: user.email,
           fullName: fname,
           role: "user", // Default role is "user"
+          bio: "",
         });
         localStorage.setItem("userUID", user.uid);
         // Set the auth-token in cookies
@@ -108,7 +109,7 @@ const RegisterPage = () => {
         const userDoc = await getDoc(userRef);
 
         if (userDoc.exists()) {
-          const { role } = userDoc.data();
+          const { role, bio } = userDoc.data();
           // Set the auth-token in cookies
           localStorage.setItem("userUID", user.uid);
           cookies.set("auth-token", user.accessToken, { path: "/" });
@@ -140,7 +141,10 @@ const RegisterPage = () => {
           email: user.email,
           fullName: user.displayName || "Anonymous",
           role: "user", // Assign default role for Google sign-ins
+          bio: "",
         });
+      } else {
+        const { bio } = userDoc.data(); // Retrieve bio if it exists
       }
 
       const { role } = userDoc.data() || { role: "user" }; // Default to "user" if new user
