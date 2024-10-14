@@ -5,7 +5,7 @@ import "./quizResultPage.css";
 
 const QuizResultPage = () => {
   const location = useLocation();
-  const { score, totalCards, flashcardSetId, timeTaken } = location.state || {}; // Get timeTaken from state
+  const { score, totalCards, flashcardSetId, timeTaken } = location.state || {};
   const navigate = useNavigate();
 
   // Handle navigation back to home page
@@ -27,8 +27,10 @@ const QuizResultPage = () => {
           <div className="total-score">
             {score}/{totalCards}
           </div>
-          <p>You took {timeTaken} seconds to complete the quiz.</p>{" "}
-          {/* Display the time taken */}
+          {timeTaken > 0 && (
+            <p>You took {timeTaken} seconds to complete the quiz.</p>
+          )}
+          {/* Display only if timeTaken is greater than 0 */}
           <p>Thank you for completing the quiz! ( ˶ˆᗜˆ˵ )</p>
           <div className="quiz-result-buttons">
             <button onClick={goToHomePage} className="quiz-result-button">
