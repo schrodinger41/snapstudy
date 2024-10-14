@@ -15,6 +15,7 @@ import {
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
 import { TbCardsFilled } from "react-icons/tb";
+import { FaExclamationTriangle } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import "./cardPage.css";
 
@@ -187,7 +188,10 @@ const CardPage = () => {
     <div className="card-page">
       <Navbar />
       <div className="flashcard-container">
-        <p className="flashcard-title">{flashcardSet.title}</p>
+        <div className="flashcard-title-line">
+          <p className="flashcard-title">{flashcardSet.title}</p>
+          <FaExclamationTriangle className="report-icon" />
+        </div>
         <p className="flashcard-creator">
           Created by: {flashcardSet.creator} ({flashcardSet.completedUsers}{" "}
           plays)
@@ -380,8 +384,7 @@ const CardPage = () => {
             <ul>
               {quizResults.map((result) => (
                 <li key={result.id}>
-                  <strong>{result.userName}</strong>: {result.score} points (
-                  {new Date(result.timestamp).toLocaleString()})
+                  <strong>{result.userName}</strong> {result.score}/{flashcardSet.cards.length}
                 </li>
               ))}
             </ul>
