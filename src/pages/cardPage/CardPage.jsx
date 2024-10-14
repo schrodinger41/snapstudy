@@ -265,123 +265,134 @@ const CardPage = () => {
             </div>
           </div>
         )}
-      </div>
 
-      <div className="comments-section">
-        <h2>Comments</h2>
-        <form onSubmit={handleCommentSubmit} className="comment-form">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="comment-input"
-            placeholder="Leave a comment..."
-          />
-          <button type="submit" className="submit-comment-button">
-            Submit
-          </button>
-        </form>
+      <div className="content-sections">
+        <div className="comments-section">
+          <h2>Comments</h2>
+          <form onSubmit={handleCommentSubmit} className="comment-form">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              className="comment-input"
+              placeholder="Leave a comment..."
+            />
+            <button type="submit" className="comment-submit-button">
+              Submit
+            </button>
+          </form>
 
-        {/* Display comments */}
-        <div className="comments-list">
-          {comments.length > 0 ? (
-            comments.map((comment) => (
-              <div key={comment.id} className="comment">
-                <div className="comment-header">
-                  <strong>{comment.author}</strong>
-                  <p className="comment-timestamp">
-                    {new Date(comment.timestamp.toDate()).toLocaleString()}
+          {/* Display comments */}
+          <div className="comments-list">
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <div key={comment.id} className="comment">
+                  <div className="comment-header">
+                    <div className="comment-author"> 
+                    <strong>{comment.author}</strong>
                     {comment.edited && (
                       <span className="edited-text"> (edited)</span>
                     )}
-                  </p>
+                    </div>
+                    <p className="comment-timestamp">
+                      {new Date(comment.timestamp.toDate()).toLocaleString()}
+                    </p>
 
-                  {/* Three-dotted menu button */}
-                  <div className="comment-options">
-                    <button
-                      className="options-button"
-                      onClick={() =>
-                        setDropdownVisible(
-                          dropdownVisible === comment.id ? null : comment.id
-                        )
-                      }
-                    >
-                      ⋮
-                    </button>
-                    {dropdownVisible === comment.id && (
-                      <div className="options-menu">
-                        {user.uid === comment.uid ? (
-                          <>
+                    {/* Three-dotted menu button */}
+                    <div className="comment-options">
+                      <button
+                        className="options-button"
+                        onClick={() =>
+                          setDropdownVisible(
+                            dropdownVisible === comment.id ? null : comment.id
+                          )
+                        }
+                      >
+                        ⋮
+                      </button>
+                      {dropdownVisible === comment.id && (
+                        <div className="options-menu">
+                          {user.uid === comment.uid ? (
+                            <>
+                              <button
+                                onClick={() => {
+                                  setEditingCommentId(comment.id);
+                                  setEditCommentText(comment.text); // Set the existing comment text in the edit state
+                                }}
+                                className="edit-button"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => handleDeleteComment(comment.id)}
+                                className="delete-button"
+                              >
+                                Delete
+                              </button>
+                            </>
+                          ) : (
                             <button
-                              onClick={() => {
-                                setEditingCommentId(comment.id);
-                                setEditCommentText(comment.text); // Set the existing comment text in the edit state
-                              }}
-                              className="edit-button"
+                              onClick={() => handleReportComment(comment.id)}
+                              className="report-button"
                             >
-                              Edit
+                              Report
                             </button>
-                            <button
-                              onClick={() => handleDeleteComment(comment.id)}
-                              className="delete-button"
-                            >
-                              Delete
-                            </button>
-                          </>
-                        ) : (
-                          <button
-                            onClick={() => handleReportComment(comment.id)}
-                            className="report-button"
-                          >
-                            Report
-                          </button>
-                        )}
-                      </div>
-                    )}
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
+
+                  {editingCommentId === comment.id ? (
+                    <div className="edit-comment-form">
+                      <textarea
+                        value={editCommentText}
+                        onChange={(e) => setEditCommentText(e.target.value)}
+                        className="comment-edit-input"
+                      ></textarea>
+                      <button
+                        onClick={() => handleEditComment(comment.id, newComment)}
+                        className="save-edit-button"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingCommentId(null)}
+                        className="cancel-edit-button"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <p>{comment.text}</p>
+                  )}
                 </div>
-
-                {editingCommentId === comment.id ? (
-                  <div className="edit-comment-form">
-                    <textarea
-                      value={editCommentText}
-                      onChange={(e) => setEditCommentText(e.target.value)}
-                      className="comment-edit-input"
-                    ></textarea>
-                    <button
-                      onClick={() => handleEditComment(comment.id, newComment)}
-                      className="save-edit-button"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => setEditingCommentId(null)}
-                      className="cancel-edit-button"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <p>{comment.text}</p>
-                )}
-              </div>
-            ))
-          ) : (
-            <p>No comments yet. Be the first to comment!</p>
-          )}
+              ))
+            ) : (
+              <p>No comments yet. Be the first to comment!</p>
+            )}
+          </div>
         </div>
-      </div>
+        
+        <div className="quiz-results-container">
+          {/* Display the latest 3 quiz results */}
+          <div className="quiz-results-section">
+            <h2>Recent Scores</h2>
+            <ul>
+              {quizResults.map((result) => (
+                <li key={result.id}>
+                  <strong>{result.userName}</strong>: {result.score} points (
+                  {new Date(result.timestamp).toLocaleString()})
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      {/* Display the latest 3 quiz results */}
-      <div className="quiz-results">
-        <h2>Latest Quiz Results</h2>
-        <ul>
-          {quizResults.map((result) => (
-            <li key={result.id}>
-              <strong>{result.userName}</strong>: {result.score} points (
-              {new Date(result.timestamp).toLocaleString()})
-            </li>
-          ))}
-        </ul>
+          {/* Display the latest 3 timed quiz results */}
+          <div className="timed-quiz-results-section">
+            <h2>Recent Timed Scores</h2>
+          </div>
+        </div>  
+      </div>
       </div>
     </div>
   );
