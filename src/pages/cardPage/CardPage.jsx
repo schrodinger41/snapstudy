@@ -554,22 +554,25 @@ const CardPage = () => {
             </div>
 
             {/* Display the latest 3 timed quiz results */}
-            <div className="timed-quiz-results-section">
-              <h2>Recent Timed Scores</h2>
-              {timedQuizResults.length > 0 ? (
-                <ul>
-                  {timedQuizResults.map((result) => (
-                    <li key={result.id}>
-                      <strong>{result.userName}</strong> {result.score}/
-                      {flashcardSet.cards.length},{" "}
-                      {formatTime(result.timeTaken)}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No timed quiz results available.</p>
-              )}
-            </div>
+          <div className="timed-quiz-results-section">
+            <h2>Recent Timed Scores</h2>
+            {timedQuizResults.length > 0 ? (
+              <ul>
+                {timedQuizResults.map((result) => (
+                  <li key={result.id} className="timed-quiz-result">
+                    <strong>{result.userName}</strong>
+                    <div className="timed-quiz-result-info">
+                      <span className="timed-quiz-score">{result.score}/
+                      {flashcardSet.cards.length}</span>
+                      <span className="timed-quiz-time">{formatTime(result.timeTaken)}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No timed quiz results available.</p>
+            )}
+          </div>
           </div>
         </div>
       </div>
