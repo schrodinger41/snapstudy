@@ -411,15 +411,32 @@ const CardPage = () => {
                 <input
                   type="number"
                   value={timerMinutes}
-                  onChange={(e) => setTimerMinutes(e.target.value)}
+                  placeholder="00"
+                  onChange={(e) => {
+                    // Limit to two digits and only allow values 0-59
+                    const value = Math.max(
+                      0,
+                      Math.min(59, parseInt(e.target.value || 0, 10))
+                    );
+                    setTimerMinutes(value);
+                  }}
                   min="0"
+                  max="59"
                   className="timer-input"
                 />
                 <span className="colon">:</span> {/* Separator */}
                 <input
                   type="number"
                   value={timerSeconds}
-                  onChange={(e) => setTimerSeconds(e.target.value)}
+                  placeholder="00"
+                  onChange={(e) => {
+                    // Limit to two digits and only allow values 0-59
+                    const value = Math.max(
+                      0,
+                      Math.min(59, parseInt(e.target.value || 0, 10))
+                    );
+                    setTimerSeconds(value);
+                  }}
                   min="0"
                   max="59"
                   className="timer-input"
