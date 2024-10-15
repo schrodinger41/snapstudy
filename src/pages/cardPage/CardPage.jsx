@@ -74,6 +74,10 @@ const CardPage = () => {
           id: doc.id,
           ...doc.data(),
         }));
+
+        // Sort comments by timestamp in descending order (newest first)
+        loadedComments.sort((a, b) => b.timestamp - a.timestamp);
+
         setComments(loadedComments);
       });
 
@@ -265,13 +269,6 @@ const CardPage = () => {
         <img src={LoadingGif} alt="Loading..." className="loading-gif" />
       </div>
     );
-
-  const handleCommentChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= 150) {
-      newComment(value);
-    }
-  };
 
   return (
     <div className="card-page">
@@ -582,7 +579,7 @@ const CardPage = () => {
             {/* Display the latest 3 quiz results */}
             <div className="quiz-results-section">
               <h2>Recent Scores</h2>
-              {quizResults.length > 0 ? ( 
+              {quizResults.length > 0 ? (
                 <ul>
                   {quizResults.map((result) => (
                     <li key={result.id}>
@@ -592,7 +589,7 @@ const CardPage = () => {
                   ))}
                 </ul>
               ) : (
-                <p>No recent scores available.</p> 
+                <p>No recent scores available.</p>
               )}
             </div>
 
