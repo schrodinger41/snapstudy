@@ -14,6 +14,7 @@ import MyCardsPage from "./pages/myCardsPage/MyCardsPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
 import QuizResultPage from "./pages/quizResultPage/QuizResultPage";
 import SearchResultsPage from "./pages/searchResultsPage/SearchResultsPage";
+import LoadingGif from "../src/images/loading.gif";
 import "./App.css";
 
 const cookies = new Cookies();
@@ -52,7 +53,9 @@ function App() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div class="loading-screen">
+      <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+      </div>
   }
 
   return (

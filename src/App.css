@@ -66,3 +66,20 @@ body {
   border-radius: 10px; 
   border: 2px solid var(--secondary-color); 
 }
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+}
+
+.loading-gif {
+  width: 100px; 
+  height: auto;
+}
