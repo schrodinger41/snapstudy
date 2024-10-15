@@ -277,7 +277,7 @@ const ProfilePage = () => {
           <div className="set-details">
             <p>
               Sets Created: {flashcardCount}
-              {flashcardCount !== 1 ? "s" : ""}
+              {flashcardCount !== 1 ? "" : ""}
             </p>
             <p>Sets Completed: {totalCompletedFlashcards}</p>
           </div>
