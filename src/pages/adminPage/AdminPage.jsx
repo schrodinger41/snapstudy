@@ -13,6 +13,10 @@ import {
 import Navbar from "../../components/navbar/Navbar";
 import { FaTrash, FaEdit, FaEye, FaLock, FaUnlock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Import the hook
+import UserDeleteConfirmation from "../../components/userDeleteConfirmation/UserDeleteConfirmation";
+import FlashcardDeleteConfirmation from "../../components/flashcardDeleteConfirmation/FlashcardDeleteConfirmation";
+import ReportedCardDeleteConfirmation from "../../components/reportedCardDeleteConfirmation/ReportedCardDeleteConfirmation";
+import ReportedCommentDeleteConfirmation from "../../components/reportedCommentDeleteConfirmation/ReportedCommentDeleteConfirmation";
 import "./adminPage.css";
 
 const AdminPage = () => {
@@ -33,6 +37,26 @@ const AdminPage = () => {
   const [editableTitle, setEditableTitle] = useState(""); // Editable title
   const [editableDescription, setEditableDescription] = useState(""); // Editable description
   const [lockedStatus, setLockedStatus] = useState({}); // Track locked status of users
+
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
+  const [showFlashcardDeleteConfirmation, setShowFlashcardDeleteConfirmation] =
+    useState(false);
+  const [flashcardToDelete, setFlashcardToDelete] = useState(null);
+
+  const [
+    showReportedCardDeleteConfirmation,
+    setShowReportedCardDeleteConfirmation,
+  ] = useState(false);
+  const [reportedCardToDelete, setReportedCardToDelete] = useState(null);
+
+  const [
+    showReportedCommentDeleteConfirmation,
+    setShowReportedCommentDeleteConfirmation,
+  ] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+
   const navigate = useNavigate();
 
   // Fetch Users (updated to include locked status)
@@ -213,45 +237,78 @@ const AdminPage = () => {
   }, [reportedCards]);
 
   // Delete Flashcard Set
-  const handleDeleteFlashcardSet = async (id) => {
-    try {
-      // Delete the flashcard set
-      const flashcardDoc = doc(db, "flashcards", id);
-      await deleteDoc(flashcardDoc);
-      console.log("Flashcard set deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting flashcard set: ", error);
+  const handleDeleteFlashcardSet = (id, title) => {
+    setFlashcardToDelete({ id, title });
+    setShowFlashcardDeleteConfirmation(true);
+  };
+
+  const handleConfirmDeleteFlashcardSet = async () => {
+    if (flashcardToDelete) {
+      try {
+        const flashcardDoc = doc(db, "flashcards", flashcardToDelete.id);
+        await deleteDoc(flashcardDoc);
+        console.log("Flashcard set deleted successfully.");
+      } catch (error) {
+        console.error("Error deleting flashcard set: ", error);
+      } finally {
+        setFlashcardToDelete(null); // Clear the flashcard to delete
+        setShowFlashcardDeleteConfirmation(false); // Close the confirmation popup
+      }
     }
   };
 
   // Delete User
-  const handleDeleteUser = async (id) => {
-    try {
-      const userDoc = doc(db, "Users", id);
-      await deleteDoc(userDoc);
-      console.log("User deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting user: ", error);
+  const handleDeleteUser = (id, name) => {
+    setUserToDelete({ id, name });
+    setShowDeleteConfirmation(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (userToDelete) {
+      try {
+        const userDoc = doc(db, "Users", userToDelete.id);
+        await deleteDoc(userDoc);
+        console.log("User deleted successfully.");
+      } catch (error) {
+        console.error("Error deleting user: ", error);
+      } finally {
+        setUserToDelete(null); // Clear the user to delete
+        setShowDeleteConfirmation(false); // Close the confirmation popup
+      }
     }
   };
 
-  // Delete Flashcard Set and Report
-  const handleDeleteFlashcardSetAndReport = async (
-    flashcardSetId,
-    reportId
-  ) => {
-    try {
-      // Delete the flashcard set
-      const flashcardDoc = doc(db, "flashcards", flashcardSetId);
-      await deleteDoc(flashcardDoc);
-      console.log("Flashcard set deleted successfully.");
+  // Handle delete confirmation for reported cards
+  const handleDeleteReportedCard = (id, title, flashcardSetId) => {
+    setReportedCardToDelete({ id, title, flashcardSetId }); // Include flashcardSetId
+    setShowReportedCardDeleteConfirmation(true);
+  };
 
-      // Delete the report from reportSets
-      const reportDoc = doc(db, "reportSets", reportId);
-      await deleteDoc(reportDoc);
-      console.log("Report deleted successfully.");
-    } catch (error) {
-      console.error("Error deleting flashcard set and report: ", error);
+  const handleConfirmDeleteReportedCard = async () => {
+    if (reportedCardToDelete) {
+      try {
+        // Delete the report from reportSets
+        const reportDoc = doc(db, "reportSets", reportedCardToDelete.id);
+        await deleteDoc(reportDoc);
+        console.log("Reported card deleted successfully.");
+
+        // Delete the associated flashcard set
+        const flashcardDoc = doc(
+          db,
+          "flashcards",
+          reportedCardToDelete.flashcardSetId
+        );
+        await deleteDoc(flashcardDoc);
+        console.log("Flashcard set deleted successfully.");
+      } catch (error) {
+        console.error(
+          "Error deleting reported card and flashcard set: ",
+          error
+        );
+      } finally {
+        setReportedCardToDelete(null); // Clear the card to delete
+        setShowReportedCardDeleteConfirmation(false); // Close the confirmation popup
+      }
     }
   };
 
@@ -406,13 +463,15 @@ const AdminPage = () => {
               <td className="center-text">
                 {editingUserId === user.id ? (
                   <>
-                    <button onClick={() => handleSaveUserName(user.id)}
-                    className="save-edit-btn"
+                    <button
+                      onClick={() => handleSaveUserName(user.id)}
+                      className="save-edit-btn"
                     >
                       Save
                     </button>
-                    <button onClick={handleCancelEdit}
-                    className="cancel-edit-btn"
+                    <button
+                      onClick={handleCancelEdit}
+                      className="cancel-edit-btn"
                     >
                       Cancel
                     </button>
@@ -421,13 +480,15 @@ const AdminPage = () => {
                   <div className="button-container">
                     <button
                       onClick={() =>
-                        handleEditUser(user.id, user.fullName, user.role)}
-                        className="edit-btn"
+                        handleEditUser(user.id, user.fullName, user.role)
+                      }
+                      className="edit-btn"
                     >
                       <FaEdit />
                     </button>
-                    <button onClick={() => handleDeleteUser(user.id)}
-                    className="delete-btn"
+                    <button
+                      onClick={() => handleDeleteUser(user.id, user.fullName)}
+                      className="delete-btn"
                     >
                       <FaTrash />
                     </button>
@@ -439,7 +500,7 @@ const AdminPage = () => {
                         lockedStatus[user.id] ? "unlock-btn" : "lock-btn"
                       }
                     >
-                      {lockedStatus[user.id] ? <FaLock/> : <FaUnlock/>}
+                      {lockedStatus[user.id] ? <FaLock /> : <FaUnlock />}
                     </button>
                   </div>
                 )}
@@ -448,6 +509,15 @@ const AdminPage = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Confirmation Popup */}
+      {showDeleteConfirmation && (
+        <UserDeleteConfirmation
+          onClose={() => setShowDeleteConfirmation(false)}
+          onConfirm={handleConfirmDelete}
+          userName={userToDelete.name}
+        />
+      )}
 
       {/* Flashcard Sets Table */}
       <h2>Flashcard Sets</h2>
@@ -525,7 +595,9 @@ const AdminPage = () => {
                       </button>
                       <button
                         className="delete-btn"
-                        onClick={() => handleDeleteFlashcardSet(set.id)} // Call delete function
+                        onClick={() =>
+                          handleDeleteFlashcardSet(set.id, set.title)
+                        } // Call delete function with title
                       >
                         <FaTrash />
                       </button>
@@ -541,6 +613,15 @@ const AdminPage = () => {
           )}
         </tbody>
       </table>
+
+      {/* Confirmation Popup for Flashcard Deletion */}
+      {showFlashcardDeleteConfirmation && (
+        <FlashcardDeleteConfirmation
+          onClose={() => setShowFlashcardDeleteConfirmation(false)}
+          onConfirm={handleConfirmDeleteFlashcardSet}
+          flashcardTitle={flashcardToDelete.title}
+        />
+      )}
 
       {/* Reported Cards Table */}
       <h2>Reported Cards</h2>
@@ -565,26 +646,26 @@ const AdminPage = () => {
                 <td>{report.userName || "N/A"}</td>
                 <td>{report.reasons.join(", ") || "N/A"}</td>
                 <td>
-                <div className="button-container">
-                  <button
-                    className="view-btn"
-                    onClick={() => navigate(`/card/${report.flashcardSetId}`)} // Navigate to the reported card set
-                  >
-                    <FaEye />
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={
-                      () =>
-                        handleDeleteFlashcardSetAndReport(
-                          report.flashcardSetId,
-                          report.id
-                        ) // Call the new delete function with flashcardSetId and reportId
-                    }
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
+                  <div className="button-container">
+                    <button
+                      className="view-btn"
+                      onClick={() => navigate(`/card/${report.flashcardSetId}`)} // Navigate to the reported card set
+                    >
+                      <FaEye />
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        handleDeleteReportedCard(
+                          report.id,
+                          flashcardTitles[report.flashcardSetId],
+                          report.flashcardSetId
+                        )
+                      } // Ensure flashcardSetId is passed
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))
@@ -595,6 +676,15 @@ const AdminPage = () => {
           )}
         </tbody>
       </table>
+
+      {/* Reported Card Delete Confirmation Popup */}
+      {showReportedCardDeleteConfirmation && (
+        <ReportedCardDeleteConfirmation
+          title={reportedCardToDelete.title}
+          onConfirm={handleConfirmDeleteReportedCard}
+          onCancel={() => setShowReportedCardDeleteConfirmation(false)}
+        />
+      )}
 
       {/* Reported Comments Table */}
       <h2>Reported Comments</h2>
@@ -621,9 +711,13 @@ const AdminPage = () => {
                 <td>
                   <button
                     className="delete-btn"
-                    onClick={() =>
-                      handleDeleteCommentAndReport(report.commentId, report.id)
-                    }
+                    onClick={() => {
+                      setCommentToDelete({
+                        commentId: report.commentId,
+                        reportId: report.id,
+                      });
+                      setShowReportedCommentDeleteConfirmation(true);
+                    }}
                   >
                     <FaTrash />
                   </button>
@@ -637,6 +731,17 @@ const AdminPage = () => {
           )}
         </tbody>
       </table>
+
+      {/* Reported Comment Delete Confirmation Popup */}
+      <ReportedCommentDeleteConfirmation
+        isOpen={showReportedCommentDeleteConfirmation}
+        onClose={() => setShowReportedCommentDeleteConfirmation(false)}
+        onConfirm={(commentId, reportId) =>
+          handleDeleteCommentAndReport(commentId, reportId)
+        }
+        commentId={commentToDelete?.commentId}
+        reportId={commentToDelete?.reportId}
+      />
     </div>
   );
 };
