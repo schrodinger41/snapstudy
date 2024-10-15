@@ -53,21 +53,23 @@ const MyCardsPage = () => {
           <div className="tooltip">Add new set?</div>
         </div>
       </div>
-        <div className="my-cards-container">
-          {userCards.length > 0 ? (
-            userCards.map((card) => (
-              <FlashcardSet
-                key={card.id}
-                id={card.id}
-                title={card.title}
-                creator={card.creator}
-                cardCount={card.cards.length}
-                completedUsers={card.completedUsers || 0} // Adjust this based on your data structure
-              />
-            ))
-          ) : (
-            <p>No flashcards created yet.</p>
-          )}
+      <div className="my-flashcard-container">
+          <div className="flashcard-sets">
+            {userCards.length > 0 ? (
+              userCards.map((card) => (
+                <FlashcardSet
+                  key={card.id}
+                  id={card.id}
+                  title={card.title}
+                  creator={card.creator}
+                  cardCount={card.cards.length}
+                  completedUsers={card.completedUsers || 0} // Adjust this based on your data structure
+                />
+              ))
+            ) : (
+              <p>No flashcards created yet.</p>
+            )}
+          </div>
         </div>
       </div>
     </div>

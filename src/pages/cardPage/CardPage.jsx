@@ -582,14 +582,18 @@ const CardPage = () => {
             {/* Display the latest 3 quiz results */}
             <div className="quiz-results-section">
               <h2>Recent Scores</h2>
-              <ul>
-                {quizResults.map((result) => (
-                  <li key={result.id}>
-                    <strong>{result.userName}</strong> {result.score}/
-                    {flashcardSet.cards.length}
-                  </li>
-                ))}
-              </ul>
+              {quizResults.length > 0 ? ( 
+                <ul>
+                  {quizResults.map((result) => (
+                    <li key={result.id}>
+                      <strong>{result.userName}</strong> {result.score}/
+                      {flashcardSet.cards.length}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No recent scores available.</p> 
+              )}
             </div>
 
             {/* Display the latest 3 timed quiz results */}
@@ -612,7 +616,7 @@ const CardPage = () => {
                   ))}
                 </ul>
               ) : (
-                <p>No timed quiz results available.</p>
+                <p>No recent timed scores available.</p>
               )}
             </div>
           </div>

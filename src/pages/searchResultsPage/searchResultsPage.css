@@ -8,13 +8,13 @@
   padding: 80px 300px
 }
 
-.search-results .flashcard-sets {
+/* .search-results .flashcard-sets {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 0 40px;
   width: 100%;
-}
+} */
 
 .results-container {
   width: 100%;
