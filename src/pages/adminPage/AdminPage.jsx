@@ -436,6 +436,7 @@ const AdminPage = () => {
                   <input
                     type="text"
                     value={editableName}
+                    maxLength={50}
                     onChange={(e) => setEditableName(e.target.value)}
                     className="edit-input-field"
                   />
@@ -542,6 +543,7 @@ const AdminPage = () => {
                     <input
                       type="text"
                       value={editableTitle}
+                      maxLength={40}
                       onChange={(e) => setEditableTitle(e.target.value)}
                       className="edit-input-field"
                     />
@@ -553,6 +555,7 @@ const AdminPage = () => {
                   {editingFlashcardId === set.id ? (
                     <input
                       type="text"
+                      maxLength={100}
                       value={editableDescription}
                       onChange={(e) => setEditableDescription(e.target.value)}
                       className="edit-input-field"

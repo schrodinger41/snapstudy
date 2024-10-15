@@ -74,6 +74,10 @@ const CardPage = () => {
           id: doc.id,
           ...doc.data(),
         }));
+
+        // Sort comments by timestamp in descending order (newest first)
+        loadedComments.sort((a, b) => b.timestamp - a.timestamp);
+
         setComments(loadedComments);
       });
 
@@ -266,13 +270,6 @@ const CardPage = () => {
       </div>
     );
 
-  const handleCommentChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= 150) {
-      newComment(value);
-    }
-  };
-
   return (
     <div className="card-page">
       <Navbar />
@@ -414,15 +411,32 @@ const CardPage = () => {
                 <input
                   type="number"
                   value={timerMinutes}
-                  onChange={(e) => setTimerMinutes(e.target.value)}
+                  placeholder="00"
+                  onChange={(e) => {
+                    // Limit to two digits and only allow values 0-59
+                    const value = Math.max(
+                      0,
+                      Math.min(59, parseInt(e.target.value || 0, 10))
+                    );
+                    setTimerMinutes(value);
+                  }}
                   min="0"
+                  max="59"
                   className="timer-input"
                 />
                 <span className="colon">:</span> {/* Separator */}
                 <input
                   type="number"
                   value={timerSeconds}
-                  onChange={(e) => setTimerSeconds(e.target.value)}
+                  placeholder="00"
+                  onChange={(e) => {
+                    // Limit to two digits and only allow values 0-59
+                    const value = Math.max(
+                      0,
+                      Math.min(59, parseInt(e.target.value || 0, 10))
+                    );
+                    setTimerSeconds(value);
+                  }}
                   min="0"
                   max="59"
                   className="timer-input"
@@ -582,7 +596,7 @@ const CardPage = () => {
             {/* Display the latest 3 quiz results */}
             <div className="quiz-results-section">
               <h2>Recent Scores</h2>
-              {quizResults.length > 0 ? ( 
+              {quizResults.length > 0 ? (
                 <ul>
                   {quizResults.map((result) => (
                     <li key={result.id}>
@@ -592,7 +606,7 @@ const CardPage = () => {
                   ))}
                 </ul>
               ) : (
-                <p>No recent scores available.</p> 
+                <p>No recent scores available.</p>
               )}
             </div>
 
