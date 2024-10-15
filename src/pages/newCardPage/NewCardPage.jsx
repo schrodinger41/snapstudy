@@ -24,6 +24,7 @@ const NewCardPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState(""); // State for category
+  const [completedUsers, setCompletedUsers] = useState(""); // State for category
   const [error, setError] = useState(""); // State for error message
   const auth = getAuth();
   const user = auth.currentUser; // Get the current user
@@ -76,6 +77,7 @@ const NewCardPage = () => {
           title,
           description,
           category, // Save category
+          completedUsers: "0",
           uid: user.uid,
           creator: user.displayName || "Anonymous", // Save the user's display name
           cards: cards,
@@ -84,6 +86,7 @@ const NewCardPage = () => {
         setCards([{ term: "", definition: "" }]);
         setTitle("");
         setDescription("");
+        setCompletedUsers("");
         setCategory(""); // Clear category after saving
         navigate("/home");
       } catch (error) {
