@@ -41,6 +41,9 @@ const CardPage = () => {
 
   const auth = getAuth();
   const user = auth.currentUser;
+
+  const [userLocked, setUserLocked] = useState(false);
+
   const navigate = useNavigate();
 
   // Fetch flashcard set data from Firestore
@@ -115,7 +118,13 @@ const CardPage = () => {
           const userRef = doc(db, "Users", user.uid);
           const userSnap = await getDoc(userRef);
           if (userSnap.exists()) {
-            setUserRole(userSnap.data().role);
+            const userData = userSnap.data();
+            setUserRole(userData.role);
+            if (userData.locked) {
+              setUserLocked(true); // New state to track if the user is locked
+            } else {
+              setUserLocked(false);
+            }
           } else {
             console.log("User document not found!");
           }
@@ -358,7 +367,9 @@ const CardPage = () => {
                         onChange={() => toggleReportReason(reason)}
                         className="reportcommentmodal-checkbox"
                       />
-                      <label className="reportcommentmodal-label">{reason}</label>
+                      <label className="reportcommentmodal-label">
+                        {reason}
+                      </label>
                     </div>
                   )
                 )}
@@ -425,17 +436,23 @@ const CardPage = () => {
         <div className="content-sections">
           <div className="comments-section">
             <h2>Comments</h2>
-            <form onSubmit={handleCommentSubmit} className="comment-form">
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                className="comment-input"
-                placeholder="Leave a comment..."
-              />
-              <button type="submit" className="comment-submit-button">
-                Submit
-              </button>
-            </form>
+            {userLocked ? (
+              <p className="locked-user-message">
+                You are locked and cannot leave comments.
+              </p>
+            ) : (
+              <form onSubmit={handleCommentSubmit} className="comment-form">
+                <textarea
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  className="comment-input"
+                  placeholder="Leave a comment..."
+                />
+                <button type="submit" className="comment-submit-button">
+                  Submit
+                </button>
+              </form>
+            )}
 
             {/* Display comments */}
             <div className="comments-list">
@@ -558,25 +575,28 @@ const CardPage = () => {
             </div>
 
             {/* Display the latest 3 timed quiz results */}
-          <div className="timed-quiz-results-section">
-            <h2>Recent Timed Scores</h2>
-            {timedQuizResults.length > 0 ? (
-              <ul>
-                {timedQuizResults.map((result) => (
-                  <li key={result.id} className="timed-quiz-result">
-                    <strong>{result.userName}</strong>
-                    <div className="timed-quiz-result-info">
-                      <span className="timed-quiz-score">{result.score}/
-                      {flashcardSet.cards.length}</span>
-                      <span className="timed-quiz-time">{formatTime(result.timeTaken)}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No timed quiz results available.</p>
-            )}
-          </div>
+            <div className="timed-quiz-results-section">
+              <h2>Recent Timed Scores</h2>
+              {timedQuizResults.length > 0 ? (
+                <ul>
+                  {timedQuizResults.map((result) => (
+                    <li key={result.id} className="timed-quiz-result">
+                      <strong>{result.userName}</strong>
+                      <div className="timed-quiz-result-info">
+                        <span className="timed-quiz-score">
+                          {result.score}/{flashcardSet.cards.length}
+                        </span>
+                        <span className="timed-quiz-time">
+                          {formatTime(result.timeTaken)}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No timed quiz results available.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
