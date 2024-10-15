@@ -415,6 +415,7 @@ const AdminPage = () => {
 
       {/* Accounts Table */}
       <h2>Accounts</h2>
+      <div className="table-responsive">
       <table className="admin-table">
         <thead>
           <tr>
@@ -510,6 +511,7 @@ const AdminPage = () => {
           ))}
         </tbody>
       </table>
+      </div>
 
       {/* Confirmation Popup */}
       {showDeleteConfirmation && (
@@ -522,6 +524,7 @@ const AdminPage = () => {
 
       {/* Flashcard Sets Table */}
       <h2>Flashcard Sets</h2>
+      <div className="table-responsive">
       <table className="admin-table">
         <thead>
           <tr>
@@ -616,6 +619,7 @@ const AdminPage = () => {
           )}
         </tbody>
       </table>
+      </div>
 
       {/* Confirmation Popup for Flashcard Deletion */}
       {showFlashcardDeleteConfirmation && (
@@ -628,6 +632,7 @@ const AdminPage = () => {
 
       {/* Reported Cards Table */}
       <h2>Reported Cards</h2>
+      <div className="table-responsive">
       <table className="admin-table">
         <thead>
           <tr>
@@ -679,6 +684,7 @@ const AdminPage = () => {
           )}
         </tbody>
       </table>
+      </div>
 
       {/* Reported Card Delete Confirmation Popup */}
       {showReportedCardDeleteConfirmation && (
@@ -691,6 +697,7 @@ const AdminPage = () => {
 
       {/* Reported Comments Table */}
       <h2>Reported Comments</h2>
+      <div className="table-responsive">
       <table className="admin-table">
         <thead>
           <tr>
@@ -734,6 +741,7 @@ const AdminPage = () => {
           )}
         </tbody>
       </table>
+      </div>
 
       {/* Reported Comment Delete Confirmation Popup */}
       <ReportedCommentDeleteConfirmation
