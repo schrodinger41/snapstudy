@@ -12,6 +12,7 @@ import {
 import Navbar from "../../components/navbar/Navbar";
 import { FaEdit } from "react-icons/fa";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
+import LoadingGif from "../../images/loading.gif"
 import "./profilePage.css";
 
 const ProfilePage = () => {
@@ -227,7 +228,9 @@ const ProfilePage = () => {
   };
 
   if (!userInfo) {
-    return <div>Loading user info...</div>; // Display a loading message
+    return <div class="loading-screen">
+    <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+    </div>; 
   }
 
   return (

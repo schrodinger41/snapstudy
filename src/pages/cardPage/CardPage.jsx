@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
+import LoadingGif from "../../images/loading.gif"
 import { TbCardsFilled } from "react-icons/tb";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -249,7 +250,9 @@ const CardPage = () => {
     ).padStart(2, "0")}`;
   };
 
-  if (!flashcardSet) return <div>Loading...</div>;
+  if (!flashcardSet) return <div class="loading-screen">
+  <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+  </div>;
 
   return (
     <div className="card-page">
