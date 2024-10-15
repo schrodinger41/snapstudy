@@ -17,13 +17,13 @@
 }
 
 .hand-icon {
-  height: 40px;
-  margin-right: 10px;
+  height: 45px;
+  margin-right: 5px;
 }
 
 .brand-name {
   font-family: var(--main-font);
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   color: black;
 }
@@ -41,14 +41,14 @@
 }
 
 .user-icon {
-  font-size: 35px;
+  font-size: 40px;
   color: black;
   margin: 0; 
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 45px;
+  top: 52px;
   right: 0;
   background-color: white;
   border: 1px solid #ccc;
@@ -67,4 +67,38 @@
 
 .dropdown-menu a:hover {
   background-color: #f0f0f0;
+}
+
+
+@media (max-width: 1500px) {
+  .navbar {
+    padding: 10px 100px; 
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .hand-icon {
+    height: 30px; 
+  }
+
+  .brand-name {
+    font-size: 18px; 
+  }
+
+  .user-icon {
+    font-size: 28px; 
+  }
+
+  .dropdown-menu {
+    top: 38px;
+    right: -20px;
+    border-bottom-left-radius: 10px;
+    border-top: none;
+  }
 }

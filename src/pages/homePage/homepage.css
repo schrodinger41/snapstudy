@@ -120,3 +120,59 @@
 .bottom {
   width: 100%;
 }
+
+@media (max-width: 1500px) {
+  .home-page-content {
+    padding: 80px 100px;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .home-page-content {
+    padding: 80px 50px; 
+  }
+
+  .search-section {
+    width: 90%; 
+  }
+
+  .main-title {
+    font-size: var(--h2-font-size); 
+  }
+
+  .top-container {
+    padding: 0 20px;
+    text-align: center;
+    display: block;
+  }
+
+  .flashcard-sets {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  }
+}
+
+
+@media (max-width: 480px) {
+  .home-page-content {
+    padding: 80px 20px; 
+  }
+
+  .search-section {
+    width: 100%; 
+  }
+
+  .main-title {
+    font-size: var(--h3-font-size); 
+  }
+
+  .category-button {
+    padding: 8px 12px; 
+    font-size: 14px;
+  }
+
+  .flashcard-sets {
+    grid-template-columns: 1fr; 
+    gap: 10px; 
+  }
+}

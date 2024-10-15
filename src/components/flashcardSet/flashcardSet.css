@@ -44,7 +44,7 @@
 .flashcard-set {
   width: 100%;
   max-width: 400px;
-  height: 250px;
+  min-height: 250px;
   background-color: #f9f9f9;
   background-image: url('../../images/snapstudy-design.png');
   background-size: cover;
@@ -73,4 +73,47 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .flashcard-set {
+    min-height: 220px; 
+    padding: 20px; 
+    max-width: 100%; 
+  }
+
+  .flashcard-content h2 {
+    font-size: 1.6rem; 
+  }
+
+  .flashcard-footer p {
+    font-size: 1rem; 
+  }
+
+  .card-icon {
+    font-size: 2rem; 
+  }
+}
+
+@media (max-width: 480px) {
+  .flashcard-set {
+    height: 180px; 
+    padding: 15px; 
+  }
+
+  .flashcard-content h2 {
+    font-size: 1.4rem; 
+  }
+
+  .flashcard-content p {
+    font-size: 0.9rem; 
+  }
+
+  .flashcard-footer p {
+    font-size: 0.9rem; 
+  }
+
+  .card-icon {
+    font-size: 1.8rem; 
+  }
 }
