@@ -11,6 +11,7 @@ import {
   updateDoc, // Import updateDoc to update documents
 } from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
+import { FaTrash, FaEdit, FaEye, FaLock, FaUnlock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Import the hook
 import "./adminPage.css";
 
@@ -379,6 +380,7 @@ const AdminPage = () => {
                     type="text"
                     value={editableName}
                     onChange={(e) => setEditableName(e.target.value)}
+                    className="edit-input-field"
                   />
                 ) : (
                   user.fullName
@@ -390,6 +392,7 @@ const AdminPage = () => {
                   <select
                     value={editableRole}
                     onChange={(e) => setEditableRole(e.target.value)}
+                    className="edit-input-field"
                   >
                     <option value="admin">Admin</option>
                     <option value="user">User</option>
@@ -403,22 +406,30 @@ const AdminPage = () => {
               <td className="center-text">
                 {editingUserId === user.id ? (
                   <>
-                    <button onClick={() => handleSaveUserName(user.id)}>
+                    <button onClick={() => handleSaveUserName(user.id)}
+                    className="save-edit-btn"
+                    >
                       Save
                     </button>
-                    <button onClick={handleCancelEdit}>Cancel</button>
+                    <button onClick={handleCancelEdit}
+                    className="cancel-edit-btn"
+                    >
+                      Cancel
+                    </button>
                   </>
                 ) : (
-                  <>
+                  <div className="button-container">
                     <button
                       onClick={() =>
-                        handleEditUser(user.id, user.fullName, user.role)
-                      }
+                        handleEditUser(user.id, user.fullName, user.role)}
+                        className="edit-btn"
                     >
-                      Edit
+                      <FaEdit />
                     </button>
-                    <button onClick={() => handleDeleteUser(user.id)}>
-                      Delete
+                    <button onClick={() => handleDeleteUser(user.id)}
+                    className="delete-btn"
+                    >
+                      <FaTrash />
                     </button>
                     <button
                       onClick={() =>
@@ -428,9 +439,9 @@ const AdminPage = () => {
                         lockedStatus[user.id] ? "unlock-btn" : "lock-btn"
                       }
                     >
-                      {lockedStatus[user.id] ? "Unlock" : "Lock"}
+                      {lockedStatus[user.id] ? <FaLock/> : <FaUnlock/>}
                     </button>
-                  </>
+                  </div>
                 )}
               </td>
             </tr>
@@ -462,6 +473,7 @@ const AdminPage = () => {
                       type="text"
                       value={editableTitle}
                       onChange={(e) => setEditableTitle(e.target.value)}
+                      className="edit-input-field"
                     />
                   ) : (
                     set.title || "N/A"
@@ -473,6 +485,7 @@ const AdminPage = () => {
                       type="text"
                       value={editableDescription}
                       onChange={(e) => setEditableDescription(e.target.value)}
+                      className="edit-input-field"
                     />
                   ) : (
                     set.description || "N/A"
@@ -484,39 +497,39 @@ const AdminPage = () => {
                   {editingFlashcardId === set.id ? (
                     <>
                       <button
-                        className="action-btn"
+                        className="save-edit-btn"
                         onClick={() => handleSaveFlashcardSet(set.id)}
                       >
                         Save
                       </button>
                       <button
-                        className="action-btn"
+                        className="cancel-edit-btn"
                         onClick={handleCancelEditFlashcardSet}
                       >
                         Cancel
                       </button>
                     </>
                   ) : (
-                    <>
+                    <div className="button-container">
                       <button
-                        className="action-btn"
+                        className="view-btn"
                         onClick={() => navigate(`/card/${set.id}`)} // Navigate to the CardPage with the flashcard set ID
                       >
-                        View
+                        <FaEye />
                       </button>
                       <button
-                        className="action-btn"
+                        className="edit-btn"
                         onClick={() => handleEditFlashcardSet(set)} // Call edit function
                       >
-                        Edit
+                        <FaEdit />
                       </button>
                       <button
-                        className="action-btn"
+                        className="delete-btn"
                         onClick={() => handleDeleteFlashcardSet(set.id)} // Call delete function
                       >
-                        Delete
+                        <FaTrash />
                       </button>
-                    </>
+                    </div>
                   )}
                 </td>
               </tr>
@@ -552,14 +565,15 @@ const AdminPage = () => {
                 <td>{report.userName || "N/A"}</td>
                 <td>{report.reasons.join(", ") || "N/A"}</td>
                 <td>
+                <div className="button-container">
                   <button
-                    className="action-btn"
+                    className="view-btn"
                     onClick={() => navigate(`/card/${report.flashcardSetId}`)} // Navigate to the reported card set
                   >
-                    View
+                    <FaEye />
                   </button>
                   <button
-                    className="action-btn"
+                    className="delete-btn"
                     onClick={
                       () =>
                         handleDeleteFlashcardSetAndReport(
@@ -568,8 +582,9 @@ const AdminPage = () => {
                         ) // Call the new delete function with flashcardSetId and reportId
                     }
                   >
-                    Delete
+                    <FaTrash />
                   </button>
+                </div>
                 </td>
               </tr>
             ))
@@ -605,12 +620,12 @@ const AdminPage = () => {
                 <td>{report.reasons.join(", ") || "N/A"}</td>
                 <td>
                   <button
-                    className="action-btn"
+                    className="delete-btn"
                     onClick={() =>
                       handleDeleteCommentAndReport(report.commentId, report.id)
                     }
                   >
-                    Delete
+                    <FaTrash />
                   </button>
                 </td>
               </tr>
