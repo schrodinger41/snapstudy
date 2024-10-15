@@ -152,6 +152,9 @@ const ProfilePage = () => {
           };
         });
 
+        // Update flashcardCount with the actual count
+        setFlashcardCount(flashcardsData.length); // Update flashcard count
+
         // Get the flashcard set with the most plays
         if (flashcardsData.length > 0) {
           const mostPlayedFlashcardSet = flashcardsData.reduce(
