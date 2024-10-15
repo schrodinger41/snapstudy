@@ -45,6 +45,8 @@
   flex-direction: column;
   flex: 1;
   margin-right: 10px;
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
 }
 
 .flashcard-category {

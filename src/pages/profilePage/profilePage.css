@@ -33,6 +33,12 @@
 .name-container {
   display: flex;
   align-items: center;
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+}
+
+.name-container p {
+  max-width: 550px;
 }
 
 .edit-name-section {

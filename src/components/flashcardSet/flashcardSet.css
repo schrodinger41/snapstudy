@@ -8,6 +8,8 @@
 
 .flashcard-content p {
   font-size: var(--small-font-size);
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
 }
 
 .flashcard-footer {
