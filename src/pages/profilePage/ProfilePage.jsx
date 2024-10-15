@@ -12,7 +12,9 @@ import {
 import Navbar from "../../components/navbar/Navbar";
 import { FaEdit } from "react-icons/fa";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
-import LoadingGif from "../../images/loading.gif"
+import LoadingGif from "../../images/loading.gif";
+import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./profilePage.css";
 
 const ProfilePage = () => {
@@ -150,14 +152,14 @@ const ProfilePage = () => {
           };
         });
 
-        // Set the flashcard count
-        setFlashcardCount(flashcardsData.length); // Update count here
-
-        const sortedFlashcards = flashcardsData
-          .sort((a, b) => b.createdAt - a.createdAt)
-          .slice(0, 2);
-
-        setUserFlashcards(sortedFlashcards);
+        // Get the flashcard set with the most plays
+        if (flashcardsData.length > 0) {
+          const mostPlayedFlashcardSet = flashcardsData.reduce(
+            (prev, current) =>
+              prev.completedUsers > current.completedUsers ? prev : current
+          ); // Find the flashcard set with the most completed users
+          setUserFlashcards([mostPlayedFlashcardSet]); // Store as an array
+        }
       }
     };
 
@@ -228,9 +230,11 @@ const ProfilePage = () => {
   };
 
   if (!userInfo) {
-    return <div class="loading-screen">
-    <img src={LoadingGif} alt="Loading..." className="loading-gif" />
-    </div>; 
+    return (
+      <div class="loading-screen">
+        <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
   }
 
   return (
@@ -287,6 +291,7 @@ const ProfilePage = () => {
             {isEditingBio ? (
               <textarea
                 className="edit-bio-input"
+                maxLength={100}
                 value={userInfo.bio}
                 onChange={(e) =>
                   setUserInfo({ ...userInfo, bio: e.target.value })
@@ -316,19 +321,22 @@ const ProfilePage = () => {
         </div>
 
         <div className="my-flashcards">
-          <h2>Your Flashcard Sets</h2>
+          <h2 className="flashcards-title">
+            Your Flashcard Sets
+            <Link to="/myCardsPage" className="flashcard-link">
+              <FaArrowRight />
+            </Link>
+          </h2>
           <div className="flashcard-sets-container">
             {userFlashcards.length > 0 ? (
-              userFlashcards.map((flashcardSet) => (
-                <FlashcardSet
-                  key={flashcardSet.id}
-                  id={flashcardSet.id}
-                  title={flashcardSet.title}
-                  cardCount={flashcardSet.cardCount} // Pass card count here
-                  creator={userInfo.fullName} // Assuming the creator is the current user
-                  completedUsers={flashcardSet.completedUsers || 0} // Default to 0 if not available
-                />
-              ))
+              <FlashcardSet
+                key={userFlashcards[0].id}
+                id={userFlashcards[0].id}
+                title={userFlashcards[0].title}
+                cardCount={userFlashcards[0].cardCount} // Pass card count here
+                creator={userInfo.fullName} // Assuming the creator is the current user
+                completedUsers={userFlashcards[0].completedUsers || 0} // Display number of completed users
+              />
             ) : (
               <p>No flashcard sets created.</p>
             )}

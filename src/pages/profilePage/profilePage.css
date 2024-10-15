@@ -5,16 +5,16 @@
 }
 
 .profile-first-section {
-  display: flex; 
-  justify-content: space-between; 
-  align-items: flex-start; 
-  margin-top: 20px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
 }
 
 .profile-info {
-  flex: 1; 
-  max-width: 600px; 
-  margin-right: 20px; 
+  flex: 1;
+  max-width: 600px;
+  margin-right: 20px;
 }
 
 .bio-box {
@@ -30,7 +30,7 @@
 
 .name-container {
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .edit-name-section {
@@ -39,9 +39,9 @@
 
 .edit-name-icon,
 .edit-bio-icon {
-  cursor: pointer; 
-  margin: 0 0 5px 8px; 
-  font-size: 1em; 
+  cursor: pointer;
+  margin: 0 0 5px 8px;
+  font-size: 1em;
   color: var(--secondary-color);
 }
 
@@ -58,7 +58,7 @@
   background: white;
   padding: 10px;
   resize: none;
-  border-radius: 5px; 
+  border-radius: 5px;
   overflow: hidden;
 }
 
@@ -68,33 +68,33 @@
 
 .edit-name-input:focus,
 .edit-bio-input:focus {
-  background: white; 
-  border-radius: 5px; 
-  outline: none; 
+  background: white;
+  border-radius: 5px;
+  outline: none;
 }
 
 .edit-bio-input:focus {
-  border: 1px solid var(--secondary-color); 
+  border: 1px solid var(--secondary-color);
 }
 
 .edit-name-input:focus {
-  border-bottom: 2px solid var(--secondary-color); 
+  border-bottom: 2px solid var(--secondary-color);
 }
 
 .bio-box h2 {
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
 }
 
 .bio-box h2 .edit-bio-icon {
-  margin-left: 8px; 
+  margin-left: 8px;
 }
 
 .set-details {
-  display: flex; 
-  justify-content: space-between; 
-  width: 60%; 
-  margin-bottom: 20px; 
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  margin-bottom: 20px;
 }
 
 .set-details p {
@@ -123,7 +123,8 @@ table {
   margin-top: 20px;
 }
 
-th, td {
+th,
+td {
   padding: 12px;
   text-align: center;
   border: 1px solid var(--secondary-color);
@@ -147,3 +148,20 @@ td[colspan="3"] {
   color: #777;
 }
 
+.flashcards-title {
+  display: flex;
+  justify-content: space-between; /* Align items at both ends */
+  align-items: center; /* Center items vertically */
+}
+
+.flashcard-link {
+  margin-left: 10px; /* Add some space between the title and arrow */
+  color: inherit; /* Make the arrow inherit the color of the text */
+  text-decoration: none; /* Remove underline */
+  display: flex;
+  align-items: center;
+}
+
+.flashcard-link:hover {
+  color: var(--secondary-color); /* Change color on hover if desired */
+}

@@ -24,6 +24,7 @@ const NewCardPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState(""); // State for category
+  const [completedUsers, setCompletedUsers] = useState(""); // State for category
   const [error, setError] = useState(""); // State for error message
   const auth = getAuth();
   const user = auth.currentUser; // Get the current user
@@ -76,6 +77,7 @@ const NewCardPage = () => {
           title,
           description,
           category, // Save category
+          completedUsers: "0",
           uid: user.uid,
           creator: user.displayName || "Anonymous", // Save the user's display name
           cards: cards,
@@ -84,6 +86,7 @@ const NewCardPage = () => {
         setCards([{ term: "", definition: "" }]);
         setTitle("");
         setDescription("");
+        setCompletedUsers("");
         setCategory(""); // Clear category after saving
         navigate("/home");
       } catch (error) {
@@ -108,6 +111,7 @@ const NewCardPage = () => {
               type="text"
               placeholder="Add a title (e.g. Biology Basics)"
               value={title}
+              maxLength={40}
               onChange={(e) => setTitle(e.target.value)}
             />
             <label>Title</label>
@@ -115,6 +119,7 @@ const NewCardPage = () => {
             <textarea
               placeholder="Add a description..."
               value={description}
+              maxLength={100}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             <label>Description</label>
@@ -172,6 +177,7 @@ const NewCardPage = () => {
                     type="text"
                     placeholder="Enter term"
                     value={card.term}
+                    maxLength={100}
                     onChange={(e) =>
                       handleInputChange(index, "term", e.target.value)
                     }
@@ -182,6 +188,7 @@ const NewCardPage = () => {
                   <input
                     type="text"
                     placeholder="Enter definition"
+                    maxLength={100}
                     value={card.definition}
                     onChange={(e) =>
                       handleInputChange(index, "definition", e.target.value)
