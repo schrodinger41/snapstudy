@@ -122,7 +122,15 @@
 }
 
 .my-flashcards {
-  flex: 0 0 440px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.flashcard-sets-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  flex-direction: column;
 }
 
 table {
@@ -130,6 +138,10 @@ table {
   border-collapse: collapse;
   margin-top: 20px;
   table-layout: auto;
+}
+
+.table-responsive {
+  overflow-x: auto;
 }
 
 th,
@@ -176,4 +188,81 @@ td[colspan="3"] {
 
 .flashcard-link:hover {
   color: var(--secondary-color); /* Change color on hover if desired */
+}
+
+
+@media (max-width: 1500px) {
+  .profile-page {
+    padding: 80px 100px;
+  }
+
+  .profile-info {
+    margin-right: 0;
+  }
+
+  .bio-box {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 80px 50px;
+  }
+
+  .bio-box {
+    width: 100%;
+  }
+
+  .profile-first-section {
+    flex-direction: column; 
+    align-items: flex-start;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column;
+  }
+
+  .profile-info {
+    width: 100%; 
+  }
+
+  .my-flashcards {
+    width: 60%;
+  }
+
+  .set-details {
+    width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 80px 20px;
+  }
+
+  .profile-info,
+  .my-flashcards {
+    width: 100%; 
+  }
+
+  .bio-box,
+  .my-flashcards,
+  .my-recent-results,
+  .my-comments {
+    padding: 15px;
+  }
+
+  .set-details {
+    width: 100%;
+  }
+
+  .name-container p {
+    font-size: var(--h3-font-size);
+  }
+
+  .edit-name-icon, 
+  .edit-bio-icon {
+    font-size: 0.8em;
+  }
 }

@@ -207,6 +207,9 @@
   cursor: pointer;
   width: 15%;
   margin-right: 2%;
+  display: inline-flex; /* Maintain inline layout */
+  justify-content: center; /* Center text horizontally */
+  align-items: center; /* Center text vertically */
 }
 
 .comment-cancel-button,

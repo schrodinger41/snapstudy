@@ -351,6 +351,7 @@ const ProfilePage = () => {
       {/* Results Table */}
       <div className="my-recent-results">
         <h2>Your Recent Results</h2>
+        <div className="table-responsive">
         <table className="results-table">
           <thead>
             <tr>
@@ -375,10 +376,12 @@ const ProfilePage = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
       {/* Comments Table */}
       <div className="my-comments">
         <h2>Your Comments</h2>
+        <div className="table-responsive">
         <table className="comments-table">
           <thead>
             <tr>
@@ -407,6 +410,7 @@ const ProfilePage = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
