@@ -108,6 +108,7 @@ const NewCardPage = () => {
               type="text"
               placeholder="Add a title (e.g. Biology Basics)"
               value={title}
+              maxLength={40}
               onChange={(e) => setTitle(e.target.value)}
             />
             <label>Title</label>
@@ -115,6 +116,7 @@ const NewCardPage = () => {
             <textarea
               placeholder="Add a description..."
               value={description}
+              maxLength={100}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             <label>Description</label>
@@ -172,6 +174,7 @@ const NewCardPage = () => {
                     type="text"
                     placeholder="Enter term"
                     value={card.term}
+                    maxLength={100}
                     onChange={(e) =>
                       handleInputChange(index, "term", e.target.value)
                     }
@@ -182,6 +185,7 @@ const NewCardPage = () => {
                   <input
                     type="text"
                     placeholder="Enter definition"
+                    maxLength={100}
                     value={card.definition}
                     onChange={(e) =>
                       handleInputChange(index, "definition", e.target.value)

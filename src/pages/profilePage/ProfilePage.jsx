@@ -12,7 +12,9 @@ import {
 import Navbar from "../../components/navbar/Navbar";
 import { FaEdit } from "react-icons/fa";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
-import LoadingGif from "../../images/loading.gif"
+import LoadingGif from "../../images/loading.gif";
+import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./profilePage.css";
 
 const ProfilePage = () => {
@@ -228,9 +230,11 @@ const ProfilePage = () => {
   };
 
   if (!userInfo) {
-    return <div class="loading-screen">
-    <img src={LoadingGif} alt="Loading..." className="loading-gif" />
-    </div>; 
+    return (
+      <div class="loading-screen">
+        <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
   }
 
   return (
@@ -287,6 +291,7 @@ const ProfilePage = () => {
             {isEditingBio ? (
               <textarea
                 className="edit-bio-input"
+                maxLength={100}
                 value={userInfo.bio}
                 onChange={(e) =>
                   setUserInfo({ ...userInfo, bio: e.target.value })
@@ -316,7 +321,12 @@ const ProfilePage = () => {
         </div>
 
         <div className="my-flashcards">
-          <h2>Your Flashcard Sets</h2>
+          <h2 className="flashcards-title">
+            Your Flashcard Sets
+            <Link to="/myCardsPage" className="flashcard-link">
+              <FaArrowRight />
+            </Link>
+          </h2>
           <div className="flashcard-sets-container">
             {userFlashcards.length > 0 ? (
               userFlashcards.map((flashcardSet) => (

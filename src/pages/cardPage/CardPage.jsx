@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
-import LoadingGif from "../../images/loading.gif"
+import LoadingGif from "../../images/loading.gif";
 import { TbCardsFilled } from "react-icons/tb";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -259,9 +259,19 @@ const CardPage = () => {
     ).padStart(2, "0")}`;
   };
 
-  if (!flashcardSet) return <div class="loading-screen">
-  <img src={LoadingGif} alt="Loading..." className="loading-gif" />
-  </div>;
+  if (!flashcardSet)
+    return (
+      <div class="loading-screen">
+        <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
+
+  const handleCommentChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 150) {
+      newComment(value);
+    }
+  };
 
   return (
     <div className="card-page">
@@ -450,8 +460,13 @@ const CardPage = () => {
                   onChange={(e) => setNewComment(e.target.value)}
                   className="comment-input"
                   placeholder="Leave a comment..."
+                  maxLength={150} // Optional: to show max length in the textarea
                 />
-                <button type="submit" className="comment-submit-button">
+                <button
+                  type="submit"
+                  disabled={newComment.length > 150}
+                  className="comment-submit-button"
+                >
                   Submit
                 </button>
               </form>
