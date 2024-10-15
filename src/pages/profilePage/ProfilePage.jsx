@@ -251,6 +251,7 @@ const ProfilePage = () => {
                 <input
                   className="edit-name-input"
                   type="text"
+                  maxLength={50}
                   value={userInfo.fullName}
                   onChange={(e) =>
                     setUserInfo({ ...userInfo, fullName: e.target.value })
