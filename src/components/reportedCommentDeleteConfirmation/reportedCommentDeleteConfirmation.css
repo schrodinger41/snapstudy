@@ -1,0 +1,68 @@
+/* reportedCommentDeleteConfirmation.css */
+
+.reported-comment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure the modal is above other content */
+}
+
+.reported-comment-modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+}
+
+.reported-comment-modal-title {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.reported-comment-modal-text {
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.reported-comment-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reported-comment-confirm-btn,
+.reported-comment-cancel-btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.reported-comment-confirm-btn {
+  background-color: #ff3d00; /* Red color for delete */
+  color: white;
+}
+
+.reported-comment-confirm-btn:hover {
+  background-color: #e63900; /* Darker red on hover */
+}
+
+.reported-comment-cancel-btn {
+  background-color: #007bff; /* Blue color for cancel */
+  color: white;
+}
+
+.reported-comment-cancel-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
