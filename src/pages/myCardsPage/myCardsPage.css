@@ -9,7 +9,7 @@
 
 .header-container {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   margin: 30px 0px;
 }
@@ -19,7 +19,7 @@
   align-items: center;
   color: #333;
   border: none;
-  border-radius: 5px; 
+  border-radius: 5px;
   cursor: pointer;
   background: transparent;
   font-size: 2rem;
@@ -31,26 +31,26 @@
 }
 
 .new-card-container {
-  position: relative; 
+  position: relative;
 }
 
 .tooltip {
-  position: absolute; 
-  bottom: 100%; 
-  right: 0; 
-  background-color: white; 
-  color: black; 
-  padding: 5px 10px; 
-  border-radius: 5px; 
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background-color: white;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 5px;
   border: 1px solid #333;
-  white-space: nowrap; 
-  transform: translateY(10px) translateX(-35px); 
-  transition: opacity 0.2s ease; 
-  opacity: 0; 
+  white-space: nowrap;
+  transform: translateY(10px) translateX(-35px);
+  transition: opacity 0.2s ease;
+  opacity: 0;
 }
 
 .new-card-container:hover .tooltip {
-  opacity: 1; 
+  opacity: 1;
 }
 
 /* .my-flashcard-container .flashcard-sets {
@@ -60,3 +60,21 @@
   padding: 0 40px;
   width: 100%;
 } */
+
+@media (max-width: 1500px) {
+  .my-cards-page {
+    padding: 80px 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-cards-page {
+    padding: 80px 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-cards-page {
+    padding: 80px 20px;
+  }
+}

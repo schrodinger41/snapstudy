@@ -45,7 +45,7 @@
   flex-direction: column;
   flex: 1;
   margin-right: 10px;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
@@ -153,8 +153,8 @@
 .timed-quiz-result-info {
   display: flex;
   flex-direction: row;
-  gap: 80px; 
-  align-items: center; 
+  gap: 80px;
+  align-items: center;
 }
 
 .quiz-results-section strong,
@@ -239,7 +239,7 @@
   border-radius: 5px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   overflow-wrap: break-word;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   white-space: pre-wrap;
 }
 
@@ -279,11 +279,11 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); 
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .modal-content {
@@ -307,11 +307,11 @@ h2 {
 }
 
 .timer-input {
-  width: 60px; 
+  width: 60px;
   padding: 0.5rem;
   font-size: 1rem;
   text-align: center;
-  border: none
+  border: none;
 }
 
 .timer-input:focus {
@@ -492,4 +492,47 @@ h2 {
 .reportcommentmodal-label {
   font-size: 16px;
   color: #555;
+}
+
+@media (max-width: 1500px) {
+  .card-page {
+    padding: 80px 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-page {
+    padding: 80px 50px;
+  }
+
+  .flashcard-title {
+    font-size: var(--h3-font-size);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-page {
+    padding: 80px 20px;
+  }
+
+  .flashcard-title {
+    font-size: var(--h3-font-size);
+  }
+
+  .flashcard-buttons {
+    flex-direction: column;
+  }
+
+  .quiz-button,
+  .timed-quiz-button {
+    padding: 15px 10px;
+  }
+
+  .comment-submit-button,
+  .comment-cancel-button,
+  .save-edit-button,
+  .cancel-edit-button {
+    padding: 5px 10px;
+    width: 20%;
+  }
 }

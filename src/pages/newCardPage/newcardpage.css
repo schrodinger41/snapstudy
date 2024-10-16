@@ -52,10 +52,10 @@
 
 .flashcard-input input:focus,
 .flashcard-input textarea:focus {
-  background: white; 
-  border-radius: 5px; 
-  outline: none; 
-  border-bottom: 2px solid var(--secondary-color); 
+  background: white;
+  border-radius: 5px;
+  outline: none;
+  border-bottom: 2px solid var(--secondary-color);
 }
 
 .flashcard-image {
@@ -163,7 +163,6 @@
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
-  
 }
 
 .create-btn {
@@ -195,8 +194,34 @@
 }
 
 .select-category:focus {
-  background: white; 
-  border-radius: 5px; 
-  outline: none; 
-  border-bottom: 2px solid var(--secondary-color); 
+  background: white;
+  border-radius: 5px;
+  outline: none;
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+@media (max-width: 1500px) {
+  .newcard-page {
+    padding: 80px 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .newcard-page {
+    padding: 80px 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .newcard-page {
+    padding: 80px 20px;
+  }
+
+  .flashcard-cards {
+    padding: 5px;
+  }
+
+  .card-body {
+    padding: 10px 10px 10px 20px;
+  }
 }

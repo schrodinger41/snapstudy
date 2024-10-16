@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
-import LoadingGif from "../../images/loading.gif"
+import LoadingGif from "../../images/loading.gif";
 import "./quizPage.css";
 
 const QuizPage = () => {
@@ -168,9 +168,12 @@ const QuizPage = () => {
     }
   };
 
-  if (!flashcardSet) return <div class="loading-screen">
-  <img src={LoadingGif} alt="Loading..." className="loading-gif" />
-  </div>;
+  if (!flashcardSet)
+    return (
+      <div class="loading-screen">
+        <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+      </div>
+    );
 
   return (
     <div>
@@ -203,7 +206,7 @@ const QuizPage = () => {
         )}
 
         {isTimeUp ? (
-          <div>
+          <div >
             <h3>Time's up!</h3>
             <p>Your final score is: {score}</p>
             <button

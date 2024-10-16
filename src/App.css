@@ -27,6 +27,18 @@
   --border-radius: 20px;
 }
 
+/*==========RESPONSIVE==========*/
+@media screen and (max-width: 1024px) {
+  :root {
+    --h1-font-size: 2rem;
+    --h2-font-size: 1.7rem;
+    --h3-font-size: 1.4rem;
+    --normal-font-size: 1.3rem;
+    --small-font-size: 1rem;
+    --smaller-font-size: 0.9rem;
+  }
+}
+
 /* Resets */
 ul {
   list-style-type: none;
@@ -53,18 +65,18 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 10px; 
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-color); 
-  border-radius: 10px; 
+  background: var(--background-color);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--secondary-color);
-  border-radius: 10px; 
-  border: 2px solid var(--secondary-color); 
+  border-radius: 10px;
+  border: 2px solid var(--secondary-color);
 }
 
 .loading-screen {
@@ -76,10 +88,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; 
+  z-index: 9999;
 }
 
 .loading-gif {
-  width: 100px; 
+  width: 100px;
   height: auto;
 }
