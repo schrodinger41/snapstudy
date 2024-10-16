@@ -1,7 +1,3 @@
-Here’s a detailed README for your SnapStudy project that you can copy and paste directly:
-
----
-
 # SnapStudy
 
 SnapStudy is an interactive flashcard platform that allows users to create, manage, and study flashcard sets across various categories. It features user authentication, search functionality, timed quizzes, and a user-friendly interface designed to enhance the study experience.
