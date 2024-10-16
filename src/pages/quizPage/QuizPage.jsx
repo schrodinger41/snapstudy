@@ -12,6 +12,7 @@ import {
 import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
 import LoadingGif from "../../images/loading.gif";
+import Background from "../../components/background/Background";
 import "./quizPage.css";
 
 const QuizPage = () => {
@@ -178,6 +179,7 @@ const QuizPage = () => {
   return (
     <div>
       <Navbar />
+      <Background />
       <div className="quiz-page">
         <div className="progress-bar-wrapper">
           <span className="progress-number current">
