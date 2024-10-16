@@ -15,6 +15,7 @@ import ProfilePage from "./pages/profilePage/ProfilePage";
 import QuizResultPage from "./pages/quizResultPage/QuizResultPage";
 import SearchResultsPage from "./pages/searchResultsPage/SearchResultsPage";
 import LoadingGif from "../src/images/loading.gif";
+import EditCardPage from "./pages/editCardPage/EditCardPage";
 import "./App.css";
 
 const cookies = new Cookies();
@@ -53,9 +54,11 @@ function App() {
   }, []);
 
   if (loading) {
-    return <div class="loading-screen">
-      <img src={LoadingGif} alt="Loading..." className="loading-gif" />
+    return (
+      <div class="loading-screen">
+        <img src={LoadingGif} alt="Loading..." className="loading-gif" />
       </div>
+    );
   }
 
   return (
@@ -121,6 +124,11 @@ function App() {
         <Route
           path="profilePage"
           element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+        />
+
+        <Route
+          path="editCard/:id"
+          element={isAuth ? <EditCardPage /> : <Navigate to="/" />}
         />
       </Routes>
     </BrowserRouter>

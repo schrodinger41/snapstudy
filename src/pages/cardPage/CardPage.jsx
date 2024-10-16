@@ -276,10 +276,20 @@ const CardPage = () => {
       <div className="flashcard-container">
         <div className="flashcard-title-line">
           <p className="flashcard-title">{flashcardSet.title}</p>
-          <FaExclamationTriangle
-            className="report-icon"
-            onClick={() => setIsReportModalOpen(true)} // Open report modal on click
-          />
+          {userRole === "user" && flashcardSet.creator !== user.displayName && (
+            <FaExclamationTriangle
+              className="report-icon"
+              onClick={() => setIsReportModalOpen(true)} // Open report modal on click
+            />
+          )}
+          {userRole === "user" && flashcardSet.creator === user.displayName && (
+            <button
+              onClick={() => navigate(`/editCard/${flashcardSet.id}`)}
+              className="edit-flashcard-button"
+            >
+              Edit Flashcard Set
+            </button>
+          )}
         </div>
         <p className="flashcard-creator">
           Created by: {flashcardSet.creator} ({flashcardSet.completedUsers}{" "}
