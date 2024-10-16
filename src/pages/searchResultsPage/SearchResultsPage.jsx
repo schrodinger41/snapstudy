@@ -85,7 +85,7 @@ const SearchResultsPage = () => {
         </div>
         <div className="results-container">
           <div className="search-title">
-            {query ? (
+            {query && !category ? (
               <p>
                 Search Results for <span>{query}</span>
               </p>
@@ -110,8 +110,11 @@ const SearchResultsPage = () => {
               ))
             ) : (
               <p>
-                No flashcard sets found that start with "{query}"
-                {category ? ` in category "${category}"` : ""}.
+                {query
+                  ? `No flashcard sets found that start with "${query}".`
+                  : category
+                  ? `No flashcard sets found in category "${category}".`
+                  : "No flashcard sets found."}
               </p>
             )}
           </div>
