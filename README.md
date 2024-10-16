@@ -16,7 +16,7 @@ SnapStudy is an interactive flashcard platform that allows users to create, mana
 
 - **Frontend**: React, React Router DOM
 - **Backend**: Firebase Firestore
-- **Hosting**: Vercel
+- **Hosting**: Netlify
 - **Authentication**: Firebase Authentication
 - **Icons**: React Icons
 
