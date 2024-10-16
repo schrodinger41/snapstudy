@@ -7,8 +7,8 @@ import {
   where,
   deleteDoc,
   doc,
-  getDoc, // Import getDoc to retrieve specific documents
-  updateDoc, // Import updateDoc to update documents
+  getDoc, 
+  updateDoc, 
 } from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
 import { FaTrash, FaEdit, FaEye, FaLock, FaUnlock } from "react-icons/fa";
@@ -29,14 +29,14 @@ const AdminPage = () => {
   const [reportedComments, setReportedComments] = useState([]);
   const [commentUsers, setCommentUsers] = useState({});
   const [flashcardTitles, setFlashcardTitles] = useState({});
-  const [commentTexts, setCommentTexts] = useState({}); // State for storing comment texts
-  const [editingUserId, setEditingUserId] = useState(null); // State to track which user is being edited
-  const [editableName, setEditableName] = useState(""); // State to store the name being edited
-  const [editableRole, setEditableRole] = useState(""); // Store the editable user role
-  const [editingFlashcardId, setEditingFlashcardId] = useState(null); // To track the flashcard being edited
-  const [editableTitle, setEditableTitle] = useState(""); // Editable title
-  const [editableDescription, setEditableDescription] = useState(""); // Editable description
-  const [lockedStatus, setLockedStatus] = useState({}); // Track locked status of users
+  const [commentTexts, setCommentTexts] = useState({}); 
+  const [editingUserId, setEditingUserId] = useState(null); 
+  const [editableName, setEditableName] = useState("");
+  const [editableRole, setEditableRole] = useState(""); 
+  const [editingFlashcardId, setEditingFlashcardId] = useState(null); 
+  const [editableTitle, setEditableTitle] = useState(""); 
+  const [editableDescription, setEditableDescription] = useState(""); 
+  const [lockedStatus, setLockedStatus] = useState({}); 
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);

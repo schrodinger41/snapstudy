@@ -1,6 +1,5 @@
-// homepage.js
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "./homepage.css";
 import Navbar from "../../components/navbar/Navbar";
 import { db } from "../../config/firebase";
@@ -25,8 +24,8 @@ const categories = [
 const HomePage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
   const [filteredSets, setFilteredSets] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // Search query state
-  const navigate = useNavigate(); // Initialize navigate function
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "flashcards"), (snapshot) => {
@@ -35,7 +34,7 @@ const HomePage = () => {
         ...doc.data(),
       }));
       setFlashcardSets(sets);
-      setFilteredSets(sets); // Initialize with all sets
+      setFilteredSets(sets);
     });
 
     return () => unsubscribe();
@@ -124,14 +123,13 @@ const HomePage = () => {
             </div>
           </div>
           <div className="flashcard-sets">
-            {/* Render only the top 3 flashcard sets */}
             {topFlashcardSets.map((set) => (
               <FlashcardSet
                 key={set.id}
                 title={set.title}
                 cardCount={set.cards.length}
-                creator={set.creator} // Pass creator's name
-                id={set.id} // Pass id for navigation
+                creator={set.creator} 
+                id={set.id} 
                 completedUsers={set.completedUsers || 0}
               />
             ))}

@@ -8,7 +8,7 @@ import { getAuth } from "firebase/auth";
 import "./editFlashcard.css";
 
 const EditCardPage = () => {
-  const { id } = useParams(); // Get flashcard set ID from URL
+  const { id } = useParams(); 
   const [cards, setCards] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

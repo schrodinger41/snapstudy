@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../config/firebase"; // Ensure you have this import
+import { db } from "../../config/firebase";
 import {
   doc,
   getDoc,
@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import Navbar from "../../components/navbar/Navbar";
 import { FaEdit } from "react-icons/fa";
-import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
+import FlashcardSet from "../../components/flashcardSet/FlashcardSet";
 import LoadingGif from "../../images/loading.gif";
 import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -20,18 +20,18 @@ import "./profilePage.css";
 const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState({
     fullName: "",
-    bio: "", // Add bio to the state
+    bio: "",
   });
   const [isEditingBio, setIsEditingBio] = useState(false);
-  const [isEditingName, setIsEditingName] = useState(false); // State for editing name
+  const [isEditingName, setIsEditingName] = useState(false);
   const [originalBio, setOriginalBio] = useState("");
-  const [originalName, setOriginalName] = useState(""); // State for original name
-  const [userResults, setUserResults] = useState([]); // State to hold user results
-  const [userComments, setUserComments] = useState([]); // State to hold user comments
-  const [userFlashcards, setUserFlashcards] = useState([]); // State to hold flashcard sets created by the user
-  const userUID = localStorage.getItem("userUID"); // Retrieve UID from local storage
-  const [flashcardCount, setFlashcardCount] = useState(0); // State to hold the count of flashcard sets
-  const [totalCompletedFlashcards, setTotalCompletedFlashcards] = useState(0); // New state for total completed flashcards count
+  const [originalName, setOriginalName] = useState("");
+  const [userResults, setUserResults] = useState([]);
+  const [userComments, setUserComments] = useState([]);
+  const [userFlashcards, setUserFlashcards] = useState([]);
+  const userUID = localStorage.getItem("userUID");
+  const [flashcardCount, setFlashcardCount] = useState(0);
+  const [totalCompletedFlashcards, setTotalCompletedFlashcards] = useState(0);
 
   console.log("Current user UID from local storage:", userUID);
 
@@ -352,64 +352,64 @@ const ProfilePage = () => {
       <div className="my-recent-results">
         <h2>Your Recent Results</h2>
         <div className="table-responsive">
-        <table className="results-table">
-          <thead>
-            <tr>
-              <th>Flashcard Set Title</th>
-              <th>Number of Cards</th> {/* Column for card count */}
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userResults.length > 0 ? (
-              userResults.map((result, index) => (
-                <tr key={index}>
-                  <td>{result.flashcardSetTitle}</td>
-                  <td>{result.cardCount}</td> {/* Display card count */}
-                  <td>{result.score}</td>
-                </tr>
-              ))
-            ) : (
+          <table className="results-table">
+            <thead>
               <tr>
-                <td colSpan="3">No results found.</td>
+                <th>Flashcard Set Title</th>
+                <th>Number of Cards</th> {/* Column for card count */}
+                <th>Score</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {userResults.length > 0 ? (
+                userResults.map((result, index) => (
+                  <tr key={index}>
+                    <td>{result.flashcardSetTitle}</td>
+                    <td>{result.cardCount}</td>
+                    <td>{result.score}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3">No results found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
       {/* Comments Table */}
       <div className="my-comments">
         <h2>Your Comments</h2>
         <div className="table-responsive">
-        <table className="comments-table">
-          <thead>
-            <tr>
-              <th>Flashcard Set Title</th>
-              <th>Comment</th>
-              <th>Timestamp</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userComments.length > 0 ? (
-              userComments.map((comment, index) => (
-                <tr key={index}>
-                  <td>{comment.flashcardSetTitle}</td>
-                  <td>{comment.text}</td>
-                  <td>
-                    {new Date(
-                      comment.timestamp.seconds * 1000
-                    ).toLocaleString()}
-                  </td>
-                </tr>
-              ))
-            ) : (
+          <table className="comments-table">
+            <thead>
               <tr>
-                <td colSpan="3">No comments found.</td>
+                <th>Flashcard Set Title</th>
+                <th>Comment</th>
+                <th>Timestamp</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {userComments.length > 0 ? (
+                userComments.map((comment, index) => (
+                  <tr key={index}>
+                    <td>{comment.flashcardSetTitle}</td>
+                    <td>{comment.text}</td>
+                    <td>
+                      {new Date(
+                        comment.timestamp.seconds * 1000
+                      ).toLocaleString()}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3">No comments found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

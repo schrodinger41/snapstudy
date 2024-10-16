@@ -208,7 +208,7 @@ const QuizPage = () => {
         )}
 
         {isTimeUp ? (
-          <div >
+          <div>
             <h3>Time's up!</h3>
             <p>Your final score is: {score}</p>
             <button

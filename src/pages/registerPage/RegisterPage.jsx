@@ -7,12 +7,11 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { setDoc, doc, getDoc } from "firebase/firestore";
-import Cookies from "universal-cookie"; // Import Cookies from universal-cookie
+import Cookies from "universal-cookie";
 import GoogleLogo from "../../images/googlelogo.png";
 import RegisterImage from "../../images/registerImage.png";
 import "./registerPage.css";
 
-// Initialize cookie object
 const cookies = new Cookies();
 
 const RegisterPage = () => {

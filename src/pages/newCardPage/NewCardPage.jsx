@@ -23,11 +23,11 @@ const NewCardPage = () => {
   const [userCards, setUserCards] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState(""); // State for category
-  const [completedUsers, setCompletedUsers] = useState(""); // State for category
-  const [error, setError] = useState(""); // State for error message
+  const [category, setCategory] = useState(""); 
+  const [completedUsers, setCompletedUsers] = useState(""); 
+  const [error, setError] = useState(""); 
   const auth = getAuth();
-  const user = auth.currentUser; // Get the current user
+  const user = auth.currentUser; 
   const navigate = useNavigate();
 
   useEffect(() => {

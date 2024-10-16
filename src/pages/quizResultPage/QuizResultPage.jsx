@@ -6,7 +6,7 @@ import "./quizResultPage.css";
 const QuizResultPage = () => {
   const location = useLocation();
   const { score, totalCards, flashcardSetId, timeTaken, timer } =
-    location.state || {}; // Add timer to destructuring
+    location.state || {}; 
   const navigate = useNavigate();
 
   // Handle navigation back to home page
@@ -16,7 +16,7 @@ const QuizResultPage = () => {
 
   // Handle retrying the quiz
   const retryQuiz = () => {
-    navigate(`/quiz/${flashcardSetId}`, { state: { timer } }); // Pass timer along with the navigation
+    navigate(`/quiz/${flashcardSetId}`, { state: { timer } });
   };
 
   return (

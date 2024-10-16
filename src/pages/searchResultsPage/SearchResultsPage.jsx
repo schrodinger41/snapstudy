@@ -1,11 +1,10 @@
-// searchResultsPage.js
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from "../../config/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import FlashcardSet from "../../components/flashcardSet/FlashcardSet";
 import Navbar from "../../components/navbar/Navbar";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 import { IoSearch } from "react-icons/io5";
 import "./searchResultsPage.css";
@@ -13,9 +12,9 @@ import "./searchResultsPage.css";
 const SearchResultsPage = () => {
   const [flashcardSets, setFlashcardSets] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // Search query state
-  const navigate = useNavigate(); // Initialize navigate function
-  const location = useLocation(); // Use location to get the query from the URL
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Extract the query and category from the URL
   const query = new URLSearchParams(location.search).get("query");
@@ -35,8 +34,8 @@ const SearchResultsPage = () => {
 
   useEffect(() => {
     if (query) {
-      const results = flashcardSets.filter(
-        (set) => set.title.toLowerCase().startsWith(query.toLowerCase()) // Change includes to startsWith
+      const results = flashcardSets.filter((set) =>
+        set.title.toLowerCase().startsWith(query.toLowerCase())
       );
       setSearchResults(results);
     } else if (category) {
@@ -73,9 +72,9 @@ const SearchResultsPage = () => {
                 type="text"
                 placeholder="Search here..."
                 className="search-input"
-                value={searchQuery} // Bind search query state
-                onChange={(e) => setSearchQuery(e.target.value)} // Update search query
-                onKeyPress={handleKeyPress} // Trigger search on Enter
+                value={searchQuery} 
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleKeyPress} 
               />
             </div>
             <div className="right-input" onClick={handleSearch}>

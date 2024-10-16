@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
-import { db } from "../../config/firebase"; // Ensure you have this import
+import { db } from "../../config/firebase"; 
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import FlashcardSet from "../../components/flashcardSet/FlashcardSet"; // Import the FlashcardSet component
+import FlashcardSet from "../../components/flashcardSet/FlashcardSet";
 import { FaRegFolderOpen } from 'react-icons/fa6';
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import "./myCardsPage.css";
 
 const MyCardsPage = () => {
   const [userCards, setUserCards] = useState([]);
-  const userUID = localStorage.getItem("userUID"); // Retrieve UID from local storage
-  const navigate = useNavigate(); // Initialize useNavigate
+  const userUID = localStorage.getItem("userUID"); 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchUserCards = () => {
@@ -28,7 +28,7 @@ const MyCardsPage = () => {
           setUserCards(cardsData);
         });
 
-        return () => unsubscribe(); // Cleanup on unmount
+        return () => unsubscribe();
       }
     };
 
@@ -63,7 +63,7 @@ const MyCardsPage = () => {
                   title={card.title}
                   creator={card.creator}
                   cardCount={card.cards.length}
-                  completedUsers={card.completedUsers || 0} // Adjust this based on your data structure
+                  completedUsers={card.completedUsers || 0}
                 />
               ))
             ) : (

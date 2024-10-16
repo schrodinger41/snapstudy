@@ -22,7 +22,7 @@ import { FaEdit } from "react-icons/fa";
 import "./cardPage.css";
 
 const CardPage = () => {
-  const { id } = useParams(); // Flashcard set ID from URL
+  const { id } = useParams(); 
   const [flashcardSet, setFlashcardSet] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -31,15 +31,15 @@ const CardPage = () => {
   const [timedQuizResults, setTimedQuizResults] = useState([]);
   const [userRole, setUserRole] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false); // New report modal state
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false); 
   const [isReportCommentModalOpen, setIsReportCommentModalOpen] =
     useState(false); // New report modal state
   const [timerMinutes, setTimerMinutes] = useState(0);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(null);
-  const [selectedReportReasons, setSelectedReportReasons] = useState([]); // State to hold selected report reasons
-  const [reportCommentId, setReportCommentId] = useState(null); // State to hold the comment ID being reported
+  const [selectedReportReasons, setSelectedReportReasons] = useState([]);
+  const [reportCommentId, setReportCommentId] = useState(null); 
 
   const auth = getAuth();
   const user = auth.currentUser;
@@ -602,7 +602,6 @@ const CardPage = () => {
           </div>
 
           <div className="quiz-results-container">
-            {/* Display the latest 3 quiz results */}
             <div className="quiz-results-section">
               <h2>Recent Scores</h2>
               {quizResults.length > 0 ? (
@@ -619,7 +618,6 @@ const CardPage = () => {
               )}
             </div>
 
-            {/* Display the latest 3 timed quiz results */}
             <div className="timed-quiz-results-section">
               <h2>Recent Timed Scores</h2>
               {timedQuizResults.length > 0 ? (
