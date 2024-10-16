@@ -481,6 +481,13 @@ h2 {
   color: #333; /* Title color */
 }
 
+.edit-card {
+  cursor: pointer;
+  margin: 0 0 5px 8px;
+  font-size: 2rem;
+  color: var(--secondary-color);
+}
+
 .reportcommentmodal-reasons {
   margin-bottom: 20px;
 }

@@ -18,6 +18,7 @@ import LoadingGif from "../../images/loading.gif";
 import { TbCardsFilled } from "react-icons/tb";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { FaEdit } from "react-icons/fa";
 import "./cardPage.css";
 
 const CardPage = () => {
@@ -283,12 +284,10 @@ const CardPage = () => {
             />
           )}
           {userRole === "user" && flashcardSet.creator === user.displayName && (
-            <button
+            <FaEdit
               onClick={() => navigate(`/editCard/${flashcardSet.id}`)}
-              className="edit-flashcard-button"
-            >
-              Edit Flashcard Set
-            </button>
+              className="edit-card"
+            />
           )}
         </div>
         <p className="flashcard-creator">
