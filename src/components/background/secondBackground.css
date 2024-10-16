@@ -1,10 +1,10 @@
 canvas {
-    position: absolute;
+    position: fixed; /* Fix the canvas to stay in the same position while scrolling */
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffe8;
-    z-index: -1; 
+    width: 100vw; /* Full width */
+    height: auto; /* Avoid scaling the height */
+    background-color: #ffffe8; /* Background color */
+    z-index: -1; /* Positioned behind other content */
   }
   
