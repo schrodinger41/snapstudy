@@ -1,0 +1,21 @@
+.cancelEdit {
+  background-color: white;
+  border: 1px solid #333;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .flashcard-actions {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .flashcard-actions {
+    display: flex;
+    flex-direction: column;
+  }
+}

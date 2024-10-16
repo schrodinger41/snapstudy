@@ -5,6 +5,7 @@ import { FaTrash, FaPlus } from "react-icons/fa";
 import { db } from "../../config/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import "./editFlashcard.css";
 
 const EditCardPage = () => {
   const { id } = useParams(); // Get flashcard set ID from URL
@@ -82,6 +83,10 @@ const EditCardPage = () => {
     }
   };
 
+  const cancelEdit = () => {
+    navigate(`/card/${id}`); // Navigate back to the card page without saving
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -139,6 +144,9 @@ const EditCardPage = () => {
             <label>Category</label>
           </div>
           <div className="flashcard-actions">
+            <button className="cancelEdit" onClick={cancelEdit}>
+              Cancel
+            </button>
             <button className="create-practice-btn" onClick={saveFlashcardSet}>
               Save
             </button>
