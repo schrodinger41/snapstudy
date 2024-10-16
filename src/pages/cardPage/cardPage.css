@@ -1,6 +1,5 @@
 .card-page {
   min-height: 100vh;
-  background-color: var(--background-color);
   padding: 80px 300px 20px 300px;
 }
 
@@ -29,7 +28,7 @@
 
 .flashcard-creator {
   margin-bottom: 20px;
-  color: #999999;
+  color: #6e6e6e;
   font-weight: 500;
 }
 

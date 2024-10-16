@@ -17,6 +17,7 @@ import SearchResultsPage from "./pages/searchResultsPage/SearchResultsPage";
 import LoadingGif from "../src/images/loading.gif";
 import EditCardPage from "./pages/editCardPage/EditCardPage";
 import "./App.css";
+import SecondBackground from "./components/background/SecondBackground";
 
 const cookies = new Cookies();
 
@@ -63,6 +64,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <SecondBackground />
       <Routes>
         <Route path="/" element={<Register />} />
         {/* User-only page */}
