@@ -64,7 +64,7 @@ function App() {
 
   return (
     <BrowserRouter>
-    <SecondBackground />
+      <SecondBackground />
       <Routes>
         <Route path="/" element={<Register />} />
         {/* User-only page */}
