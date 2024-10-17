@@ -25,6 +25,7 @@ const QuizPage = () => {
   const [feedback, setFeedback] = useState("");
   const [score, setScore] = useState(0);
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const [isSaving, setIsSaving] = useState(false); // New state to prevent multiple saves
   const navigate = useNavigate();
   const auth = getAuth();
   const user = auth.currentUser;
@@ -65,7 +66,7 @@ const QuizPage = () => {
     fetchFlashcardSet();
   }, [id]);
 
-  // Timer logic
+  // Timer logic, invoking quiz completion when time runs out
   useEffect(() => {
     if (timer) {
       const interval = setInterval(() => {
@@ -73,7 +74,7 @@ const QuizPage = () => {
           if (prev <= 0) {
             clearInterval(interval);
             setIsTimeUp(true);
-            handleQuizComplete(timer); // Complete quiz with full timer value as timeTaken
+            handleQuizComplete(timer); // Complete quiz on time up
             return 0;
           }
           return prev - 1;
@@ -84,10 +85,12 @@ const QuizPage = () => {
     }
   }, [timer]);
 
+  // Call handleQuizComplete only once when the quiz ends
   const handleQuizComplete = (timeTakenOverride = null) => {
-    setIsQuizComplete(true);
-    const timeTaken = timeTakenOverride || (!timer ? 0 : timer - timeRemaining); // If no timer, timeTaken is 0
-    handleFinishQuiz(timeTaken);
+    if (isSaving) return; // Prevent multiple invocations
+
+    const timeTaken = timeTakenOverride || (!timer ? 0 : timer - timeRemaining); // Calculate time taken
+    handleFinishQuiz(timeTaken); // Pass the correct time taken
   };
 
   useEffect(() => {
@@ -131,7 +134,14 @@ const QuizPage = () => {
   };
 
   const handleFinishQuiz = async (timeTakenInSeconds) => {
+    // Prevent any further execution if the flashcardSet is null or saving is already in progress
+    if (!flashcardSet || isSaving) return;
+
+    // Set the state to indicate saving in progress
+    setIsSaving(true);
+
     try {
+      // Save the quiz results to the "results" collection
       const resultsRef = collection(db, "results");
       await addDoc(resultsRef, {
         userId: user.uid,
@@ -142,11 +152,13 @@ const QuizPage = () => {
         timestamp: new Date(),
       });
 
+      // Update the flashcard set to increment the number of users who completed it
       const flashcardSetRef = doc(db, "flashcards", id);
       await updateDoc(flashcardSetRef, {
         completedUsers: increment(1),
       });
 
+      // Navigate to the result page, passing the relevant data
       navigate("/quizResultPage", {
         state: {
           score: score,
@@ -158,6 +170,8 @@ const QuizPage = () => {
       });
     } catch (error) {
       console.error("Error saving quiz result: ", error);
+    } finally {
+      setIsSaving(false); // Allow future saves if needed
     }
   };
 
@@ -171,7 +185,7 @@ const QuizPage = () => {
 
   if (!flashcardSet)
     return (
-      <div class="loading-screen">
+      <div className="loading-screen">
         <img src={LoadingGif} alt="Loading..." className="loading-gif" />
       </div>
     );
