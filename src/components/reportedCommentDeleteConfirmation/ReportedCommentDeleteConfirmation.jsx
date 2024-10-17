@@ -12,15 +12,13 @@ const ReportedCommentDeleteConfirmation = ({
   if (!isOpen) return null;
 
   return (
-    <div className="reported-comment-modal-overlay">
-      <div className="reported-comment-modal-content">
-        <h2 className="reported-comment-modal-title">Confirm Deletion</h2>
-        <p className="reported-comment-modal-text">
-          Are you sure you want to delete this reported comment?
-        </p>
-        <div className="reported-comment-modal-buttons">
+    <div className="custom-modal">
+      <div className="modal-content">
+        <h2>Confirm Deletion</h2>
+        <p>Are you sure you want to delete this reported comment?</p>
+        <div className="confirmation-buttons">
           <button
-            className="reported-comment-confirm-btn"
+            className="cancel-button"
             onClick={() => {
               onConfirm(commentId, reportId);
               onClose();
@@ -28,7 +26,7 @@ const ReportedCommentDeleteConfirmation = ({
           >
             Delete
           </button>
-          <button className="reported-comment-cancel-btn" onClick={onClose}>
+          <button className="cancel-button" onClick={onClose}>
             Cancel
           </button>
         </div>

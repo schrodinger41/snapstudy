@@ -15,16 +15,6 @@
   justify-content: space-between;
 }
 
-.confirm-btn {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 10px;
-}
-
-.cancel-btn {
-  background-color: gray;
-  color: white;
-  border: none;
-  padding: 10px;
+.custom-modal p {
+  margin-bottom: 20px;
 }

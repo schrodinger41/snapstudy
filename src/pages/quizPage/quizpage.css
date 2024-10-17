@@ -11,6 +11,18 @@
   padding: 20px 300px;
 }
 
+.back-to-home-icon {
+  position: absolute;
+  top: 80px; 
+  left: 20px;
+  font-size: 24px; 
+  color: #333; 
+}
+
+.back-to-home-icon:hover {
+  color: var(--primary-color);
+}
+
 .quiz-page h2 {
   /* align-self: flex-start; */
   margin-bottom: 10px;
@@ -130,6 +142,7 @@
   border: 1px solid #333;
   border-radius: 50px;
   padding: 5px 25px;
+  background-color: var(--primary-color);
 }
 
 .progress-number.total {
@@ -139,6 +152,7 @@
   border: 1px solid #333;
   border-radius: 50px;
   padding: 5px 25px;
+  background-color: var(--primary-color);
 }
 
 .timer {
@@ -165,6 +179,11 @@
   .progress-bar-wrapper {
     padding: 80px 100px;
   }
+
+  .progress-bar-wrapper {
+    width: 90%;
+    position: absolute;
+  }
 }
 
 @media (max-width: 768px) {
@@ -180,8 +199,7 @@
 }
 
 @media (max-width: 480px) {
-  .quiz-page,
-  .progress-bar-wrapper {
+  .quiz-page {
     padding: 60px 20px;
   }
 
@@ -190,8 +208,14 @@
   }
 
   .progress-bar-wrapper {
+    padding: 130px 20px;
     width: 90%;
     position: absolute;
+  }
+
+  .progress-number.current,
+  .progress-number.total {
+    padding: 5px 20px;
   }
 
   .quiz-box h3 {

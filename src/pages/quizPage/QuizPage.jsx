@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { db } from "../../config/firebase";
 import {
   doc,
@@ -14,6 +14,7 @@ import Navbar from "../../components/navbar/Navbar";
 import LoadingGif from "../../images/loading.gif";
 import Background from "../../components/background/Background";
 import "./quizpage.css";
+import { FaArrowLeft } from "react-icons/fa";
 
 const QuizPage = () => {
   const { id } = useParams();
@@ -195,6 +196,9 @@ const QuizPage = () => {
       <Navbar />
       <Background />
       <div className="quiz-page">
+        <Link to="/home" className="back-to-home-icon">
+              <FaArrowLeft />
+        </Link>
         <div className="progress-bar-wrapper">
           <span className="progress-number current">
             {currentCardIndex + 1}
@@ -222,9 +226,10 @@ const QuizPage = () => {
         )}
 
         {isTimeUp ? (
-          <div>
-            <h3>Time's up!</h3>
+          <div className="quiz-result-box">
+            <h2>Time's up!</h2>
             <p>Your final score is: {score}</p>
+            <p>૮(˶ㅠ︿ㅠ)ა</p>
             <button
               className="next-button"
               onClick={() => handleQuizComplete(timer)}
