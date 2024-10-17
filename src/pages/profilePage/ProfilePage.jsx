@@ -399,7 +399,14 @@ const ProfilePage = () => {
                     <td>
                       {new Date(
                         comment.timestamp.seconds * 1000
-                      ).toLocaleString()}
+                      ).toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true, // Ensures 12-hour format with AM/PM
+                      })}
                     </td>
                   </tr>
                 ))
