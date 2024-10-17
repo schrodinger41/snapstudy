@@ -13,7 +13,7 @@ import { getAuth } from "firebase/auth";
 import Navbar from "../../components/navbar/Navbar";
 import LoadingGif from "../../images/loading.gif";
 import Background from "../../components/background/Background";
-import "./quizPage.css";
+import "./quizpage.css";
 
 const QuizPage = () => {
   const { id } = useParams();
